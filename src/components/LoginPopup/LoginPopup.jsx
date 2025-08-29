@@ -3,9 +3,11 @@ import "./LoginPopup.css";
 import { assets } from "../../assets/assets";
 import { StoreContext } from "../../context/StoreContext";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 export const LoginPopup = ({ setShowLogin }) => {
   const { url, setToken } = useContext(StoreContext);
   const [currState, setCurrState] = useState("Login"); // login || signup
+  const navigate = useNavigate();
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -30,7 +32,13 @@ export const LoginPopup = ({ setShowLogin }) => {
     if (response.data.success) {
       setToken(response.data.token);
       localStorage.setItem("token", response.data.token);
-      setShowLogin(false);
+      localStorage.setItem("role", response.data.role); // 👈 lưu role
+
+      if (response.data.role === "admin") {
+        navigate("/admin/dashboard"); // 👈 chuyển hướng admin
+      } else {
+        setShowLogin(false); // 👈 user bình thường thì đóng popup
+      }
     } else {
       alert(response.data.message);
     }
