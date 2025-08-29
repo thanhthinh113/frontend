@@ -1,0 +1,143 @@
+/* add.css - Phong cách tối giản */
+
+/* --- Container tổng thể --- */
+.add-container {
+    width: 65%; /* Chiều rộng nhỏ hơn để trông gọn hơn */
+    margin: 40px auto; /* Căn giữa */
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    font-family: 'Outfit', sans-serif;
+    color: #444;
+}
+
+/* --- Form --- */
+.add-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px; /* Khoảng cách giữa các nhóm input */
+}
+
+.form-group p {
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+/* --- Khu vực tải ảnh --- */
+.form-group-image {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Căn lề trái */
+    gap: 15px;
+}
+
+.image-upload-label {
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.image-upload-label img {
+    width: 150px; /* Kích thước icon tải ảnh */
+    height: 150px;
+    border: 2px dashed #e0e0e0;
+    border-radius: 10px;
+    object-fit: contain;
+    transition: border-color 0.2s ease-in-out;
+}
+
+.image-upload-label:hover img {
+    border-color: #ff6347;
+}
+
+/* --- Nhóm input thông thường --- */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group-flex {
+    display: flex;
+    gap: 20px;
+}
+
+.form-group-flex .form-group {
+    flex: 1; /* Chia đều không gian */
+}
+
+/* --- Style cho input, textarea và select --- */
+input, textarea, select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 15px;
+    color: #555;
+    background-color: #fcfcfc;
+    transition: all 0.2s ease-in-out;
+    outline: none;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: #ff6347;
+    box-shadow: 0 0 0 2px rgba(255, 99, 71, 0.1);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23444%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13%205.1L146.2%20204.7%2018.6%2074.5c-6-6.2-16.6-6.2-22.6%200-6%206.1-6%2016.9%200%2023l120.7%20117.9c6.4%206.2%2016.8%206.2%2023.2%200l121.3-117.9c6-6.1%206-16.9%200-23z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 10px;
+}
+
+/* --- Nút "ADD" --- */
+.submit-btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    background-color: #ff6347;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 4px 10px rgba(255, 99, 71, 0.3);
+    align-self: flex-start;
+}
+
+.submit-btn:hover {
+    background-color: #e5533d;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 99, 71, 0.4);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+/* --- Responsive cho màn hình nhỏ hơn --- */
+@media (max-width: 768px) {
+    .add-container {
+        width: 95%;
+        margin: 20px auto;
+        padding: 20px;
+    }
+    .form-group-flex {
+        flex-direction: column;
+        gap: 20px;
+    }
+    .submit-btn {
+        width: 100%;
+        align-self: center;
+    }
+}

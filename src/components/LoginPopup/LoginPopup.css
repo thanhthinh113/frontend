@@ -52,17 +52,7 @@ display: grid;
     font-size: 15px;
     cursor: pointer;
 }
-.login-popup-condition{
-    display: flex;
-    align-items: start;
-    gap: 8px;
-    margin-top: -15px;
-}
 
-.login-popup-condition input{
-    margin-top: 5px;
-    cursor: pointer;
-}
 
 .login-popup p span{
  color: tomato;

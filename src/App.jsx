@@ -11,8 +11,13 @@ import { Cart } from "./pages/Cart/Cart";
 import { PlaceOrder } from "./pages/PlaceOrder/PlaceOrder";
 import { Verify } from "./pages/Verify/Verify";
 import { MyOrders } from "./pages/MyOrders/MyOrders";
-import { Admin } from "./pages/Admin/Admin";
 import CheckAdmin from "./CheckAdmin/CheckAdmin";
+
+import { Sidebar } from "./Admin/components/Sidebar/Sidebar";
+import { Navbar as NavbarAdmin } from "./Admin/components/Navbar/Navbar";
+import { Add } from "./admin/pages/Add/Add";
+import { List } from "./admin/pages/List/List";
+import { Orders } from "./admin/pages/Orders/Orders";
 
 export const App = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -27,17 +32,19 @@ export const App = () => {
         <Route
           path="/*"
           element={
-            <div className="app">
-              <Navbar setShowLogin={setShowLogin} />
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/order" element={<PlaceOrder />} />
-                <Route path="/verify" element={<Verify />} />
-                <Route path="/myorders" element={<MyOrders />} />
-              </Routes>
+            <>
+              <div className="app">
+                <Navbar setShowLogin={setShowLogin} />
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/cart" element={<Cart />} />
+                  <Route path="/order" element={<PlaceOrder />} />
+                  <Route path="/verify" element={<Verify />} />
+                  <Route path="/myorders" element={<MyOrders />} />
+                </Routes>
+              </div>
               <Footer />
-            </div>
+            </>
           }
         />
 
@@ -46,14 +53,15 @@ export const App = () => {
           path="/admin/*"
           element={
             <CheckAdmin>
-              <div className="admin-layout flex">
-                {/* Sidebar + Content */}
-                <div className="w-1/5 bg-gray-800 text-white p-4">
-                  Sidebar menu
-                </div>
-                <div className="w-4/5 p-4">
+              <NavbarAdmin />
+              <hr />
+              <div className="app-content">
+                <Sidebar />
+                <div className="app-admin-pages">
                   <Routes>
-                    <Route path="dashboard" element={<Admin />} />
+                    <Route path="/add" element={<Add />} />
+                    <Route path="/list" element={<List />} />
+                    <Route path="orders" element={<Orders />} />
                   </Routes>
                 </div>
               </div>

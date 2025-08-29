@@ -5,7 +5,7 @@ import { StoreContext } from "../../context/StoreContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 export const LoginPopup = ({ setShowLogin }) => {
-  const { url, setToken } = useContext(StoreContext);
+  const { url, setToken, loginUser } = useContext(StoreContext);
   const [currState, setCurrState] = useState("Login"); // login || signup
   const navigate = useNavigate();
   const [data, setData] = useState({
@@ -30,14 +30,18 @@ export const LoginPopup = ({ setShowLogin }) => {
     }
     const response = await axios.post(newUrl, data);
     if (response.data.success) {
-      setToken(response.data.token);
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("role", response.data.role); // 👈 lưu role
+      loginUser({
+        token: response.data.token,
+        name: response.data.name,
+        email: response.data.email,
+        role: response.data.role,
+      });
 
       if (response.data.role === "admin") {
-        navigate("/admin/dashboard"); // 👈 chuyển hướng admin
+        navigate("/admin");
+        setShowLogin(false);
       } else {
-        setShowLogin(false); // 👈 user bình thường thì đóng popup
+        setShowLogin(false);
       }
     } else {
       alert(response.data.message);
@@ -88,10 +92,7 @@ export const LoginPopup = ({ setShowLogin }) => {
         <button type="submit">
           {currState === "Sign Up" ? "Create account" : "Login"}
         </button>
-        <div className="login-popup-condition">
-          <input type="checkbox" required />
-          <p>By continuing, I agree to the Terms of Service</p>
-        </div>
+
         {currState === "Login" ? (
           <p>
             Create a new account?{" "}

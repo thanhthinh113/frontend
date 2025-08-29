@@ -3,6 +3,7 @@ import axios from "axios";
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
+  const [user, setUser] = useState(null);
   const [cartItems, setCartItems] = useState({});
   const [token, setToken] = useState("");
   const url = "http://localhost:4000";
@@ -71,10 +72,30 @@ const StoreContextProvider = (props) => {
       if (localStorage.getItem("token")) {
         setToken(localStorage.getItem("token"));
         await loadCartData(localStorage.getItem("token"));
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        }
       }
     }
     loadData();
   }, []);
+
+  const logoutUser = () => {
+    setToken("");
+    setUser(null);
+    localStorage.removeItem("token");
+    window.location.reload();
+  };
+  const loginUser = (data) => {
+    setToken(data.token);
+    setUser({ name: data.name, email: data.email, role: data.role });
+    localStorage.setItem("token", data.token);
+    localStorage.setItem(
+      "user",
+      JSON.stringify({ name: data.name, email: data.email, role: data.role })
+    );
+  };
 
   const contextValue = {
     food_list,
@@ -86,6 +107,9 @@ const StoreContextProvider = (props) => {
     url,
     token,
     setToken,
+    user,
+    logoutUser,
+    loginUser,
   };
   return (
     <StoreContext.Provider value={contextValue}>
