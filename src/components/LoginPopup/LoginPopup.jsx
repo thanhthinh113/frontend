@@ -36,6 +36,7 @@ export const LoginPopup = ({ setShowLogin }) => {
         email: response.data.email,
         role: response.data.role,
       });
+      localStorage.setItem("role", response.data.role);
 
       if (response.data.role === "admin") {
         navigate("/admin");
