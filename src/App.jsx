@@ -18,6 +18,7 @@ import { Navbar as NavbarAdmin } from "./Admin/components/Navbar/Navbar";
 import { Add } from "./admin/pages/Add/Add";
 import { List } from "./admin/pages/List/List";
 import { Orders } from "./admin/pages/Orders/Orders";
+import { User } from "./admin/pages/User/User";
 
 export const App = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -62,6 +63,7 @@ export const App = () => {
                     <Route path="/add" element={<Add />} />
                     <Route path="/list" element={<List />} />
                     <Route path="orders" element={<Orders />} />
+                    <Route path="/users" element={<User />} />
                   </Routes>
                 </div>
               </div>

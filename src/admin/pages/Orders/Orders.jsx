@@ -6,12 +6,14 @@ import { assets } from "../../../assets/assets";
 import { StoreContext } from "../../../context/StoreContext";
 
 export const Orders = () => {
-  const { url } = useContext(StoreContext);
+  const { url, token } = useContext(StoreContext);
   const [orders, setOrders] = useState([]);
 
   const fetchAllOrders = async () => {
     try {
-      const response = await axios.get(`${url}/api/order/list`);
+      const response = await axios.get(`${url}/api/order/list`, {
+        headers: { token },
+      });
       if (response.data.success) {
         setOrders(response.data.orders);
       } else {
@@ -25,10 +27,14 @@ export const Orders = () => {
 
   const statusHandler = async (e, orderId) => {
     try {
-      const response = await axios.post(`${url}/api/order/updatestatus`, {
-        orderId,
-        status: e.target.value,
-      });
+      const response = await axios.post(
+        `${url}/api/order/updatestatus`,
+        {
+          orderId,
+          status: e.target.value,
+        },
+        { headers: { token } }
+      );
       if (response.data.success) {
         toast.success("Order status updated");
         fetchAllOrders();
@@ -42,9 +48,10 @@ export const Orders = () => {
   };
 
   useEffect(() => {
-    fetchAllOrders();
-  }, []);
-
+    if (token) {
+      fetchAllOrders();
+    }
+  }, [token]);
   return (
     <div className="orders-container">
       <h3>Quản lý Đơn hàng</h3>

@@ -35,6 +35,15 @@ export const Sidebar = () => {
           <img src={assets.order_icon} alt="Orders Icon" />
           <p>Orders</p>
         </NavLink>
+        <NavLink
+          to="/admin/users"
+          className={({ isActive }) =>
+            isActive ? "sidebar-option active" : "sidebar-option"
+          }
+        >
+          <img src={assets.order_icon} alt="Users Icon" />
+          <p>Users</p>
+        </NavLink>
       </div>
     </div>
   );

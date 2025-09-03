@@ -47,6 +47,7 @@ export const LoginPopup = ({ setShowLogin }) => {
     } else {
       alert(response.data.message);
     }
+    window.location.reload();
   };
 
   return (
