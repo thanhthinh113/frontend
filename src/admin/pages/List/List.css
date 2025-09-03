@@ -29,7 +29,7 @@
 .table-row {
     display: grid;
     /* Điều chỉnh grid-template-columns để thêm cột STT */
-    grid-template-columns: 0.3fr 0.5fr 1.5fr 3fr 1fr 0.5fr 0.5fr; 
+    grid-template-columns: 0.3fr 0.5fr 1.5fr 3fr 1fr 1fr 0.5fr; 
     align-items: center;
     gap: 20px;
     padding: 15px 20px;

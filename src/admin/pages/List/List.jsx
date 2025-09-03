@@ -1,4 +1,3 @@
-// List.jsx
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -8,6 +7,13 @@ import { StoreContext } from "../../../context/StoreContext";
 export const List = () => {
   const { url } = useContext(StoreContext);
   const [list, setList] = useState([]);
+
+  // Helper function to format numbers to VND
+  const formatVND = (amount) => {
+    // Assuming the price is already in VND, just format it.
+    // If it's in USD, you'd need to convert it first.
+    return amount.toLocaleString("vi-VN");
+  };
 
   const fetchList = async () => {
     try {
@@ -47,7 +53,7 @@ export const List = () => {
       <h3>Tất cả sản phẩm</h3>
       <div className="list-table">
         <div className="table-header table-row">
-          <b>STT</b> {/* Thêm cột STT */}
+          <b>STT</b>
           <b>Ảnh</b>
           <b>Tên</b>
           <b>Mô tả</b>
@@ -57,13 +63,12 @@ export const List = () => {
         </div>
         {list.map((item, index) => (
           <div className="table-row table-item" key={item._id}>
-            <p className="item-number">{index + 1}</p>{" "}
-            {/* Hiển thị số thứ tự */}
+            <p className="item-number">{index + 1}</p>
             <img src={`${url}/images/` + item.image} alt={item.name} />
             <p>{item.name}</p>
             <p className="item-description">{item.description}</p>
             <p>{item.category}</p>
-            <p>${item.price}</p>
+            <p>{formatVND(item.price)} VND</p>
             <p onClick={() => removeFood(item._id)} className="remove-btn">
               Xóa
             </p>
