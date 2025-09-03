@@ -36,11 +36,12 @@ export const PlaceOrder = () => {
         orderItems.push(itemInfo);
       }
     });
+    // Correctly calculate the total amount by adding the 30,000 VND delivery fee
     let orderData = {
       userId: localStorage.getItem("userId"),
       address: data,
       items: orderItems,
-      amount: getTotalCartAmount() + 2,
+      amount: getTotalCartAmount() + 30000,
     };
     let response = await axios.post(`${url}/api/order/place`, orderData, {
       headers: { token },
@@ -58,24 +59,29 @@ export const PlaceOrder = () => {
   useEffect(() => {
     if (!token) {
       navigate("/cart");
-      toast.error("Please login to place order");
+      toast.error("Vui lòng đăng nhập để đặt hàng");
     } else if (getTotalCartAmount() === 0) {
       navigate("/cart");
-      toast.error("Cart is empty");
+      toast.error("Giỏ hàng của bạn đang trống");
     }
   }, [token]);
+
+  // Helper function to format numbers to VND
+  const formatVND = (amount) => {
+    return amount.toLocaleString("vi-VN");
+  };
 
   return (
     <form onSubmit={placeOrder} className="place-order">
       <div className="place-order-left">
-        <p className="title">Delivery Information</p>
+        <p className="title">Thông tin giao hàng</p>
         <div className="multi-fields">
           <input
             required
             name="firstName"
             onChange={onChangeHandler}
             type="text"
-            placeholder="First name"
+            placeholder="Tên"
             value={data.firstName}
           />
           <input
@@ -83,7 +89,7 @@ export const PlaceOrder = () => {
             name="lastName"
             onChange={onChangeHandler}
             type="text"
-            placeholder="Last name"
+            placeholder="Họ"
             value={data.lastName}
           />
         </div>
@@ -92,7 +98,7 @@ export const PlaceOrder = () => {
           name="email"
           onChange={onChangeHandler}
           type="text"
-          placeholder="Email address"
+          placeholder="Địa chỉ Email"
           value={data.email}
         />
         <input
@@ -100,7 +106,7 @@ export const PlaceOrder = () => {
           name="street"
           onChange={onChangeHandler}
           type="text"
-          placeholder="Street"
+          placeholder="Tên đường, số nhà"
           value={data.street}
         />
         <div className="multi-fields">
@@ -109,7 +115,7 @@ export const PlaceOrder = () => {
             name="city"
             onChange={onChangeHandler}
             type="text"
-            placeholder="City"
+            placeholder="Thành phố"
             value={data.city}
           />
           <input
@@ -117,7 +123,7 @@ export const PlaceOrder = () => {
             name="state"
             onChange={onChangeHandler}
             type="text"
-            placeholder="State"
+            placeholder="Quận/Huyện"
             value={data.state}
           />
         </div>
@@ -127,7 +133,7 @@ export const PlaceOrder = () => {
             name="zipCode"
             onChange={onChangeHandler}
             type="text"
-            placeholder="Zip code"
+            placeholder="Mã bưu chính"
             value={data.zipCode}
           />
           <input
@@ -135,7 +141,7 @@ export const PlaceOrder = () => {
             name="country"
             onChange={onChangeHandler}
             type="text"
-            placeholder="Country"
+            placeholder="Quốc gia"
             value={data.country}
           />
         </div>
@@ -144,30 +150,35 @@ export const PlaceOrder = () => {
           name="phone"
           onChange={onChangeHandler}
           type="text"
-          placeholder="Phone"
+          placeholder="Số điện thoại"
           value={data.phone}
         />
       </div>
       <div className="place-order-right">
         <div className="cart-total">
-          <h2>Cart Total</h2>
+          <h2>Tổng tiền giỏ hàng</h2>
           <div>
             <div className="cart-total-details">
-              <p>Subtotal</p>
-              <p>{getTotalCartAmount()}</p>
+              <p>Tổng phụ</p>
+              <p>{formatVND(getTotalCartAmount())} VND</p>
             </div>
             <hr />
             <div className="cart-total-details">
-              <p>Delivery Fee</p>
-              <p>${getTotalCartAmount() === 0 ? 0 : 2}</p>
+              <p>Phí giao hàng</p>
+              <p>{getTotalCartAmount() === 0 ? "0 VND" : "30.000 VND"}</p>
             </div>
             <hr />
             <div className="cart-total-details">
-              <p>Total</p>
-              <p>{getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 2}</p>
+              <b>Tổng cộng</b>
+              <b>
+                {getTotalCartAmount() === 0
+                  ? "0 VND"
+                  : formatVND(getTotalCartAmount() + 30000)}{" "}
+                VND
+              </b>
             </div>
           </div>
-          <button type="submit">Proceed to Payment</button>
+          <button type="submit">Tiến hành thanh toán</button>
         </div>
       </div>
     </form>

@@ -5,6 +5,8 @@ import { StoreContext } from "../../context/StoreContext";
 export const FoodItem = ({ id, name, price, description, image }) => {
   const { cartItems, addToCart, removeFromCart, url } =
     useContext(StoreContext);
+  const priceVND = price.toLocaleString("vi-VN");
+
   return (
     <div className="food-item">
       <div className="food-item-img-container">
@@ -42,7 +44,7 @@ export const FoodItem = ({ id, name, price, description, image }) => {
           <img src={assets.rating_starts} alt="" />
         </div>
         <p className="food-item-desc">{description}</p>
-        <p className="food-item-price">${price}</p>
+        <p className="food-item-price">{priceVND} VND</p>
       </div>
     </div>
   );

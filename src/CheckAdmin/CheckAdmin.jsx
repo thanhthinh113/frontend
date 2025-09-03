@@ -2,13 +2,13 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 
 const CheckAdmin = ({ children }) => {
-  const role = localStorage.getItem("role"); // lấy role đã lưu sau login
+  const role = localStorage.getItem("role");
 
   if (role !== "admin") {
-    return <Navigate to="/" replace />; // nếu không phải admin thì về trang chủ
+    return <Navigate to="/" replace />;
   }
 
-  return children; // nếu admin thì cho vào
+  return children;
 };
 
 export default CheckAdmin;
