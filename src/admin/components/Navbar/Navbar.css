@@ -14,3 +14,32 @@
     color: #49557e;
     font-size: 16px;
 }
+
+.navbar-user{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.logout-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 2px;          /* nhỏ hơn */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logout-btn img {
+  width: 16px;           /* thu nhỏ icon */
+  height: 16px;
+  object-fit: contain;
+  filter: brightness(0) saturate(100%) invert(41%) sepia(72%) saturate(3280%) hue-rotate(340deg) brightness(95%) contrast(97%);
+}
+
+.logout-btn:hover img {
+  transform: scale(1.1); /* hover chỉ phóng nhẹ icon */
+  opacity: 0.85;
+}

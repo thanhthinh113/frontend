@@ -61,7 +61,9 @@ export const Orders = () => {
             <div className="order-card-header">
               <img src={assets.parcel_icon} alt="parcel icon" />
               {/* Hiển thị 6 ký tự cuối cùng của ID đơn hàng */}
-              <h4>Đơn hàng #{order._id.slice(-6)}</h4>
+              <h4>
+                {index + 1}. Đơn hàng #{order._id.slice(-6)}
+              </h4>
             </div>
 
             <div className="order-card-body">
@@ -104,6 +106,7 @@ export const Orders = () => {
                 id={`status-select-${order._id}`}
                 onChange={(e) => statusHandler(e, order._id)}
                 value={order.status || "Food Processing"}
+                disabled={order.status === "Delivered"}
               >
                 <option value="Food Processing">Food Processing</option>
                 <option value="Out for delivery">Out for delivery</option>
