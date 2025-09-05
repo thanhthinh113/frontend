@@ -19,6 +19,7 @@ import { Add } from "./admin/pages/Add/Add";
 import { List } from "./admin/pages/List/List";
 import { Orders } from "./admin/pages/Orders/Orders";
 import { User } from "./admin/pages/User/User";
+import { Profile } from "./components/Profile/Profile";
 
 export const App = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -42,6 +43,7 @@ export const App = () => {
                   <Route path="/order" element={<PlaceOrder />} />
                   <Route path="/verify" element={<Verify />} />
                   <Route path="/myorders" element={<MyOrders />} />
+                  <Route path="/profile" element={<Profile />} />
                 </Routes>
               </div>
               <Footer />

@@ -3,6 +3,7 @@ import "./Navbar.css";
 import { assets } from "../../assets/assets";
 import { Link, useNavigate } from "react-router-dom";
 import { StoreContext } from "../../context/StoreContext";
+import { FaUserCircle } from "react-icons/fa";
 
 export const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("home");
@@ -62,6 +63,10 @@ export const Navbar = ({ setShowLogin }) => {
             <img src={assets.profile_icon} alt="Profile icon" />
             <span className="profile-name">{user?.name}</span>
             <ul className="navbar-profile-dropdown">
+              <li onClick={() => navigate("/profile")}>
+                <FaUserCircle size={30} color="tomato" />
+                <p>Profile</p>
+              </li>
               <li onClick={() => navigate("/myorders")}>
                 <img src={assets.bag_icon} alt="Bag icon" />
                 <p>Orders</p>
