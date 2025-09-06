@@ -46,8 +46,14 @@ export const Profile = () => {
 
       if (res.data.success) {
         toast.success("Cập nhật thông tin thành công");
-        setUser(res.data.data);
-        localStorage.setItem("user", JSON.stringify(res.data.data));
+
+        const updatedUser = {
+          ...user, // giữ lại email, role, _id
+          ...res.data.data, // cập nhật name, phone, address
+        };
+
+        setUser(updatedUser);
+        localStorage.setItem("user", JSON.stringify(updatedUser)); // ✅ lưu full user
         setEditing(false);
       }
     } catch (err) {

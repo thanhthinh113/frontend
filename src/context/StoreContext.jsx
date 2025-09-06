@@ -1,11 +1,16 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
-  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
   const [cartItems, setCartItems] = useState({});
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState(() => localStorage.getItem("token") || "");
   const url = "http://localhost:4000";
   const [food_list, setFoodList] = useState([]);
 
@@ -85,16 +90,15 @@ const StoreContextProvider = (props) => {
     setToken("");
     setUser(null);
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     window.location.reload();
+    navigate("/");
   };
   const loginUser = (data) => {
     setToken(data.token);
-    setUser({ name: data.name, email: data.email, role: data.role });
+    setUser(data.user); // full user từ backend
     localStorage.setItem("token", data.token);
-    localStorage.setItem(
-      "user",
-      JSON.stringify({ name: data.name, email: data.email, role: data.role })
-    );
+    localStorage.setItem("user", JSON.stringify(data.user));
   };
 
   const contextValue = {

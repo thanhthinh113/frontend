@@ -32,13 +32,11 @@ export const LoginPopup = ({ setShowLogin }) => {
     if (response.data.success) {
       loginUser({
         token: response.data.token,
-        name: response.data.name,
-        email: response.data.email,
-        role: response.data.role,
+        user: response.data.user,
       });
-      localStorage.setItem("role", response.data.role);
+      localStorage.setItem("role", response.data.user.role);
 
-      if (response.data.role === "admin") {
+      if (response.data.user.role === "admin") {
         navigate("/admin");
         setShowLogin(false);
       } else {
