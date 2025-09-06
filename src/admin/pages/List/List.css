@@ -88,6 +88,23 @@
 .remove-btn:hover {
     color: #e5533d;
 }
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-btn {
+  cursor: pointer;
+  color: #007bff;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: color 0.2s ease-in-out;
+}
+
+.edit-btn:hover {
+  color: #0056b3;
+}
+
 
 /* Điều chỉnh responsive */
 @media (max-width: 900px) {

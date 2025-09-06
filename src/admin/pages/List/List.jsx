@@ -3,15 +3,15 @@ import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "./List.css";
 import { StoreContext } from "../../../context/StoreContext";
+import { Edit } from "../Edit/Edit"; // import component Edit
 
 export const List = () => {
   const { url } = useContext(StoreContext);
   const [list, setList] = useState([]);
+  const [editingFood, setEditingFood] = useState(null); // để lưu món đang sửa
 
   // Helper function to format numbers to VND
   const formatVND = (amount) => {
-    // Assuming the price is already in VND, just format it.
-    // If it's in USD, you'd need to convert it first.
     return amount.toLocaleString("vi-VN");
   };
 
@@ -69,12 +69,26 @@ export const List = () => {
             <p className="item-description">{item.description}</p>
             <p>{item.category}</p>
             <p>{formatVND(item.price)} VND</p>
-            <p onClick={() => removeFood(item._id)} className="remove-btn">
-              Xóa
-            </p>
+            <div className="action-buttons">
+              <span onClick={() => setEditingFood(item)} className="edit-btn">
+                Sửa
+              </span>
+              <span onClick={() => removeFood(item._id)} className="remove-btn">
+                Xóa
+              </span>
+            </div>
           </div>
         ))}
       </div>
+
+      {/* Hiện popup Edit khi bấm sửa */}
+      {editingFood && (
+        <Edit
+          food={editingFood}
+          onClose={() => setEditingFood(null)}
+          onUpdated={fetchList}
+        />
+      )}
     </div>
   );
 };
