@@ -68,6 +68,78 @@
   color: #333;
   font-weight: 500;
 }
+
+/* ========== PROFILE FORM EDIT MODE ========== */
+.profile-info input {
+  width: 100%;
+  padding: 10px 14px;
+  margin: 8px 0;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+}
+
+.profile-info input:focus {
+  outline: none;
+  border-color: #ff4d30;
+  box-shadow: 0 0 0 2px rgba(255, 77, 48, 0.2);
+}
+
+/* Grid layout cho form khi edit */
+.profile-info.editing {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 20px; /* row-gap 12px, col-gap 20px */
+}
+
+.profile-info.editing h2,
+.profile-info.editing p {
+  grid-column: 1 / -1; /* full width nếu muốn giữ lại */
+}
+
+.save-btn,
+.cancel-btn,
+.edit-btn {
+  padding: 10px 18px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.save-btn {
+  background: #ff4d30;
+  color: #fff;
+  margin-right: 10px;
+}
+
+.save-btn:hover {
+  background: #e63e24;
+}
+
+.cancel-btn {
+  background: #eee;
+  color: #333;
+}
+
+.cancel-btn:hover {
+  background: #ddd;
+}
+
+.edit-btn {
+  background: #ff4d30;
+  color: #fff;
+  margin-top: 15px;
+}
+
+.edit-btn:hover {
+  background: #e63e24;
+}
+
 /* Responsive tablet */
 @media (max-width: 768px) {
   .profile-wrapper {

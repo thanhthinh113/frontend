@@ -110,6 +110,7 @@ const StoreContextProvider = (props) => {
     user,
     logoutUser,
     loginUser,
+    setUser,
   };
   return (
     <StoreContext.Provider value={contextValue}>
