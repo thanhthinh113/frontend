@@ -74,3 +74,21 @@
 .dot.active {
   background: #ff4d4d;
 }
+
+/* 📱 Responsive cho mobile */
+@media (max-width: 600px) {
+  .slider {
+    height: 220px;
+    border-radius: 8px;
+  }
+
+  .arrow {
+    font-size: 1.5rem;
+    padding: 4px 8px;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+  }
+}
