@@ -1,7 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./ExploreMenu.css";
-import { menu_list } from "../../assets/assets";
+
 export const ExploreMenu = ({ category, setCategory }) => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch("/admin/api/categories");
+        if (!res.ok) throw new Error("Failed to fetch categories");
+        const data = await res.json();
+        setCategories(data);
+      } catch (err) {
+        console.error("Error loading categories:", err);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   return (
     <div className="explore-menu" id="explore-menu">
       <h1>Explore our menu</h1>
@@ -9,28 +26,36 @@ export const ExploreMenu = ({ category, setCategory }) => {
         Choose from a diverse menu featuring a delectable array of dishes
         crafted with the finest ingredients and culinary expertise.
       </p>
+
       <div className="explore-menu-list">
-        {menu_list.map((item, index) => {
-          return (
-            <div
-              onClick={() =>
-                setCategory((prev) =>
-                  prev === item.menu_name ? "ALL" : item.menu_name
-                )
-              }
-              className="explore-menu-list-item"
-              key={index}
-            >
-              <img
-                className={category === item.menu_name ? "active" : ""}
-                src={item.menu_image}
-                alt=""
-              />
-              <p>{item.menu_name}</p>
-            </div>
-          );
-        })}
+        {categories.map((item) => (
+          <div
+            role="button"
+            tabIndex={0}
+            onClick={() =>
+              setCategory((prev) =>
+                prev === item.name ? "ALL" : item.name
+              )
+            }
+            onKeyDown={(e) =>
+              e.key === "Enter" &&
+              setCategory((prev) =>
+                prev === item.name ? "ALL" : item.name
+              )
+            }
+            className="explore-menu-list-item"
+            key={item.id || item.name}
+          >
+            <img
+              className={category === item.name ? "active" : ""}
+              src={item.image}
+              alt={item.name}
+            />
+            <p>{item.name}</p>
+          </div>
+        ))}
       </div>
+
       <hr />
     </div>
   );
