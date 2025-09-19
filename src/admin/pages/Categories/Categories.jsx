@@ -1,55 +1,59 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import "../Categories/Categories.css"; 
 
 export default function Categories() {
   const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     fetchCategories();
   }, []);
 
   const fetchCategories = async () => {
-    const res = await axios.get("http://localhost:5000/api/categories");
+    const res = await axios.get("http://localhost:4000/api/categories");
     setCategories(res.data);
   };
 
   const addCategory = async () => {
-    await axios.post("http://localhost:5000/api/categories", { name, description });
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("image", image);
+
+    await axios.post("http://localhost:4000/api/categories", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
     setName("");
     setDescription("");
+    setImage(null);
     fetchCategories();
   };
 
   return (
-    <div className="categories-container">
-      <h2 className="categories-title">Quản lý Danh mục</h2>
+    <div>
+      <h2>Quản lý Danh mục (S3)</h2>
 
-      <div className="categories-form">
-        <input
-          className="categories-input"
-          placeholder="Tên danh mục"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input
-          className="categories-input"
-          placeholder="Mô tả"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <button className="categories-btn" onClick={addCategory}>
-          Thêm
-        </button>
-      </div>
+      <input
+        placeholder="Tên danh mục"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <input
+        placeholder="Mô tả"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+      />
+      <input type="file" onChange={(e) => setImage(e.target.files[0])} />
+      <button onClick={addCategory}>Thêm</button>
 
-      <ul className="categories-list">
+      <ul>
         {categories.map((c) => (
-          <li className="categories-item" key={c.id}>
-            <span className="categories-name">{c.name}</span>
-            <span className="categories-desc">{c.description}</span>
+          <li key={c._id}>
+            <img src={c.imageUrl} alt={c.name} width="80" />
+            <strong>{c.name}</strong> - {c.description}
           </li>
         ))}
       </ul>

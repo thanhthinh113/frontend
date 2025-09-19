@@ -7,7 +7,7 @@ export const ExploreMenu = ({ category, setCategory }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch("/admin/api/categories");
+        const res = await fetch("http://localhost:4000/api/categories");
         if (!res.ok) throw new Error("Failed to fetch categories");
         const data = await res.json();
         setCategories(data);
@@ -33,22 +33,18 @@ export const ExploreMenu = ({ category, setCategory }) => {
             role="button"
             tabIndex={0}
             onClick={() =>
-              setCategory((prev) =>
-                prev === item.name ? "ALL" : item.name
-              )
+              setCategory((prev) => (prev === item.name ? "ALL" : item.name))
             }
             onKeyDown={(e) =>
               e.key === "Enter" &&
-              setCategory((prev) =>
-                prev === item.name ? "ALL" : item.name
-              )
+              setCategory((prev) => (prev === item.name ? "ALL" : item.name))
             }
             className="explore-menu-list-item"
-            key={item.id || item.name}
+            key={item._id}
           >
             <img
               className={category === item.name ? "active" : ""}
-              src={item.image}
+              src={item.imageUrl}  
               alt={item.name}
             />
             <p>{item.name}</p>
