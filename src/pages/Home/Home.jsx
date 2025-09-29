@@ -1,20 +1,31 @@
-import React, { useState } from "react";
-import "./Home.css";
-import { Header } from "../../components/Header/Header";
-import { ExploreMenu } from "../../components/ExploreMenu/ExploreMenu";
-import { FoodDisplay } from "../../components/FoodDisplay/FoodDisplay";
-import { AppDownload } from "../../components/AppDownload/AppDownload";
+import React, { useContext } from "react";
 import Slider from "../../admin/components/Slider/Slider";
+import  ExploreMenu  from "../../components/ExploreMenu/ExploreMenu";
+import { FoodDisplay } from "../../components/FoodDisplay/FoodDisplay";
+import { StoreContext } from "../../context/StoreContext";
+import "./Home.css";
 
 export const Home = () => {
-  const [category, setCategory] = useState("ALL");
+  const { food_list } = useContext(StoreContext);
+
+  console.log("Home food_list:", food_list);
 
   return (
-    <div>
+    <div className="home">
       <Slider />
-      <ExploreMenu category={category} setCategory={setCategory} />
-      <FoodDisplay category={category} />
-      <AppDownload />
+
+      <section className="home-section">
+        <ExploreMenu />
+      </section>
+
+      <section className="home-section">
+        {/* <h2 className="section-title">Món ăn nổi bật</h2> */}
+        {food_list && food_list.length > 0 ? (
+          <FoodDisplay foodList={food_list} />
+        ) : (
+          <p>Đang tải món ăn...</p>
+        )}
+      </section>
     </div>
   );
 };

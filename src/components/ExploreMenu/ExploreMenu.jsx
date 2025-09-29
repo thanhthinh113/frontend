@@ -1,58 +1,51 @@
-import React, { useEffect, useState } from "react";
+
+import React, { useEffect, useState, useContext } from "react";
+import { StoreContext } from "../../context/StoreContext";
 import "./ExploreMenu.css";
 
-export const ExploreMenu = ({ category, setCategory }) => {
+export default function ExploreMenu() {
+  const { setSelectedCategory } = useContext(StoreContext);
   const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const res = await fetch("http://localhost:4000/api/categories");
-        if (!res.ok) throw new Error("Failed to fetch categories");
         const data = await res.json();
+        console.log("categories:", data);
         setCategories(data);
-      } catch (err) {
-        console.error("Error loading categories:", err);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      } finally {
+        setLoading(false);
       }
     };
-
     fetchCategories();
   }, []);
 
-  return (
-    <div className="explore-menu" id="explore-menu">
-      <h1>Explore our menu</h1>
-      <p className="explore-menu-text">
-        Choose from a diverse menu featuring a delectable array of dishes
-        crafted with the finest ingredients and culinary expertise.
-      </p>
+  if (loading) return <p>Đang tải danh mục...</p>;
 
+  return (
+    <div className="explore-menu">
+      <h2>Danh mục món ăn</h2>
       <div className="explore-menu-list">
+        <button
+          onClick={() => setSelectedCategory("all")}
+          className="explore-menu-item"
+        >
+          Tất cả
+        </button>
         {categories.map((item) => (
-          <div
-            role="button"
-            tabIndex={0}
-            onClick={() =>
-              setCategory((prev) => (prev === item.name ? "ALL" : item.name))
-            }
-            onKeyDown={(e) =>
-              e.key === "Enter" &&
-              setCategory((prev) => (prev === item.name ? "ALL" : item.name))
-            }
-            className="explore-menu-list-item"
+          <button
             key={item._id}
+            onClick={() => setSelectedCategory(item.name)}
+            className="explore-menu-item"
           >
-            <img
-              className={category === item.name ? "active" : ""}
-              src={item.imageUrl}  
-              alt={item.name}
-            />
-            <p>{item.name}</p>
-          </div>
+            {item.name}
+          </button>
         ))}
       </div>
-
-      <hr />
     </div>
   );
-};
+}

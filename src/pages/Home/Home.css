@@ -1,0 +1,47 @@
+.home-page {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Slider */
+.home-slider {
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+}
+
+.home-slider .slider {
+  border-radius: 10px;
+}
+
+/* Explore Menu */
+.home-menu {
+  background: #fff;
+  padding: 15px 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.home-menu h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+/* Food Display */
+.home-food {
+  padding: 10px 0 30px;
+}
+
+.home-food h2 {
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+.home-food .food-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}

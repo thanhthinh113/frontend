@@ -1,62 +1,147 @@
-import { useState, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
+import { StoreContext } from "../../../context/StoreContext";
+import "./Categories.css";
 
-export default function Categories() {
+export const Categories = () => {
+  const { url } = useContext(StoreContext);
   const [categories, setCategories] = useState([]);
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [image, setImage] = useState(null);
+  const [newName, setNewName] = useState("");
+  const [newImage, setNewImage] = useState(null);
+  const [editing, setEditing] = useState(null);
+
+  // Lấy danh sách categories
+  const fetchCategories = async () => {
+    try {
+      const res = await axios.get(`${url}/api/categories`);
+      setCategories(res.data);
+    } catch (err) {
+      toast.error("Lỗi khi tải danh mục");
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
     fetchCategories();
   }, []);
 
-  const fetchCategories = async () => {
-    const res = await axios.get("http://localhost:4000/api/categories");
-    setCategories(res.data);
+  // Submit form (thêm/sửa)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append("name", newName);
+      if (newImage) formData.append("image", newImage);
+
+      if (editing) {
+        await axios.put(`${url}/api/categories/${editing._id}`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        toast.success("Cập nhật danh mục thành công");
+      } else {
+        await axios.post(`${url}/api/categories`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        toast.success("Thêm danh mục thành công");
+      }
+
+      setNewName("");
+      setNewImage(null);
+      setEditing(null);
+      fetchCategories();
+    } catch (err) {
+      toast.error("Lỗi khi lưu danh mục");
+      console.error(err);
+    }
   };
 
-  const addCategory = async () => {
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("description", description);
-    formData.append("image", image);
-
-    await axios.post("http://localhost:4000/api/categories", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-
-    setName("");
-    setDescription("");
-    setImage(null);
-    fetchCategories();
+  // Xóa
+  const handleDelete = async (id) => {
+    if (!window.confirm("Bạn có chắc muốn xóa danh mục này?")) return;
+    try {
+      await axios.delete(`${url}/api/categories/${id}`);
+      toast.success("Xóa danh mục thành công");
+      fetchCategories();
+    } catch (err) {
+      toast.error("Lỗi khi xóa danh mục");
+      console.error(err);
+    }
   };
 
   return (
-    <div>
-      <h2>Quản lý Danh mục (S3)</h2>
+    <div className="categories-container">
+      <h3>Quản lý Danh mục</h3>
 
-      <input
-        placeholder="Tên danh mục"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <input
-        placeholder="Mô tả"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
-      <input type="file" onChange={(e) => setImage(e.target.files[0])} />
-      <button onClick={addCategory}>Thêm</button>
+      <form className="category-form" onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Nhập tên danh mục"
+          value={newName}
+          onChange={(e) => setNewName(e.target.value)}
+          required
+        />
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setNewImage(e.target.files[0])}
+        />
 
-      <ul>
-        {categories.map((c) => (
-          <li key={c._id}>
-            <img src={c.imageUrl} alt={c.name} width="80" />
-            <strong>{c.name}</strong> - {c.description}
-          </li>
-        ))}
-      </ul>
+        <button type="submit">{editing ? "Cập nhật" : "Thêm mới"}</button>
+        {editing && (
+          <button
+            type="button"
+            onClick={() => {
+              setEditing(null);
+              setNewName("");
+              setNewImage(null);
+            }}
+          >
+            Hủy
+          </button>
+        )}
+      </form>
+
+      <table className="categories-table">
+        <thead>
+          <tr>
+            <th>STT</th>
+            <th>Tên danh mục</th>
+            <th>Hình ảnh</th>
+            <th>Hành động</th>
+          </tr>
+        </thead>
+        <tbody>
+          {categories.map((cat, idx) => (
+            <tr key={cat._id}>
+              <td>{idx + 1}</td>
+              <td>{cat.name}</td>
+              <td>
+                {cat.image ? (
+                  <img
+                    src={`${url}/${cat.image}`}
+                    alt={cat.name}
+                    style={{ width: 60, height: 60, objectFit: "cover" }}
+                  />
+                ) : (
+                  "—"
+                )}
+              </td>
+              <td>
+                <button
+                  onClick={() => {
+                    setEditing(cat);
+                    setNewName(cat.name);
+                  }}
+                >
+                  Sửa
+                </button>
+                <button onClick={() => handleDelete(cat._id)}>Xóa</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
-}
+};
