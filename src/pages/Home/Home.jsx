@@ -3,6 +3,7 @@ import Slider from "../../admin/components/Slider/Slider";
 import  ExploreMenu  from "../../components/ExploreMenu/ExploreMenu";
 import { FoodDisplay } from "../../components/FoodDisplay/FoodDisplay";
 import { StoreContext } from "../../context/StoreContext";
+import ComboDeals from "../../components/ComboDeals/ComboDeals";
 import "./Home.css";
 
 export const Home = () => {
@@ -19,12 +20,14 @@ export const Home = () => {
       </section>
 
       <section className="home-section">
-        {/* <h2 className="section-title">Món ăn nổi bật</h2> */}
         {food_list && food_list.length > 0 ? (
           <FoodDisplay foodList={food_list} />
         ) : (
           <p>Đang tải món ăn...</p>
         )}
+      </section>
+      <section className="home-section">
+        <ComboDeals />
       </section>
     </div>
   );

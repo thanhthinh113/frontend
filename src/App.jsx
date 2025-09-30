@@ -24,6 +24,7 @@ import { List } from "./admin/pages/List/List";
 import { Orders } from "./admin/pages/Orders/Orders";
 import { User } from "./admin/pages/User/User";
 import { Categories } from "./admin/pages/Categories/Categories";
+import { AdminCombo } from "./admin/pages/Combo/AdminCombo";
 
 const UserLayout = ({ setShowLogin }) => (
   <>
@@ -88,6 +89,7 @@ export const App = () => {
           <Route path="orders" element={<Orders />} />
           <Route path="users" element={<User />} />
           <Route path="categories" element={<Categories />} />
+          <Route path="combos" element={<AdminCombo />} />
         </Route>
       </Routes>
     </>
