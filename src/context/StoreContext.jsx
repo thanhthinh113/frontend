@@ -21,25 +21,37 @@ const StoreContextProvider = ({ children }) => {
 
   const url = "http://localhost:4000";
 
-  // ================= CART =================
-  const addToCart = async (itemId) => {
-    setCartItems((prev) => ({
-      ...prev,
-      [itemId]: prev[itemId] ? prev[itemId] + 1 : 1,
-    }));
+const addToCart = async (itemOrId) => {
+  const itemId = typeof itemOrId === "object" ? itemOrId._id : itemOrId;
 
-    if (token) {
-      try {
-        await axios.post(
-          `${url}/api/cart/add`,
-          { itemId },
-          { headers: { token } }
-        );
-      } catch (err) {
-        console.error("Error adding to cart", err);
-      }
+  setCartItems((prev) => ({
+    ...prev,
+    [itemId]: prev[itemId] ? prev[itemId] + 1 : 1,
+  }));
+
+  if (token) {
+    try {
+      await axios.post(
+        `${url}/api/cart/add`,
+        { itemId },
+        { headers: { token } }
+      );
+    } catch (err) {
+      console.error("Error adding to cart", err);
     }
-  };
+    return;
+  }
+
+  try {
+    const guestCart = JSON.parse(localStorage.getItem("guestCart") || "{}");
+    guestCart[itemId] = guestCart[itemId] ? guestCart[itemId] + 1 : 1;
+    localStorage.setItem("guestCart", JSON.stringify(guestCart));
+    setCartItems(guestCart);
+    console.log("Added to guest cart (localStorage)", itemId);
+  } catch (err) {
+    console.error("Error saving guest cart", err);
+  }
+};
 
   const removeFromCart = async (itemId) => {
     setCartItems((prev) => {

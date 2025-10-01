@@ -1,45 +1,89 @@
-.navbar{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 4%;
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-.navbar .logo{
-    width:max(10%,80px);
+/* Logo */
+.logo {
+  height: 40px;
+  cursor: pointer;
 }
 
-.navbar .profile{
-     font-weight: 600;
-    color: #49557e;
-    font-size: 16px;
+/* Menu Links */
+.navbar-links {
+  display: flex;
+  gap: 20px;
 }
 
-.navbar-user{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
+.navbar-links .nav-link {
+  text-decoration: none;
+  font-size: 16px;
+  color: #2d2d2d;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.navbar-links .nav-link:hover {
+  color: #ff4d4f;
+}
+
+/* Search Section */
+.navbar-search {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+  position: relative;
+}
+
+.search-icon {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+}
+
+.search-input {
+  margin-left: 8px;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  outline: none;
+  font-size: 14px;
+  width: 180px;
+  transition: all 0.3s ease-in-out;
+}
+
+/* User Section */
+.navbar-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.navbar-user img {
+  width: 28px;
+  height: 28px;
+}
+
+.profile {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
 }
 
 .logout-btn {
-  background: transparent;
   border: none;
+  background: transparent;
   cursor: pointer;
-  padding: 2px;          /* nhỏ hơn */
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .logout-btn img {
-  width: 16px;           /* thu nhỏ icon */
-  height: 16px;
-  object-fit: contain;
-  filter: brightness(0) saturate(100%) invert(41%) sepia(72%) saturate(3280%) hue-rotate(340deg) brightness(95%) contrast(97%);
-}
-
-.logout-btn:hover img {
-  transform: scale(1.1); /* hover chỉ phóng nhẹ icon */
-  opacity: 0.85;
+  width: 22px;
+  height: 22px;
 }

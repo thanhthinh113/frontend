@@ -1,4 +1,4 @@
-/* sidebar.css */
+sidebar.css
 
 /* --- Sidebar Container --- */
 .sidebar {
@@ -11,7 +11,7 @@
   top: 0;
   left: 0;
   transition: width 0.3s ease-in-out; /* Hiệu ứng chuyển động khi responsive */
-  font-family: 'Outfit', sans-serif; /* Sử dụng font Outfit */
+  font-family: "Outfit", sans-serif; /* Sử dụng font Outfit */
   color: #333; /* Màu chữ tối hơn */
   overflow-y: auto; /* Cho phép cuộn nếu nội dung quá dài */
 }
@@ -60,9 +60,8 @@
   color: #333; /* Chữ đậm hơn khi hover */
 }
 .sidebar-option:hover img {
-    opacity: 1; /* Icon sáng hơn khi hover */
+  opacity: 1; /* Icon sáng hơn khi hover */
 }
-
 
 /* --- Active State --- */
 .sidebar-option.active {
@@ -76,7 +75,6 @@
   opacity: 1; /* Icon sáng hoàn toàn khi active */
   filter: brightness(0.8) sepia(1) hue-rotate(-20deg) saturate(3); /* Hiệu ứng màu cho icon */
 }
-
 
 /* --- Responsive Design (for smaller screens) --- */
 @media (max-width: 900px) {
