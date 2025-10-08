@@ -1,7 +1,7 @@
-
 .explore-menu {
   padding: 20px;
-  text-align: center;
+  max-width: 1200px; /* Đồng bộ với .slider */
+  margin: 0 auto; /* Căn giữa */
 }
 
 .explore-menu-header {
@@ -12,6 +12,8 @@
 
 .explore-menu h2 {
   margin-bottom: 20px;
+  font-size: 1.8rem; /* Tăng kích thước chữ cho nhất quán */
+  color: #333; /* Đồng bộ màu sắc */
 }
 
 .explore-menu-list {
@@ -19,6 +21,8 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
+  max-width: 1200px; /* Đồng bộ với .slider */
+  margin: 0 auto; /* Căn giữa */
 }
 
 .explore-menu-item {
@@ -26,40 +30,80 @@
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .explore-menu-item:hover {
   transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Đồng bộ với .slider */
 }
 
+/* Tách style cho img và div */
 .explore-menu-img {
   width: 100px;
   height: 100px;
-  border-radius: 50%; /* ảnh tròn */
-  object-fit: cover;
+  border-radius: 50%;
   border: 2px solid #ddd;
   margin-bottom: 8px;
+  object-fit: cover; /* Chỉ áp dụng cho img */
+}
+
+.explore-menu-img.placeholder,
+.explore-menu-img.all {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fafafa;
+  background: #eee;
+  color: #888;
+  font-size: 20px; /* Đồng bộ font-size */
   font-weight: bold;
 }
 
 .explore-menu-img.all {
-  background: #4caf50;
+  background: #ff4d4f; /* Đồng bộ màu với .dot.active */
   color: #fff;
-  font-size: 18px;
 }
 
 .explore-menu-img.placeholder {
-  background: #eee;
-  color: #888;
-  font-size: 24px;
+  background: #ddd; /* Nhẹ hơn để phân biệt */
 }
 
 .explore-menu-item p {
   font-size: 14px;
   font-weight: 600;
+  color: #333; /* Đồng bộ màu sắc */
+}
+
+/* 📱 Responsive cho mobile */
+@media (max-width: 600px) {
+  .explore-menu {
+    padding: 10px; /* Giảm padding */
+    max-width: 100%;
+  }
+
+  .explore-menu-header {
+    max-width: 100%;
+    margin: 15px auto 8px;
+  }
+
+  .explore-menu h2 {
+    font-size: 1.5rem; /* Giảm kích thước chữ */
+  }
+
+  .explore-menu-list {
+    gap: 15px; /* Giảm khoảng cách */
+    max-width: 100%;
+  }
+
+  .explore-menu-img,
+  .explore-menu-img.placeholder,
+  .explore-menu-img.all {
+    width: 80px; /* Giảm kích thước ảnh */
+    height: 80px;
+    font-size: 16px; /* Đồng bộ font-size */
+  }
+
+  .explore-menu-item p {
+    font-size: 12px; /* Giảm font cho mobile */
+  }
 }
