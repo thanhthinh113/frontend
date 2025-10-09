@@ -9,6 +9,9 @@ import {
   FaMapMarkerAlt,
   FaPhoneAlt,
   FaEdit,
+  FaLock,
+  FaSignOutAlt,
+  FaCamera,
 } from "react-icons/fa";
 import "./Profile.css";
 import { useNavigate } from "react-router-dom";
@@ -20,40 +23,42 @@ export const Profile = () => {
   const navigate = useNavigate();
 
   const [editing, setEditing] = useState(false);
+  const [changingPass, setChangingPass] = useState(false);
+  const [avatar, setAvatar] = useState(user?.avatar || "");
   const [name, setName] = useState(user?.name || "");
   const [phone, setPhone] = useState(user?.phone || "");
   const [address, setAddress] = useState(user?.address || {});
+  const [oldPass, setOldPass] = useState("");
+  const [newPass, setNewPass] = useState("");
+  const [confirmPass, setConfirmPass] = useState("");
+
   useEffect(() => {
     if (user) {
       setName(user.name || "");
       setPhone(user.phone || "");
       setAddress(user.address || {});
+      setAvatar(user.avatar || "");
     }
   }, [user]);
+
+  // ✅ Lưu thông tin hồ sơ
   const handleSave = async () => {
     try {
-      const res = await axios.post(
-        `${url}/api/user/update-profile`,
-        {
-          name,
-          phone,
-          address,
-        },
-        {
-          headers: { token },
-        }
-      );
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("phone", phone);
+      formData.append("address", JSON.stringify(address));
+      if (avatar instanceof File) formData.append("avatar", avatar);
+
+      const res = await axios.post(`${url}/api/user/update-profile`, formData, {
+        headers: { token, "Content-Type": "multipart/form-data" },
+      });
 
       if (res.data.success) {
         toast.success("Cập nhật thông tin thành công");
-
-        const updatedUser = {
-          ...user, // giữ lại email, role, _id
-          ...res.data.data, // cập nhật name, phone, address
-        };
-
+        const updatedUser = { ...user, ...res.data.data };
         setUser(updatedUser);
-        localStorage.setItem("user", JSON.stringify(updatedUser)); // ✅ lưu full user
+        localStorage.setItem("user", JSON.stringify(updatedUser));
         setEditing(false);
       }
     } catch (err) {
@@ -62,11 +67,79 @@ export const Profile = () => {
     }
   };
 
+  // ✅ Đổi mật khẩu
+  const handleChangePassword = async () => {
+    if (newPass !== confirmPass) return toast.error("Mật khẩu không khớp");
+    try {
+      const res = await axios.post(
+        `${url}/api/user/change-password`,
+        { oldPass, newPass },
+        { headers: { token } }
+      );
+      if (res.data.success) {
+        toast.success("Đổi mật khẩu thành công!");
+        setChangingPass(false);
+        setOldPass("");
+        setNewPass("");
+        setConfirmPass("");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Sai mật khẩu cũ hoặc lỗi máy chủ");
+    }
+  };
+
+  // ✅ Đăng xuất
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setUser(null);
+    navigate("/login");
+    toast.info("Đã đăng xuất!");
+  };
+
+  // ✅ Xử lý chọn ảnh đại diện
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setAvatar(file);
+    }
+  };
+
   return (
     <div className="profile-wrapper">
       {/* Thông tin user */}
       <div className="profile-card">
-        <FaUserCircle className="profile-avatar" />
+        <div className="avatar-section">
+          {avatar && !(avatar instanceof File) ? (
+            <img
+              src={`${url}/${avatar}`}
+              alt="avatar"
+              className="profile-avatar-img"
+            />
+          ) : avatar instanceof File ? (
+            <img
+              src={URL.createObjectURL(avatar)}
+              alt="preview"
+              className="profile-avatar-img"
+            />
+          ) : (
+            <FaUserCircle className="profile-avatar" />
+          )}
+
+          {editing && (
+            <label className="avatar-upload">
+              <FaCamera />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleAvatarChange}
+                style={{ display: "none" }}
+              />
+            </label>
+          )}
+        </div>
+
         <div className="profile-info">
           {editing ? (
             <>
@@ -136,6 +209,37 @@ export const Profile = () => {
         </div>
       </div>
 
+      {/* Đổi mật khẩu */}
+      {changingPass && (
+        <div className="change-password">
+          <h3>Đổi mật khẩu</h3>
+          <input
+            type="password"
+            placeholder="Mật khẩu cũ"
+            value={oldPass}
+            onChange={(e) => setOldPass(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Mật khẩu mới"
+            value={newPass}
+            onChange={(e) => setNewPass(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Xác nhận mật khẩu mới"
+            value={confirmPass}
+            onChange={(e) => setConfirmPass(e.target.value)}
+          />
+          <button className="save-btn" onClick={handleChangePassword}>
+            Cập nhật
+          </button>
+          <button className="cancel-btn" onClick={() => setChangingPass(false)}>
+            Hủy
+          </button>
+        </div>
+      )}
+
       {/* Menu chức năng */}
       <div className="profile-menu">
         <div className="menu-item" onClick={() => navigate("/myorders")}>
@@ -149,10 +253,16 @@ export const Profile = () => {
         <div className="menu-item">
           <FaGift className="menu-icon" />
           <span>Tích điểm & Ưu đãi</span>
+          <p className="loyalty">Cấp bậc: {user?.tier || "Thành viên mới"}</p>
+          <p className="points">Điểm: {user?.points || 0}</p>
         </div>
-        <div className="menu-item">
-          <FaCog className="menu-icon" />
-          <span>Cài đặt tài khoản</span>
+        <div className="menu-item" onClick={() => setChangingPass(true)}>
+          <FaLock className="menu-icon" />
+          <span>Đổi mật khẩu</span>
+        </div>
+        <div className="menu-item" onClick={handleLogout}>
+          <FaSignOutAlt className="menu-icon" />
+          <span>Đăng xuất</span>
         </div>
       </div>
     </div>

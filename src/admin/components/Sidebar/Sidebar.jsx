@@ -66,6 +66,15 @@ export const Sidebar = () => {
           <img src={assets.order_icon} alt="Combo Icon" />
           <p>Combo</p>
         </NavLink>
+         <NavLink
+          to="/admin/statistics"
+          className={({ isActive }) =>
+            isActive ? "sidebar-option active" : "sidebar-option"
+          }
+        >
+          <img src={assets.order_icon} alt="Statistics Icon" />
+          <p>Thống kê</p>
+        </NavLink>
       </div>
     </div>
   );
