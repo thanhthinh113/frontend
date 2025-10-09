@@ -5,6 +5,8 @@ import "./AdminCombo.css";
 export const AdminCombo = () => {
   const [combos, setCombos] = useState([]);
   const [foods, setFoods] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("all");
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -16,12 +18,8 @@ export const AdminCombo = () => {
   const [editingId, setEditingId] = useState(null);
   const url = "http://localhost:4000";
 
-  // ===== Helper =====
-  const formatCurrency = (value) => {
-    if (!value) return "0";
-    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  };
-
+  const formatCurrency = (value) =>
+    !value ? "0" : value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   const parseCurrency = (value) => value.toString().replace(/,/g, "");
 
   const fetchCombos = async () => {
@@ -34,9 +32,15 @@ export const AdminCombo = () => {
     setFoods(res.data.data || []);
   };
 
+  const fetchCategories = async () => {
+    const res = await axios.get(`${url}/api/categories`);
+    setCategories(res.data);
+  };
+
   useEffect(() => {
     fetchCombos();
     fetchFoods();
+    fetchCategories();
   }, []);
 
   const updateTotalPrice = (itemsList) => {
@@ -90,34 +94,15 @@ export const AdminCombo = () => {
     data.append("description", formData.description);
     data.append("price", formData.price);
     data.append("discountPrice", parseCurrency(formData.discountPrice));
-    data.append("items", JSON.stringify(formData.items));
+    data.append("items", JSON.stringify(formData.items.map((i) => i.id)));
     if (formData.image) data.append("image", formData.image);
 
     try {
       if (editingId) {
-        // CẬP NHẬT
-        if (formData.image) {
-          await axios.post(`${url}/api/combos/${editingId}?_method=PUT`, data, {
-            headers: { "Content-Type": "multipart/form-data" },
-          });
-        } else {
-          await axios.put(
-            `${url}/api/combos/${editingId}`,
-            {
-              name: formData.name,
-              description: formData.description,
-              price: formData.price,
-              discountPrice: parseCurrency(formData.discountPrice),
-              items: formData.items.map((i) => ({
-                _id: i.id,
-                quantity: i.quantity,
-              })),
-            },
-            { headers: { "Content-Type": "application/json" } }
-          );
-        }
+        await axios.put(`${url}/api/combos/${editingId}`, data, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
       } else {
-        // THÊM MỚI
         await axios.post(`${url}/api/combos`, data, {
           headers: { "Content-Type": "multipart/form-data" },
         });
@@ -152,6 +137,7 @@ export const AdminCombo = () => {
       })),
       image: null,
     });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleDelete = async (id) => {
@@ -161,49 +147,88 @@ export const AdminCombo = () => {
     }
   };
 
+  // --- Lọc món ăn theo danh mục ---
+const filteredFoods =
+  selectedCategory === "all"
+    ? foods
+    : foods.filter((f) => {
+        const categoryId =
+          typeof f.categoryId === "object"
+            ? f.categoryId._id
+            : f.categoryId;
+        return categoryId?.toString() === selectedCategory.toString();
+      });
+;
+
+
   return (
     <div className="admin-combo">
-      <h2>Quản lý Combo Ưu Đãi</h2>
+      <h2 className="title">🎁 Quản lý Combo Ưu Đãi</h2>
 
-      <form className="combo-form" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Tên combo"
-          value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          required
-        />
+      <form className="combo-form glassy" onSubmit={handleSubmit}>
+        <div className="form-grid">
+          <input
+            type="text"
+            placeholder="Tên combo"
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Giá ưu đãi"
+            value={formatCurrency(formData.discountPrice)}
+            onChange={(e) =>
+              setFormData({ ...formData, discountPrice: e.target.value })
+            }
+          />
+          <input
+            type="text"
+            placeholder="Giá gốc"
+            value={formatCurrency(formData.price)}
+            readOnly
+          />
+        </div>
+
         <textarea
-          placeholder="Mô tả"
+          placeholder="Mô tả combo..."
           value={formData.description}
-          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-        />
-
-        <input
-          type="text"
-          placeholder="Giá gốc"
-          value={formatCurrency(formData.price)}
-          readOnly
-        />
-
-        <input
-          type="text"
-          placeholder="Giá ưu đãi"
-          value={formatCurrency(formData.discountPrice)}
           onChange={(e) =>
-            setFormData({ ...formData, discountPrice: e.target.value })
+            setFormData({ ...formData, description: e.target.value })
           }
         />
 
-        <label>Chọn món trong combo:</label>
-        <div className="food-checkboxes">
-          {foods.map((food) => {
+        <label className="section-label">🍱 Chọn danh mục món ăn:</label>
+        <div className="category-buttons">
+          <button
+            type="button"
+            className={selectedCategory === "all" ? "active" : ""}
+            onClick={() => setSelectedCategory("all")}
+          >
+            Tất cả
+          </button>
+          {categories.map((cat) => (
+            <button
+              key={cat._id}
+              type="button"
+              className={selectedCategory === cat._id ? "active" : ""}
+              onClick={() => setSelectedCategory(cat._id)}
+            >
+              {cat.name}
+            </button>
+          ))}
+        </div>
+
+        <div className="food-list">
+          {filteredFoods.map((food) => {
             const item = formData.items.find((i) => i.id === food._id);
             return (
               <div key={food._id} className="food-item-row">
-                <span>
-                  {food.name} ({formatCurrency(food.price)}₫)
-                </span>
+                <img src={`${url}/${food.image}`} alt={food.name} />
+                <div className="food-info">
+                  <span>{food.name}</span>
+                  <p>{formatCurrency(food.price)}₫</p>
+                </div>
                 <div className="quantity-controls">
                   <button type="button" onClick={() => removeItem(food._id)}>
                     -
@@ -218,6 +243,7 @@ export const AdminCombo = () => {
           })}
         </div>
 
+        <label className="section-label">📷 Ảnh combo:</label>
         <input
           type="file"
           onChange={(e) =>
@@ -225,31 +251,40 @@ export const AdminCombo = () => {
           }
         />
 
-        <button type="submit">
-          {editingId ? "Cập nhật Combo" : "Thêm Combo"}
+        <button type="submit" className="btn-submit">
+          {editingId ? "💾 Cập nhật Combo" : "➕ Thêm Combo"}
         </button>
       </form>
 
-      <h3>Danh sách Combo</h3>
+      <h3 className="subtitle">Danh sách Combo</h3>
       <div className="combo-list-admin">
         {combos.map((combo) => (
           <div key={combo._id} className="combo-card-admin">
-            <img src={`${url}/${combo.image}`} alt={combo.name} />
-            <div>
+            <img src={`${url}/uploads/${combo.image}`} alt={combo.name} />
+            <div className="combo-info">
               <h4>{combo.name}</h4>
-              <p>{combo.description}</p>
-              <p>
-                Giá: <del>{formatCurrency(combo.price)}₫</del>{" "}
+              <p className="desc">{combo.description}</p>
+              <p className="price">
+                <del>{formatCurrency(combo.price)}₫</del>{" "}
                 <strong>{formatCurrency(combo.discountPrice)}₫</strong>
               </p>
-              <p>
+              <p className="items">
                 Món:{" "}
                 {combo.items
-                  .map((i) => `${i.name} x${i.quantity || 1}`)
+                  .map((i) => `${i.name || i.id} x${i.quantity || 1}`)
                   .join(", ")}
               </p>
-              <button onClick={() => handleEdit(combo)}>Sửa</button>
-              <button onClick={() => handleDelete(combo._id)}>Xóa</button>
+              <div className="btn-group">
+                <button className="edit" onClick={() => handleEdit(combo)}>
+                  ✏️ Sửa
+                </button>
+                <button
+                  className="delete"
+                  onClick={() => handleDelete(combo._id)}
+                >
+                  🗑️ Xóa
+                </button>
+              </div>
             </div>
           </div>
         ))}
