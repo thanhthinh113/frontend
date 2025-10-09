@@ -7,11 +7,18 @@ import { FaUserCircle } from "react-icons/fa";
 
 export const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("home");
-
-  const { getTotalCartAmount, token, user, logoutUser } =
-    useContext(StoreContext);
-
+  const { getTotalCartAmount, token, user, logoutUser } = useContext(StoreContext);
   const navigate = useNavigate();
+
+  // 👉 Hàm mở form đăng nhập và tự cuộn lên đầu
+  const handleSignInClick = () => {
+    setShowLogin(true);
+    // Cuộn mượt lên đầu trang
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   return (
     <div className="navbar">
@@ -48,6 +55,7 @@ export const Navbar = ({ setShowLogin }) => {
           contact us
         </a>
       </ul>
+
       <div className="navbar-right">
         <img src={assets.search_icon} alt="Search icon" />
         <div className="navbar-search-icon">
@@ -56,8 +64,9 @@ export const Navbar = ({ setShowLogin }) => {
           </Link>
           <div className={getTotalCartAmount() === 0 ? "" : "dot"}></div>
         </div>
+
         {!token ? (
-          <button onClick={() => setShowLogin(true)}>sign in</button>
+          <button onClick={handleSignInClick}>sign in</button>
         ) : (
           <div className="navbar-profile">
             <img src={assets.profile_icon} alt="Profile icon" />
