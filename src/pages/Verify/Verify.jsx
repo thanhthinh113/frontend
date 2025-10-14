@@ -7,7 +7,7 @@ export const Verify = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const success = searchParams.get("success");
   const orderId = searchParams.get("orderId");
-  const { url } = useContext(StoreContext);
+  const { url, setUser } = useContext(StoreContext);
   const navigate = useNavigate();
 
   const verifyPayment = async () => {
@@ -16,6 +16,10 @@ export const Verify = () => {
       orderId,
     });
     if (response.data.success) {
+      if (response.data.user) {
+        setUser(response.data.user);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+      }
       navigate("/myorders");
     } else {
       navigate("/");
