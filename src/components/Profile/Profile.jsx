@@ -146,7 +146,7 @@ export const Profile = () => {
           <FaShoppingCart className="menu-icon" />
           <span>Giỏ hàng</span>
         </div>
-        <div className="menu-item">
+        <div className="menu-item" onClick={() => navigate("/voucher")}>
           <FaGift className="menu-icon" />
           <span>Tích điểm & Ưu đãi</span>
           <p>{user?.points || 0} điểm</p>

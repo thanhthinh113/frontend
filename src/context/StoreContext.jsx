@@ -1,5 +1,5 @@
-
-import React, { createContext, useEffect, useState } from "react";import axios from "axios";
+import React, { createContext, useEffect, useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export const StoreContext = createContext();
@@ -21,37 +21,37 @@ const StoreContextProvider = ({ children }) => {
 
   const url = "http://localhost:4000";
 
-const addToCart = async (itemOrId) => {
-  const itemId = typeof itemOrId === "object" ? itemOrId._id : itemOrId;
+  const addToCart = async (itemOrId) => {
+    const itemId = typeof itemOrId === "object" ? itemOrId._id : itemOrId;
 
-  setCartItems((prev) => ({
-    ...prev,
-    [itemId]: prev[itemId] ? prev[itemId] + 1 : 1,
-  }));
+    setCartItems((prev) => ({
+      ...prev,
+      [itemId]: prev[itemId] ? prev[itemId] + 1 : 1,
+    }));
 
-  if (token) {
-    try {
-      await axios.post(
-        `${url}/api/cart/add`,
-        { itemId },
-        { headers: { token } }
-      );
-    } catch (err) {
-      console.error("Error adding to cart", err);
+    if (token) {
+      try {
+        await axios.post(
+          `${url}/api/cart/add`,
+          { itemId },
+          { headers: { token } }
+        );
+      } catch (err) {
+        console.error("Error adding to cart", err);
+      }
+      return;
     }
-    return;
-  }
 
-  try {
-    const guestCart = JSON.parse(localStorage.getItem("guestCart") || "{}");
-    guestCart[itemId] = guestCart[itemId] ? guestCart[itemId] + 1 : 1;
-    localStorage.setItem("guestCart", JSON.stringify(guestCart));
-    setCartItems(guestCart);
-    console.log("Added to guest cart (localStorage)", itemId);
-  } catch (err) {
-    console.error("Error saving guest cart", err);
-  }
-};
+    try {
+      const guestCart = JSON.parse(localStorage.getItem("guestCart") || "{}");
+      guestCart[itemId] = guestCart[itemId] ? guestCart[itemId] + 1 : 1;
+      localStorage.setItem("guestCart", JSON.stringify(guestCart));
+      setCartItems(guestCart);
+      console.log("Added to guest cart (localStorage)", itemId);
+    } catch (err) {
+      console.error("Error saving guest cart", err);
+    }
+  };
 
   const removeFromCart = async (itemId) => {
     setCartItems((prev) => {
@@ -144,6 +144,22 @@ const addToCart = async (itemOrId) => {
       console.error("Error loading cart data", err);
     }
   };
+  const refreshUser = async () => {
+    if (!token) return;
+    try {
+      const res = await axios.get(`${url}/api/user/profile`, {
+        headers: { token },
+      });
+      if (res.data.success) {
+        setUser(res.data.user);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+      } else {
+        console.warn("Không thể lấy thông tin user:", res.data.message);
+      }
+    } catch (err) {
+      console.error("Lỗi tải user mới:", err);
+    }
+  };
 
   useEffect(() => {
     async function loadData() {
@@ -152,6 +168,7 @@ const addToCart = async (itemOrId) => {
       await fetchCombos();
 
       if (token) {
+        await refreshUser();
         await loadCartData(token);
       }
     }
@@ -193,7 +210,8 @@ const addToCart = async (itemOrId) => {
     selectedCategory,
     setSelectedCategory,
     searchTerm,
-setSearchTerm,
+    setSearchTerm,
+    refreshUser,
   };
 
   return (
