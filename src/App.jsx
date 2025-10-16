@@ -129,6 +129,7 @@ import { AdminCombo } from "./admin/pages/Combo/AdminCombo";
 
 // User FoodDetail
 import FoodDetail from "./admin/pages/FoodDetail/FoodDetail";
+import { Voucher } from "./admin/pages/Voucher/Voucher";
 
 const UserLayout = ({ setShowLogin }) => (
   <>
@@ -197,6 +198,7 @@ export const App = () => {
           <Route path="users" element={<User />} />
           <Route path="categories" element={<Categories />} />
           <Route path="combos" element={<AdminCombo />} />
+          <Route path="voucher" element={<Voucher />} />
         </Route>
       </Routes>
     </>

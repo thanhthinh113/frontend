@@ -1,7 +1,6 @@
-
 import React from "react";
 import "./sidebar.css";
-import { assets } from "../../../assets/assets"; 
+import { assets } from "../../../assets/assets";
 import { NavLink } from "react-router-dom";
 
 export const Sidebar = () => {
@@ -66,7 +65,7 @@ export const Sidebar = () => {
           <img src={assets.order_icon} alt="Combo Icon" />
           <p>Combo</p>
         </NavLink>
-         <NavLink
+        <NavLink
           to="/admin/statistics"
           className={({ isActive }) =>
             isActive ? "sidebar-option active" : "sidebar-option"
@@ -74,6 +73,15 @@ export const Sidebar = () => {
         >
           <img src={assets.order_icon} alt="Statistics Icon" />
           <p>Thống kê</p>
+        </NavLink>
+        <NavLink
+          to="/admin/voucher"
+          className={({ isActive }) =>
+            isActive ? "sidebar-option active" : "sidebar-option"
+          }
+        >
+          <img src={assets.order_icon} alt="Statistics Icon" />
+          <p>Voucher</p>
         </NavLink>
       </div>
     </div>
