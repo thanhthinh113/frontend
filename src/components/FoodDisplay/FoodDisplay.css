@@ -13,6 +13,124 @@
   max-width: 1200px;
 }
 
+/* 🎨 Icon cho bộ lọc và sắp xếp */
+.filter-icon,
+.sort-icon {
+  color: #ff4b4b; /* màu chủ đạo */
+  margin-right: 6px;
+  font-size: 16px;
+  vertical-align: middle;
+  transition: transform 0.2s ease;
+}
+
+.filter-left label:hover .filter-icon,
+.filter-right label:hover .sort-icon {
+  transform: scale(1.15);
+  color: #e63946; /* nhấn màu khi hover */
+}
+
+/* Tinh chỉnh label chứa icon cho cân đối */
+.filter-left label,
+.filter-right label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+
+.sort-section {
+  margin: 10px 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sort-section select {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  cursor: pointer;
+}
+/* Gộp lọc và sắp xếp thành 1 hàng căn 2 bên */
+.filter-sort-container {
+  display: flex;
+  justify-content: space-between; /* Đẩy 2 cụm ra 2 bên */
+  align-items: center;
+  margin: 15px auto 25px; /* Canh giữa theo max-width */
+  max-width: 1200px; /* Đồng bộ với phần header và list */
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 0 10px;
+}
+
+/* Cụm bên trái (lọc giá) */
+.filter-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Cụm bên phải (sắp xếp) */
+.filter-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Label chung */
+.filter-left label,
+.filter-right label {
+  font-weight: 600; /* Tăng độ đậm để dễ nhìn hơn */
+  color: #333;
+  font-size: 15px;
+}
+
+/* Định dạng cho hộp Select (Dropdown) */
+.filter-left select,
+.filter-right select {
+  /* Đảm bảo chỉ áp dụng cho Select, không áp dụng cho input text */
+  -webkit-appearance: none; /* Ẩn mũi tên mặc định trên Chrome */
+  -moz-appearance: none; /* Ẩn mũi tên mặc định trên Firefox */
+  appearance: none; /* Ẩn mũi tên mặc định */
+
+  padding: 8px 30px 8px 12px; /* Thêm padding, đặc biệt là bên phải để chừa chỗ cho mũi tên */
+  border: 1px solid #ccc;
+  border-radius: 8px; /* Bo góc đẹp hơn */
+  background: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.filter-left select:hover,
+.filter-right select:hover,
+.filter-left select:focus,
+.filter-right select:focus {
+  border-color: #ff4b4b; /* Màu chủ đạo của Tomato. */
+  box-shadow: 0 0 0 3px rgba(255, 75, 75, 0.1); /* Hiệu ứng focus nhẹ */
+}
+
+/* 📱 Responsive cho mobile */
+@media (max-width: 600px) {
+  .filter-sort-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px; /* Tăng khoảng cách giữa 2 cụm */
+  }
+
+  .filter-left,
+  .filter-right {
+    justify-content: space-between; /* Căn label và select ra 2 đầu */
+  }
+
+  .filter-left select,
+  .filter-right select {
+    width: 60%; /* Tăng độ rộng của select trên mobile */
+  }
+}
+
 .food-item {
   position: relative;
   background: #fff;
