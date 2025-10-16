@@ -11,7 +11,7 @@ const StoreContextProvider = ({ children }) => {
     const storedUser = localStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : null;
   });
-
+  const [searchTerm, setSearchTerm] = useState("");
   const [cartItems, setCartItems] = useState({});
   const [token, setToken] = useState(() => localStorage.getItem("token") || "");
   const [food_list, setFoodList] = useState([]);
@@ -192,6 +192,8 @@ const addToCart = async (itemOrId) => {
     loginUser,
     selectedCategory,
     setSelectedCategory,
+    searchTerm,
+setSearchTerm,
   };
 
   return (
