@@ -1,359 +1,212 @@
 .profile-wrapper {
-  max-width: 1200px; /* Đồng bộ với .slider, .list-container */
-  margin: 30px auto; /* Giảm margin nhẹ */
+  max-width: 900px;
+  margin: 40px auto;
   padding: 20px;
-  font-family: 'Outfit', sans-serif; /* Đồng bộ font với .list-container, .admin-combo */
-  background: linear-gradient(135deg, #f7f9fb 0%, #f0f2f5 100%); /* Gradient nhẹ */
+  font-family: "Inter", sans-serif;
 }
 
+/* Card user */
 .profile-card {
   display: flex;
   align-items: center;
   background: #fff;
-  padding: 20px 25px; /* Giảm padding nhẹ */
-  border-radius: 12px; /* Đồng bộ với .slider */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Đồng bộ shadow */
-  margin-bottom: 25px;
-  transition: transform 0.25s ease; /* Hiệu ứng hover */
-}
-
-.profile-card:hover {
-  transform: translateY(-3px); /* Hiệu ứng hiện đại */
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  padding: 25px 30px;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  margin-bottom: 30px;
 }
 
 .profile-avatar {
-  font-size: 80px; /* Giảm nhẹ để cân đối */
-  color: #ff4d4f; /* Đồng bộ với .dot.active, .admin-combo */
+  font-size: 90px;
+  color: #ff4d30; /* màu cam đồng bộ brand */
   margin-right: 20px;
-}
-
-.profile-avatar-img {
-  width: 100px; /* Giảm kích thước để gọn gàng */
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-  background: #fafafa; /* Fallback nếu ảnh không load */
-  border: 2px solid #ddd; /* Thêm viền nhẹ */
-}
-
-.avatar-section {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.avatar-upload {
-  position: absolute;
-  bottom: 0;
-  right: 0; /* Đặt ở góc dưới phải của avatar */
-  background: #ff4d4f; /* Đồng bộ màu */
-  border-radius: 50%;
-  padding: 8px;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  transition: transform 0.25s ease;
-}
-
-.avatar-upload:hover {
-  transform: scale(1.1);
-  background: #e63946; /* Đồng bộ với hover */
 }
 
 .profile-info h2 {
   margin: 0;
-  font-size: 1.6rem; /* Đồng bộ với .admin-combo h4 */
+  font-size: 24px;
   font-weight: 600;
   color: #333;
 }
 
 .profile-info p {
-  margin-top: 6px;
+  margin-top: 5px;
   color: #666;
-  font-size: 14px;
 }
 
+/* Menu */
 .profile-menu {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Tự động wrap */
-  gap: 15px; /* Đồng bộ với .food-display-list */
-  max-width: 1200px; /* Đồng bộ với .slider */
-  margin: 0 auto;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
 }
 
 .menu-item {
   display: flex;
   align-items: center;
   background: #fff;
-  padding: 14px 18px;
-  border-radius: 12px; /* Đồng bộ với .slider */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Đồng bộ shadow */
+  padding: 16px 20px;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.05);
   cursor: pointer;
-  transition: all 0.25s ease; /* Đồng bộ với .food-item */
+  transition: all 0.2s ease;
 }
 
 .menu-item:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-  background: linear-gradient(180deg, #ffffff 0%, #f9f9f9 100%); /* Gradient nhẹ */
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
 }
 
 .menu-icon {
-  font-size: 20px;
-  margin-right: 10px;
-  color: #ff4d4f; /* Đồng bộ màu */
+  font-size: 22px;
+  margin-right: 12px;
+  color: #ff4d30;
 }
 
 .menu-item span {
-  font-size: 15px;
+  font-size: 16px;
   color: #333;
   font-weight: 500;
 }
-
-/* Profile Form Edit Mode */
-.profile-info.editing {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Tự động wrap */
-  gap: 12px 20px;
+.menu-item p {
+  margin-left: auto;          /* đẩy phần điểm về bên phải */
+  font-weight: 600;
+  padding: 6px 10px;
+  color: #ff4d30;
+  border-radius: 8px;
+  font-size: 14px;
+  min-width: 80px;            /* giữ đều kích thước */
+  text-align: center;
 }
 
-.profile-info.editing h2,
-.profile-info.editing p {
-  grid-column: 1 / -1;
-}
-
+/* ========== PROFILE FORM EDIT MODE ========== */
 .profile-info input {
   width: 100%;
-  padding: 12px 14px;
+  padding: 10px 14px;
   margin: 8px 0;
   border: 1px solid #ddd;
-  border-radius: 8px; /* Đồng bộ với .combo-form input */
+  border-radius: 10px;
   font-size: 14px;
-  background: #fafafa; /* Nền nhẹ */
-  transition: all 0.25s ease;
+  transition: border-color 0.2s ease;
 }
 
 .profile-info input:focus {
   outline: none;
-  border-color: #ff4d4f;
-  box-shadow: 0 0 6px rgba(255, 77, 48, 0.3);
+  border-color: #ff4d30;
+  box-shadow: 0 0 0 2px rgba(255, 77, 48, 0.2);
+}
+
+/* Grid layout cho form khi edit */
+.profile-info.editing {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 20px; /* row-gap 12px, col-gap 20px */
+}
+
+.profile-info.editing h2,
+.profile-info.editing p {
+  grid-column: 1 / -1; /* full width nếu muốn giữ lại */
 }
 
 .save-btn,
 .cancel-btn,
 .edit-btn {
-  padding: 10px 20px;
-  margin-top: 12px;
+  padding: 10px 18px;
+  margin-top: 10px;
   border: none;
-  border-radius: 8px; /* Đồng bộ với .combo-form */
+  border-radius: 10px;
   font-size: 14px;
-  font-weight: 600;
   cursor: pointer;
-  transition: all 0.25s ease;
-  display: inline-flex;
-  align-items: center;
-  position: relative; /* Cho tooltip */
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
 .save-btn {
-  background: #ff4d4f; /* Đồng bộ màu */
+  background: #ff4d30;
   color: #fff;
   margin-right: 10px;
 }
 
 .save-btn:hover {
-  background: #e63946;
-  transform: scale(1.03);
+  background: #e63e24;
 }
 
 .cancel-btn {
-  background: #f5f5f5; /* Đồng bộ với .list-container .action-buttons */
+  background: #eee;
   color: #333;
 }
 
 .cancel-btn:hover {
-  background: #e0e0e0;
-  transform: scale(1.03);
+  background: #ddd;
 }
 
 .edit-btn {
-  background: #4caf50; /* Đồng bộ với .btn-group .edit */
+  background: #ff4d30;
   color: #fff;
   margin-top: 15px;
 }
 
 .edit-btn:hover {
-  background: #45a049;
-  transform: scale(1.03);
+  background: #e63e24;
 }
 
-/* Thêm icon (Font Awesome) */
-.save-btn::before {
-  content: '\f0c7'; /* Font Awesome save icon */
-  font-family: 'Font Awesome 5 Free';
-  font-weight: 900;
-  margin-right: 6px;
-}
 
-.cancel-btn::before {
-  content: '\f00d'; /* Font Awesome cancel icon */
-  font-family: 'Font Awesome 5 Free';
-  font-weight: 900;
-  margin-right: 6px;
-}
-
-.edit-btn::before {
-  content: '\f044'; /* Font Awesome edit icon */
-  font-family: 'Font Awesome 5 Free';
-  font-weight: 900;
-  margin-right: 6px;
-}
-
-/* Tooltip cho nút */
-.save-btn:hover::after,
-.cancel-btn:hover::after,
-.edit-btn:hover::after {
-  content: attr(data-tooltip); /* Sử dụng data-tooltip trong HTML */
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #333;
-  color: #fff;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  white-space: nowrap;
-}
-
-.change-password {
-  background: #fff;
-  margin: 20px auto;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Đồng bộ shadow */
-  width: 100%;
-  max-width: 500px; /* Tăng max-width để cân đối */
-}
-
-.change-password input {
-  display: block;
-  width: 100%;
-  margin-bottom: 12px;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 14px;
-  background: #fafafa;
-}
-
-.change-password input:focus {
-  border-color: #ff4d4f;
-  box-shadow: 0 0 6px rgba(255, 77, 48, 0.3);
-}
-
-.loyalty,
-.points {
-  font-size: 13px;
-  color: #666;
-  margin-top: 8px;
-}
 
 /* Responsive tablet */
 @media (max-width: 768px) {
   .profile-wrapper {
     padding: 15px;
-    max-width: 100%; /* Đồng bộ với .slider */
   }
 
   .profile-card {
     flex-direction: column;
     text-align: center;
-    padding: 15px;
-    border-radius: 8px; /* Đồng bộ với .slider trên mobile */
   }
 
   .profile-avatar {
     margin-right: 0;
-    margin-bottom: 12px;
-    font-size: 60px;
-  }
-
-  .profile-avatar-img {
-    width: 80px;
-    height: 80px;
-  }
-
-  .avatar-upload {
-    padding: 6px;
-    bottom: 0;
-    right: -10px; /* Điều chỉnh vị trí */
+    margin-bottom: 15px;
+    font-size: 70px;
   }
 
   .profile-info h2 {
-    font-size: 1.4rem;
+    font-size: 20px;
   }
 
   .profile-info p {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .profile-menu {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .menu-item {
-    padding: 12px 15px;
-  }
-
-  .change-password {
-    padding: 15px;
-    max-width: 100%;
+    grid-template-columns: 1fr; /* xuống 1 cột */
+    gap: 14px;
   }
 }
+
 
 /* Responsive mobile nhỏ */
 @media (max-width: 480px) {
   .profile-card {
-    padding: 12px;
+    padding: 20px;
   }
 
   .profile-avatar {
-    font-size: 50px;
-  }
-
-  .profile-avatar-img {
-    width: 70px;
-    height: 70px;
+    font-size: 60px;
   }
 
   .profile-info h2 {
-    font-size: 1.2rem;
+    font-size: 18px;
   }
 
   .profile-info p {
-    font-size: 12px;
+    font-size: 13px;
   }
 
   .menu-item {
-    padding: 10px 12px;
+    padding: 14px 16px;
   }
 
   .menu-item span {
     font-size: 14px;
-  }
-
-  .save-btn,
-  .cancel-btn,
-  .edit-btn {
-    padding: 8px 16px;
-    font-size: 13px;
-  }
-
-  .change-password input {
-    padding: 10px;
-    font-size: 13px;
   }
 }
