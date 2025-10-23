@@ -9,9 +9,13 @@
 
 .food-detail-img {
   width: 100%;
-  max-height: 420px;
+  height: auto;                /* ✅ Tự co theo tỉ lệ thật */
+  max-height: 500px;           /* Giới hạn chiều cao tối đa để không quá dài */
   border-radius: 12px;
-  object-fit: cover;
+  object-fit: contain;          /* ✅ Hiển thị toàn bộ ảnh, không cắt */
+  background-color: #f8f8f8;    /* Thêm nền sáng nếu ảnh có vùng trống */
+  display: block;
+  margin: 0 auto;
 }
 
 .food-detail-info {
@@ -182,13 +186,14 @@
   gap: 15px;
 }
 
-.related-item {
-  text-align: center;
-  background: #fff;
+.related-item img {
+  width: 100%;
+  height: 150px;
+  object-fit: contain;          /* ✅ Giữ nguyên tỉ lệ, không phóng to */
   border-radius: 10px;
-  padding: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  transition: 0.3s;
+  background-color: #f8f8f8;
+  display: block;
+  margin: 0 auto;
 }
 
 .related-item img {
