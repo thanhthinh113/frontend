@@ -112,6 +112,7 @@ import { Cart } from "./pages/Cart/Cart";
 import { PlaceOrder } from "./pages/PlaceOrder/PlaceOrder";
 import { Verify } from "./pages/Verify/Verify";
 import { MyOrders } from "./pages/MyOrders/MyOrders";
+import { VoucherUser } from "./pages/VoucherUser/VoucherUser";
 import { Profile } from "./components/Profile/Profile";
 
 import CheckAdmin from "./CheckAdmin/CheckAdmin";
@@ -129,6 +130,7 @@ import { AdminCombo } from "./admin/pages/Combo/AdminCombo";
 
 // User FoodDetail
 import FoodDetail from "./admin/pages/FoodDetail/FoodDetail";
+import { Voucher } from "./admin/pages/Voucher/Voucher";
 
 const UserLayout = ({ setShowLogin }) => (
   <>
@@ -171,7 +173,7 @@ export const App = () => {
           />
           {/* Route chi tiết món ăn cho USER */}
           <Route path="food/:id" element={<FoodDetail />} />
-
+          <Route path="voucher" element={<VoucherUser />} />
           <Route path="*" element={<h2>404 - Not Found</h2>} />
         </Route>
 
@@ -197,6 +199,7 @@ export const App = () => {
           <Route path="users" element={<User />} />
           <Route path="categories" element={<Categories />} />
           <Route path="combos" element={<AdminCombo />} />
+          <Route path="voucher" element={<Voucher />} />
         </Route>
       </Routes>
     </>
