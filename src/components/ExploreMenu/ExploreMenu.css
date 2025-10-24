@@ -1,5 +1,5 @@
 .explore-menu {
-  padding: 20px;
+  padding: 20px 20px 20px 0px;
   max-width: 1200px; /* Đồng bộ với .slider */
   margin: 0 auto; /* Căn giữa */
 }
@@ -30,48 +30,50 @@
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.explore-menu-item:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Đồng bộ với .slider */
-}
-
-/* Tách style cho img và div */
+/* Chỉ áp dụng hiệu ứng hover cho hình tròn */
 .explore-menu-img {
   width: 100px;
   height: 100px;
   border-radius: 50%;
   border: 2px solid #ddd;
   margin-bottom: 8px;
-  object-fit: cover; /* Chỉ áp dụng cho img */
+  object-fit: cover;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.explore-menu-img.placeholder,
+/* Hover mượt và không hiện ô vuông */
+.explore-menu-img:hover {
+  transform: scale(1.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* Các loại hình đặc biệt */
 .explore-menu-img.all {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #eee;
-  color: #888;
-  font-size: 20px; /* Đồng bộ font-size */
+  background: tomato;
+  color: #fff;
+  font-size: 20px;
   font-weight: bold;
 }
 
-.explore-menu-img.all {
-  background: #ff4d4f; /* Đồng bộ màu với .dot.active */
-  color: #fff;
-}
-
 .explore-menu-img.placeholder {
-  background: #ddd; /* Nhẹ hơn để phân biệt */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ddd;
+  color: #888;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .explore-menu-item p {
   font-size: 14px;
   font-weight: 600;
-  color: #333; /* Đồng bộ màu sắc */
+  color: #333;
 }
 
 /* 📱 Responsive cho mobile */

@@ -106,7 +106,11 @@ export const FoodDisplay = () => {
       </div>
 
       {/* 🔍 Thanh tìm kiếm */}
-      <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <SearchBar
+        className="search-bar"
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+      />
 
       {/* ⚙️ Bộ lọc sắp xếp & giá */}
       <div className="filter-sort-container">

@@ -97,6 +97,18 @@ export const Orders = () => {
                 <p>
                   Tổng tiền: <strong>{order.amount} VND</strong>
                 </p>
+                <p>
+                  Ngày đặt:{" "}
+                  <strong>
+                    {new Date(order.date).toLocaleString("vi-VN", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </strong>
+                </p>
               </div>
             </div>
 

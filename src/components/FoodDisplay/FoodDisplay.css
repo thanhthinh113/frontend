@@ -5,12 +5,20 @@
   margin: 20px auto;
   width: 100%;
   max-width: 1200px;
+  background: #fafafa;
+  border-radius: 16px;
+  padding: 40px 20px;
 }
 
 .food-display-header {
   text-align: left;
   margin: 20px auto 10px;
   max-width: 1200px;
+}
+.food-display-header h2 {
+  margin-bottom: 20px;
+  font-size: 1.8rem; /* Tăng kích thước chữ cho nhất quán */
+  color: #333; /* Đồng bộ màu sắc */
 }
 
 /* 🎨 Icon cho bộ lọc và sắp xếp */
@@ -37,6 +45,9 @@
   gap: 6px;
 }
 
+.search-bar{
+  width: 50%;
+}
 
 .sort-section {
   margin: 10px 0 20px;

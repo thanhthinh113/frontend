@@ -66,6 +66,18 @@ export const MyOrders = () => {
                 <p>
                   Số lượng: <strong>{order.items.length}</strong> sản phẩm
                 </p>
+                <p>
+                  Ngày đặt:{" "}
+                  <strong>
+                    {new Date(order.date).toLocaleString("vi-VN", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </strong>
+                </p>
                 <p className="order-status">
                   <span>&#x25cf;</span>
                   <b>{order.status}</b>
