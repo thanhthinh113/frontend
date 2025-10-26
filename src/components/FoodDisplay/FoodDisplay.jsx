@@ -18,7 +18,7 @@ export const FoodDisplay = () => {
   const [priceRange, setPriceRange] = useState("all");
 
   const itemsPerRow = 4;
-  const rowsPerPage = 2;
+  const rowsPerPage = 3;
   const itemsPerPage = itemsPerRow * rowsPerPage;
 
   const getCategoryName = (item) => {

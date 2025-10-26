@@ -11,11 +11,18 @@ const ComboDeals = () => {
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
-  const handleAddCombo = (combo) => {
-    if (combo.items && combo.items.length > 0) {
-      combo.items.forEach((foodId) => addToCart(foodId));
-    }
-  };
+  // const handleAddCombo = (combo) => {
+  //   if (combo.items && combo.items.length > 0) {
+  //     combo.items.forEach((foodId) => addToCart(foodId));
+  //   }
+  // };
+
+const handleAddCombo = (combo) => {
+  addToCart(combo._id, "combo");
+  alert(`✅ Đã thêm "${combo.name}" vào giỏ hàng!`);
+};
+
+
 
   return (
     <div className="combo-deals">
