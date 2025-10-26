@@ -7,17 +7,18 @@ import { FaUserCircle } from "react-icons/fa";
 
 export const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("home");
-  const { getTotalCartAmount, token, user, logoutUser } = useContext(StoreContext);
+  const { token, user, logoutUser, cartItems } = useContext(StoreContext);
   const navigate = useNavigate();
+
+  // 👉 Đếm tổng số lượng sản phẩm trong giỏ
+  const getCartItemCount = () => {
+    return Object.values(cartItems).reduce((sum, qty) => sum + qty, 0);
+  };
 
   // 👉 Hàm mở form đăng nhập và tự cuộn lên đầu
   const handleSignInClick = () => {
     setShowLogin(true);
-    // Cuộn mượt lên đầu trang
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -25,6 +26,7 @@ export const Navbar = ({ setShowLogin }) => {
       <Link to={"/"}>
         <img src={assets.logo} alt="Logo" className="logo" />
       </Link>
+
       <ul className="navbar-menu">
         <Link
           to="/"
@@ -58,11 +60,14 @@ export const Navbar = ({ setShowLogin }) => {
 
       <div className="navbar-right">
         <img src={assets.search_icon} alt="Search icon" />
-        <div className="navbar-search-icon">
+        <div className="navbar-search-icon" style={{ position: "relative" }}>
           <Link to={"/cart"}>
             <img src={assets.basket_icon} alt="Basket icon" />
+            {/* 🧮 Hiển thị số lượng sản phẩm trong giỏ */}
+            {getCartItemCount() > 0 && (
+              <span className="cart-count">{getCartItemCount()}</span>
+            )}
           </Link>
-          <div className={getTotalCartAmount() === 0 ? "" : "dot"}></div>
         </div>
 
         {!token ? (

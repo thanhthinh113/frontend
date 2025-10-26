@@ -95,6 +95,25 @@ const StoreContextProvider = ({ children }) => {
     return total;
   };
 
+  // 🧹 Xóa toàn bộ giỏ hàng
+   const clearCart = async () => {
+  try {
+    // ✅ Nếu user đã đăng nhập, gọi API backend để xóa luôn trên server
+    if (token) {
+      await axios.post(`${url}/api/cart/clear`, {}, { headers: { token } });
+    }
+
+    // ✅ Reset giỏ hàng local về rỗng
+    setCartItems({});
+    localStorage.removeItem("guestCart");
+
+    console.log("🧹 Giỏ hàng đã được xóa toàn bộ!");
+  } catch (err) {
+    console.error("❌ Error clearing cart:", err);
+  }
+};
+
+
   // ========================= 📦 FETCH DỮ LIỆU =========================
   const fetchFoodList = async () => {
     try {
@@ -250,6 +269,7 @@ const StoreContextProvider = ({ children }) => {
     searchTerm,
     setSearchTerm,
     refreshUser,
+    clearCart,
   };
 
   return (

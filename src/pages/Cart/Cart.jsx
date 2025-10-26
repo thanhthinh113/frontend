@@ -10,37 +10,30 @@ export const Cart = () => {
     combos,
     removeFromCart,
     getTotalCartAmount,
+    clearCart,
     url,
   } = useContext(StoreContext);
   const navigate = useNavigate();
   const [promoCode, setPromoCode] = useState("");
 
-  // Định dạng tiền VND
   const formatVNDSimple = (amount = 0) => amount.toLocaleString("vi-VN");
 
-  // Gom dữ liệu món ăn + combo lại
   const allItems = [
     ...food_list.map((item) => ({ ...item, type: "food" })),
     ...combos.map((item) => ({ ...item, type: "combo" })),
   ];
 
-  // Lọc các sản phẩm có trong giỏ
   const filteredItems = allItems.filter((item) => {
     const key = `${item.type}_${item._id}`;
     return cartItems[key] > 0;
   });
 
-  // ✅ Hàm xử lý đường dẫn ảnh đúng cho cả combo & món ăn
   const getImageSrc = (item) => {
-    if (!item.image) return `${url}/images/no-image.png`; // fallback ảnh rỗng
+    if (!item.image) return `${url}/images/no-image.png`;
     if (item.image.startsWith("http")) return item.image;
-
-    // Nếu là combo mà chưa có "images/" → tự thêm
     if (item.type === "combo" && !item.image.startsWith("images/")) {
       return `${url}/images/${item.image}`;
     }
-
-    // Nếu là món ăn thì để nguyên
     return `${url}/${item.image.replace(/^\/+/, "")}`;
   };
 
@@ -62,7 +55,6 @@ export const Cart = () => {
           filteredItems.map((item) => {
             const key = `${item.type}_${item._id}`;
             const price = item.discountPrice || item.price;
-
             return (
               <div key={key}>
                 <div className="cart-items-title cart-items-item">
@@ -113,12 +105,23 @@ export const Cart = () => {
               </b>
             </div>
           </div>
-          <button
-            disabled={filteredItems.length === 0}
-            onClick={() => navigate("/order")}
-          >
-            Tiến hành thanh toán
-          </button>
+
+          <div className="cart-buttons">
+            <button
+              disabled={filteredItems.length === 0}
+              onClick={() => navigate("/order")}
+              className="checkout-btn"
+            >
+              Tiến hành thanh toán
+            </button>
+            <button
+              onClick={clearCart}
+              className="clear-cart-btn"
+              disabled={filteredItems.length === 0}
+            >
+              🧹 Xóa giỏ hàng
+            </button>
+          </div>
         </div>
 
         <div className="cart-promocode">

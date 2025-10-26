@@ -1,100 +1,240 @@
-.cart{
-    margin-top: 100px;
-    margin-left: 10%;
-    margin-right: 10%;
-}
-.cart-items-title{
-    display: grid;
-    grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr 0.5fr;
-    align-items: center;
-    color: grey;
-    font-size: max(1vw, 12px);
-}
-.cart-items-item{
-    margin: 10px 0px;
-    color: black;
-
-}
-.cart-items-item img{
-    width: 50px;
-}
-.cart hr{
-    height: 1px;
-    background-color: #e2e2e2;
-    border: none;
+/* =============================
+   🛒 CART PAGE STYLE
+   ============================= */
+.cart {
+  margin-top: 120px;
+  margin-left: 10%;
+  margin-right: 10%;
+  color: #222;
+  font-family: "Poppins", sans-serif;
 }
 
-.cart-items-item .cross{
-    cursor: pointer;
+/* Tiêu đề bảng giỏ hàng */
+.cart-items-title {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr 0.5fr;
+  align-items: center;
+  color: #666;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: max(0.9vw, 13px);
+  border-bottom: 2px solid #eaeaea;
+  padding-bottom: 10px;
 }
 
-.cart-bottom{
-    margin-top: 80px;
-    display: flex;
-    justify-content: space-between;
-    gap: max(12vw, 20px);
-}
-.cart-total{
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.cart-total-details{
-    display: flex;
-    justify-content: space-between;
-    color: #555;
+/* Dòng sản phẩm */
+.cart-items-item {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr 0.5fr;
+  align-items: center;
+  margin: 12px 0;
+  color: black;
+  font-size: 15px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+  padding: 10px 15px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.cart-total hr{
-    margin: 10px 0px;
-}
-.cart-total button{
-    border: none;
-    color: white;
-    background-color: tomato;
-    width: max(15vw,200px);
-    padding: 12px 0px;
-    border-radius: 4px;
-    cursor: pointer;
+.cart-items-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-.cart-promocode{
-    flex: 1;
-}
-.cart-promocode p{
-    color: #555;
-}
-.cart-promocode-input{
-    margin-top: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #eaeaea;
-    border-radius: 4px;
-}
-.cart-promocode-input input{
-    background: transparent;
-    border: none;
-    outline: none;
-    padding-left: 10px;
-}
-.cart-promocode-input button{
-    width:max(10vw,150px);
-    padding: 12px 5px;
-    background-color: black;
-    border: none;
-    color: white;
-    border-radius: 4px;
+.cart-items-item img {
+  width: 55px;
+  height: 55px;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
-@media (max-width: 750px){
-    
-    .cart-bottom{
-        flex-direction: column-reverse;
-    }
-    .cart-promocode{
-        justify-content: start;
-    }
+/* Dấu X */
+.cart-items-item .cross {
+  cursor: pointer;
+  color: #e63946;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.2s;
+}
+
+.cart-items-item .cross:hover {
+  color: #ff0000;
+  transform: scale(1.2);
+}
+
+.cart hr {
+  height: 1px;
+  background-color: #e2e2e2;
+  border: none;
+}
+
+/* =============================
+   📦 PHẦN DƯỚI - TỔNG TIỀN & MÃ KM
+   ============================= */
+.cart-bottom {
+  margin-top: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: max(10vw, 40px);
+}
+
+/* Tổng tiền */
+.cart-total {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: #fff;
+  padding: 25px 30px;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.cart-total h2 {
+  margin-bottom: 10px;
+  color: #222;
+}
+
+.cart-total-details {
+  display: flex;
+  justify-content: space-between;
+  color: #555;
+  font-size: 15px;
+}
+
+.cart-total hr {
+  margin: 10px 0;
+}
+
+.cart-total button {
+  border: none;
+  color: white;
+  background-color: tomato;
+  width: 100%;
+  padding: 14px 0;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.cart-total button:hover {
+  background-color: #e0432f;
+  box-shadow: 0 4px 10px rgba(255, 99, 71, 0.3);
+}
+
+/* Mã khuyến mãi */
+.cart-promocode {
+  flex: 1;
+  background: #fff;
+  padding: 25px 30px;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.cart-promocode p {
+  color: #444;
+  font-weight: 500;
+}
+
+.cart-promocode-input {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f6f6f6;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.cart-promocode-input input {
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 12px;
+  font-size: 15px;
+  width: 100%;
+  color: #222;
+}
+
+.cart-promocode-input button {
+  width: max(10vw, 140px);
+  padding: 12px 10px;
+  background-color: black;
+  border: none;
+  color: white;
+  border-radius: 0 6px 6px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cart-promocode-input button:hover {
+  background-color: #333;
+}
+
+/* =============================
+   🧹 NÚT XÓA GIỎ HÀNG
+   ============================= */
+.clear-cart-btn {
+  margin-top: 18px;
+  background-color: #f4172d;
+  color: black;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  width: 100%;
+}
+
+.clear-cart-btn:hover {
+  background-color: #d80f24;
+  color: #fff;
+}
+
+.clear-cart-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* =============================
+   🧍 EMPTY CART
+   ============================= */
+.empty-cart {
+  text-align: center;
+  color: #777;
+  font-size: 18px;
+  margin-top: 40px;
+}
+
+/* =============================
+   📱 RESPONSIVE
+   ============================= */
+@media (max-width: 900px) {
+  .cart {
+    margin: 100px 5%;
+  }
+
+  .cart-bottom {
+    flex-direction: column-reverse;
+  }
+
+  .cart-items-title,
+  .cart-items-item {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .cart-items-item img {
+    width: 60px;
+  }
+
+  .cart-total,
+  .cart-promocode {
+    width: 100%;
+  }
 }

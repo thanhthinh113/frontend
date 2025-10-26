@@ -95,16 +95,6 @@
   position: relative;
 }
 
-.navbar-search-icon .dot {
-  position: absolute;
-  min-width: 10px;
-  min-height: 10px;
-  background-color: tomato;
-  border-radius: 50%;
-  top: -8px;
-  right: -8px;
-  border: 2px solid white;
-}
 
 /* Các kiểu dáng cho Profile */
 .navbar-profile {
@@ -213,3 +203,20 @@ hr {
     padding: 10px 20px;
   }
 }
+.cart-count {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: tomato;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
