@@ -4,14 +4,45 @@ import { StoreContext } from "../../context/StoreContext";
 import { useNavigate } from "react-router-dom";
 
 export const Cart = () => {
-  const { cartItems, food_list, combos, removeFromCart, getTotalCartAmount, url } =
-    useContext(StoreContext);
+  const {
+    cartItems,
+    food_list,
+    combos,
+    removeFromCart,
+    getTotalCartAmount,
+    url,
+  } = useContext(StoreContext);
   const navigate = useNavigate();
   const [promoCode, setPromoCode] = useState("");
 
+  // Định dạng tiền VND
   const formatVNDSimple = (amount = 0) => amount.toLocaleString("vi-VN");
 
-  const hasItems = Object.keys(cartItems).length > 0;
+  // Gom dữ liệu món ăn + combo lại
+  const allItems = [
+    ...food_list.map((item) => ({ ...item, type: "food" })),
+    ...combos.map((item) => ({ ...item, type: "combo" })),
+  ];
+
+  // Lọc các sản phẩm có trong giỏ
+  const filteredItems = allItems.filter((item) => {
+    const key = `${item.type}_${item._id}`;
+    return cartItems[key] > 0;
+  });
+
+  // ✅ Hàm xử lý đường dẫn ảnh đúng cho cả combo & món ăn
+  const getImageSrc = (item) => {
+    if (!item.image) return `${url}/images/no-image.png`; // fallback ảnh rỗng
+    if (item.image.startsWith("http")) return item.image;
+
+    // Nếu là combo mà chưa có "images/" → tự thêm
+    if (item.type === "combo" && !item.image.startsWith("images/")) {
+      return `${url}/images/${item.image}`;
+    }
+
+    // Nếu là món ăn thì để nguyên
+    return `${url}/${item.image.replace(/^\/+/, "")}`;
+  };
 
   return (
     <div className="cart">
@@ -27,39 +58,25 @@ export const Cart = () => {
         <br />
         <hr />
 
-        {hasItems ? (
-          Object.keys(cartItems).map((key) => {
-            const [type, id] = key.split("_");
-            let itemData;
-
-            if (type === "combo") {
-              itemData = combos?.find((c) => c._id === id);
-            } else {
-              itemData = food_list?.find((f) => f._id === id);
-            }
-
-            if (!itemData) return null;
-
-            const price = itemData.discountPrice || itemData.price;
-            const quantity = cartItems[key];
-            const total = price * quantity;
+        {filteredItems.length > 0 ? (
+          filteredItems.map((item) => {
+            const key = `${item.type}_${item._id}`;
+            const price = item.discountPrice || item.price;
 
             return (
               <div key={key}>
                 <div className="cart-items-title cart-items-item">
-                  <img
-                    src={
-                      itemData.image?.startsWith("http")
-                        ? itemData.image
-                        : `${url}/images/${itemData.image}`
-                    }
-                    alt={itemData.name}
-                  />
-                  <p>{type === "combo" ? `Combo: ${itemData.name}` : itemData.name}</p>
+                  <img src={getImageSrc(item)} alt={item.name} />
+                  <p>
+                    {item.type === "combo" ? `Combo: ${item.name}` : item.name}
+                  </p>
                   <p>{formatVNDSimple(price)} VND</p>
-                  <p>{quantity}</p>
-                  <p>{formatVNDSimple(total)} VND</p>
-                  <p onClick={() => removeFromCart(key)} className="cross">
+                  <p>{cartItems[key]}</p>
+                  <p>{formatVNDSimple(price * cartItems[key])} VND</p>
+                  <p
+                    onClick={() => removeFromCart(item._id, item.type)}
+                    className="cross"
+                  >
                     x
                   </p>
                 </div>
@@ -97,7 +114,7 @@ export const Cart = () => {
             </div>
           </div>
           <button
-            disabled={!hasItems}
+            disabled={filteredItems.length === 0}
             onClick={() => navigate("/order")}
           >
             Tiến hành thanh toán
