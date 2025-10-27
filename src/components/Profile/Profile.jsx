@@ -23,6 +23,9 @@ export const Profile = () => {
   const [name, setName] = useState(user?.name || "");
   const [phone, setPhone] = useState(user?.phone || "");
   const [address, setAddress] = useState(user?.address || {});
+  const formatVND = (amount) => {
+    return amount.toLocaleString("vi-VN");
+  };
   useEffect(() => {
     if (user) {
       setName(user.name || "");
@@ -155,7 +158,7 @@ export const Profile = () => {
         <div className="menu-item" onClick={() => navigate("/voucher")}>
           <FaGift className="menu-icon" />
           <span>Tích điểm & Ưu đãi</span>
-          <p>{user?.points || 0} điểm</p>
+          <p>{formatVND(user?.points || 0)} điểm</p>
         </div>
         <div className="menu-item">
           <FaCog className="menu-icon" />
