@@ -13,6 +13,9 @@ export const Voucher = () => {
     pointsRequired: "",
     expiryDate: "",
   });
+  const formatVND = (amount) => {
+    return amount.toLocaleString("vi-VN");
+  };
 
   // 📦 Lấy danh sách voucher
   const fetchVouchers = async () => {
@@ -90,7 +93,7 @@ export const Voucher = () => {
         />
         <input
           type="number"
-          placeholder="Phần trăm giảm (%)"
+          placeholder="Tiền giảm (VND)"
           value={formData.discountPercent}
           onChange={(e) =>
             setFormData({ ...formData, discountPercent: e.target.value })
@@ -122,7 +125,7 @@ export const Voucher = () => {
         <div className="voucher-header voucher-row">
           <b>STT</b>
           <b>Mã</b>
-          <b>Giảm (%)</b>
+          <b>Giảm (VND)</b>
           <b>Điểm đổi</b>
           <b>Ngày tạo</b>
           <b>Hết hạn</b>
@@ -134,8 +137,8 @@ export const Voucher = () => {
           <div className="voucher-row voucher-item" key={v._id}>
             <p>{index + 1}</p>
             <p>{v.code}</p>
-            <p>{v.discountPercent}</p>
-            <p>{v.pointsRequired}</p>
+            <p>{formatVND(v.discountPercent)} VND</p>
+            <p>{formatVND(v.pointsRequired)}</p>
             <p>{new Date(v.createdAt).toLocaleDateString("vi-VN")}</p>
             <p>{new Date(v.expiryDate).toLocaleDateString("vi-VN")}</p>
             <p>

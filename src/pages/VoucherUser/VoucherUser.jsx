@@ -7,6 +7,9 @@ import "./VoucherUser.css";
 export const VoucherUser = () => {
   const { url, token, user, setUser } = useContext(StoreContext);
   const [vouchers, setVouchers] = useState([]);
+  const formatVND = (amount) => {
+    return amount.toLocaleString("vi-VN");
+  };
 
   // Lấy danh sách voucher có sẵn trên hệ thống
   const fetchVouchers = async () => {
@@ -74,7 +77,7 @@ export const VoucherUser = () => {
     <div className="voucher-page">
       <h2>Tích điểm & Ưu đãi</h2>
       <p className="user-points">
-        Điểm hiện có: <b>{user?.points || 0}</b>
+        Điểm hiện có: <b> {formatVND(user?.points || 0)}</b>
       </p>
 
       {/* Danh sách voucher có thể đổi */}
@@ -87,8 +90,11 @@ export const VoucherUser = () => {
             vouchers.map((v) => (
               <div key={v._id} className="voucher-card">
                 <h3>{v.code}</h3>
-                <p>Giảm giá: {v.discountPercent}%</p>
-                <p>Yêu cầu: {v.pointsRequired} điểm</p>
+                <p>
+                  Giảm giá:
+                  {formatVND(v.discountPercent)} VND
+                </p>
+                <p>Yêu cầu: {formatVND(v.pointsRequired)} điểm</p>
                 <p>Hết hạn: {new Date(v.expiryDate).toLocaleDateString()}</p>
                 <button
                   onClick={() => handleRedeem(v._id, v.pointsRequired)}
@@ -114,7 +120,10 @@ export const VoucherUser = () => {
             user.redeemedVouchers.map((v, index) => (
               <div key={index} className="voucher-card owned">
                 <h3>{v.code}</h3>
-                <p>Giảm giá: {v.discountPercent}%</p>
+                <p>
+                  Giảm giá:
+                  {formatVND(v.discountPercent)} VND
+                </p>
                 <p>Hết hạn: {new Date(v.expiryDate).toLocaleDateString()}</p>
                 <p
                   className={

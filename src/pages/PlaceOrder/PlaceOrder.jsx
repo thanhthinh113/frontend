@@ -4,6 +4,7 @@ import { StoreContext } from "../../context/StoreContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+
 export const PlaceOrder = () => {
   const { getTotalCartAmount, token, food_list, cartItems, url, user } =
     useContext(StoreContext);
@@ -20,52 +21,76 @@ export const PlaceOrder = () => {
     phone: "",
   });
 
+  const [selectedVoucher, setSelectedVoucher] = useState(""); // voucher code được chọn
+  const [discountPercent, setDiscountPercent] = useState(0);
+
   const onChangeHandler = (e) => {
     const name = e.target.name;
     const value = e.target.value;
     setData((data) => ({ ...data, [name]: value }));
   };
 
+  // Khi chọn voucher -> cập nhật discount
+  useEffect(() => {
+    if (!selectedVoucher || !user?.redeemedVouchers) {
+      setDiscountPercent(0);
+      return;
+    }
+    const voucher = user.redeemedVouchers.find(
+      (v) => v.code === selectedVoucher
+    );
+    setDiscountPercent(voucher ? voucher.discountPercent : 0);
+  }, [selectedVoucher, user]);
+
+  const navigate = useNavigate();
+
   const placeOrder = async (e) => {
     e.preventDefault();
+
     let orderItems = [];
-    food_list.map((item) => {
+    food_list.forEach((item) => {
       if (cartItems[item._id] > 0) {
         orderItems.push({
-          foodId: item._id, // thêm foodId riêng
+          foodId: item._id,
           name: item.name,
           price: item.price,
           quantity: cartItems[item._id],
         });
       }
     });
-    // Correctly calculate the total amount by adding the 30,000 VND delivery fee
-    // let orderData = {
-    //   userId: localStorage.getItem("userId"),
-    //   address: data,
-    //   items: orderItems,
-    //   amount: getTotalCartAmount() + 30000,
-    // };
-    let orderData = {
-      userId: user?._id, // <-- dùng user từ context
+
+    // Tổng tiền tạm tính
+    let totalAmount = getTotalCartAmount() + 30000;
+
+    // // Giảm giá nếu có voucher
+    // if (discountPercent > 0) {
+    //   totalAmount = Math.floor(totalAmount * (1 - discountPercent / 100));
+    // }
+
+    const orderData = {
+      userId: user?._id,
       address: data,
       items: orderItems,
-      amount: getTotalCartAmount() + 30000,
+      amount: totalAmount,
+      voucherCode: selectedVoucher || null, // 🧾 gửi voucher lên backend
     };
 
-    let response = await axios.post(`${url}/api/order/place`, orderData, {
-      headers: { token },
-    });
-    if (response.data.success) {
-      const { session_url } = response.data;
-      window.location.replace(session_url);
-    } else {
-      console.log(response.data);
-      alert("Error placing order");
+    try {
+      const response = await axios.post(`${url}/api/order/place`, orderData, {
+        headers: { token },
+      });
+      if (response.data.success) {
+        const { session_url } = response.data;
+        window.location.replace(session_url);
+      } else {
+        toast.error(response.data.message || "Lỗi khi đặt hàng");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Lỗi kết nối đến server");
     }
   };
 
-  const navigate = useNavigate();
   useEffect(() => {
     if (!token) {
       navigate("/cart");
@@ -76,10 +101,11 @@ export const PlaceOrder = () => {
     }
   }, [token]);
 
-  // Helper function to format numbers to VND
-  const formatVND = (amount) => {
-    return amount.toLocaleString("vi-VN");
-  };
+  const formatVND = (amount) => amount.toLocaleString("vi-VN");
+
+  const total = getTotalCartAmount() + 30000;
+  const discountedTotal =
+    discountPercent > 0 ? Math.max(total - discountPercent, 0) : total;
 
   return (
     <form onSubmit={placeOrder} className="place-order">
@@ -163,7 +189,29 @@ export const PlaceOrder = () => {
           placeholder="Số điện thoại"
           value={data.phone}
         />
+
+        {/* 🎟️ Voucher section */}
+        {user?.redeemedVouchers?.length > 0 ? (
+          <div className="voucher-section">
+            <label htmlFor="voucher">Chọn voucher:</label>
+            <select
+              id="voucher"
+              value={selectedVoucher}
+              onChange={(e) => setSelectedVoucher(e.target.value)}
+            >
+              <option value="">Không dùng voucher</option>
+              {user.redeemedVouchers.map((v, i) => (
+                <option key={i} value={v.code}>
+                  {v.code} - Giảm {v.discountPercent}%
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : (
+          <p className="no-voucher">Bạn chưa có voucher nào</p>
+        )}
       </div>
+
       <div className="place-order-right">
         <div className="cart-total">
           <h2>Tổng tiền giỏ hàng</h2>
@@ -177,15 +225,19 @@ export const PlaceOrder = () => {
               <p>Phí giao hàng</p>
               <p>{getTotalCartAmount() === 0 ? "0 VND" : "30.000 VND"}</p>
             </div>
+            {discountPercent > 0 && (
+              <>
+                <hr />
+                <div className="cart-total-details discount">
+                  <p>Giảm giá ({discountPercent}%)</p>
+                  <p>-{formatVND(total - discountedTotal)} VND</p>
+                </div>
+              </>
+            )}
             <hr />
             <div className="cart-total-details">
               <b>Tổng cộng</b>
-              <b>
-                {getTotalCartAmount() === 0
-                  ? "0 VND"
-                  : formatVND(getTotalCartAmount() + 30000)}{" "}
-                VND
-              </b>
+              <b>{formatVND(discountedTotal)} VND</b>
             </div>
           </div>
           <button type="submit">Tiến hành thanh toán</button>

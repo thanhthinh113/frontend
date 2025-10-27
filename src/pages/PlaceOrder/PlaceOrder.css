@@ -37,3 +37,25 @@
 .place-order .cart-total button{
     margin-top: 30px;
 }
+.voucher-section {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.voucher-section label {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.voucher-section select {
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.no-voucher {
+  margin-top: 15px;
+  color: gray;
+  font-style: italic;
+}
