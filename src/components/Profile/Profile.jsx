@@ -133,6 +133,12 @@ export const Profile = () => {
               </button>
             </>
           )}
+          <button
+            className="change-password-btn"
+            onClick={() => navigate("/change-password")}
+          >
+            Đổi mật khẩu
+          </button>
         </div>
       </div>
 

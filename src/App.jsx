@@ -31,6 +31,7 @@ import { AdminCombo } from "./admin/pages/Combo/AdminCombo";
 import FoodDetail from "./admin/pages/FoodDetail/FoodDetail";
 import { Voucher } from "./admin/pages/Voucher/Voucher";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
+import { ChangePassword } from "./components/ChangePassword/ChangePassword";
 
 const UserLayout = ({ setShowLogin }) => (
   <>
@@ -74,6 +75,7 @@ export const App = () => {
           {/* Route chi tiết món ăn cho USER */}
           <Route path="food/:id" element={<FoodDetail />} />
           <Route path="voucher" element={<VoucherUser />} />
+          <Route path="change-password" element={<ChangePassword />} />
           <Route path="*" element={<h2>404 - Not Found</h2>} />
         </Route>
 
