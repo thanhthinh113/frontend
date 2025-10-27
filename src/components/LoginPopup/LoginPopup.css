@@ -59,3 +59,20 @@ display: grid;
  font-weight: 500;
  cursor: pointer;
 }
+.password-input {
+  position: relative;
+}
+
+.password-input input {
+  width: 100%;
+  padding-right: 35px; /* dành chỗ cho icon */
+}
+
+.password-input span {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #555;
+}

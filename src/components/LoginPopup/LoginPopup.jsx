@@ -4,71 +4,100 @@ import { assets } from "../../assets/assets";
 import { StoreContext } from "../../context/StoreContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
 export const LoginPopup = ({ setShowLogin }) => {
-  const { url, setToken, loginUser } = useContext(StoreContext);
+  const { url, loginUser } = useContext(StoreContext);
   const [currState, setCurrState] = useState("Login"); // login || signup
   const navigate = useNavigate();
+
   const [data, setData] = useState({
     name: "",
     email: "",
     password: "",
   });
 
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // trạng thái con mắt
+
   const onChangeHandler = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setData((data) => ({ ...data, [name]: value }));
+    const { name, value } = e.target;
+    setData((prev) => ({ ...prev, [name]: value }));
   };
 
   const onLogin = async (e) => {
     e.preventDefault();
-    let newUrl = url;
-    if (currState === "Login") {
-      newUrl += "/api/user/login";
-    } else {
-      newUrl += "/api/user/register";
-    }
-    const response = await axios.post(newUrl, data);
-    if (response.data.success) {
-      loginUser({
-        token: response.data.token,
-        user: response.data.user,
-      });
-      localStorage.setItem("role", response.data.user.role);
 
-      if (response.data.user.role === "admin") {
-        navigate("/admin");
-        setShowLogin(false);
-      } else {
-        setShowLogin(false);
-      }
-    } else {
-      alert(response.data.message);
+    if (
+      !data.email ||
+      !data.password ||
+      (currState === "Sign Up" && !data.name)
+    ) {
+      toast.warn("Vui lòng nhập đầy đủ thông tin");
+      return;
     }
-    window.location.reload();
+
+    try {
+      setLoading(true);
+      let newUrl =
+        url +
+        (currState === "Login" ? "/api/user/login" : "/api/user/register");
+
+      const response = await axios.post(newUrl, data);
+
+      if (response.data.success && response.data.user) {
+        // Chỉ khi thành công và có user mới xử lý
+        toast.success(
+          currState === "Login"
+            ? "Đăng nhập thành công!"
+            : "Đăng ký tài khoản thành công!"
+        );
+
+        loginUser({
+          token: response.data.token,
+          user: response.data.user,
+        });
+
+        localStorage.setItem("role", response.data.user.role);
+
+        if (response.data.user.role === "admin") {
+          navigate("/admin");
+        }
+
+        setShowLogin(false);
+        // window.location.reload(); // không nên reload ngay, để toast hiển thị
+      } else {
+        toast.error(response.data.message || "Có lỗi xảy ra");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Đã xảy ra lỗi khi xử lý. Vui lòng thử lại.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="login-popup">
       <form onSubmit={onLogin} className="login-popup-container">
         <div className="login-popup-title">
-          <h2>{currState}</h2>
+          <h2>{currState === "Login" ? "Đăng nhập" : "Đăng ký"}</h2>
           <img
             onClick={() => setShowLogin(false)}
             src={assets.cross_icon}
             alt=""
           />
         </div>
+
         <div className="login-popup-inputs">
-          {currState === "Login" ? (
-            <></>
-          ) : (
+          {currState === "Sign Up" && (
             <input
               name="name"
               onChange={onChangeHandler}
               value={data.name}
               type="text"
-              placeholder="Your name"
+              placeholder="Nhập tên của bạn"
               required
             />
           )}
@@ -77,31 +106,41 @@ export const LoginPopup = ({ setShowLogin }) => {
             onChange={onChangeHandler}
             value={data.email}
             type="email"
-            placeholder="Your email"
+            placeholder="Nhập email"
             required
           />
-          <input
-            name="password"
-            onChange={onChangeHandler}
-            value={data.password}
-            type="password"
-            placeholder="Your password"
-            required
-          />
+          <div className="password-input">
+            <input
+              name="password"
+              onChange={onChangeHandler}
+              value={data.password}
+              type={showPassword ? "text" : "password"}
+              placeholder="Nhập mật khẩu"
+              required
+            />
+            <span onClick={() => setShowPassword(!showPassword)}>
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
         </div>
-        <button type="submit">
-          {currState === "Sign Up" ? "Create account" : "Login"}
+
+        <button type="submit" disabled={loading}>
+          {loading
+            ? "Đang xử lý..."
+            : currState === "Sign Up"
+            ? "Tạo tài khoản"
+            : "Đăng nhập"}
         </button>
 
         {currState === "Login" ? (
           <p>
-            Create a new account?{" "}
-            <span onClick={() => setCurrState("Sign Up")}>Click here</span>
+            Chưa có tài khoản?{" "}
+            <span onClick={() => setCurrState("Sign Up")}>Đăng ký ngay</span>
           </p>
         ) : (
           <p>
-            Already have an account?{" "}
-            <span onClick={() => setCurrState("Login")}>Login here</span>
+            Đã có tài khoản?{" "}
+            <span onClick={() => setCurrState("Login")}>Đăng nhập</span>
           </p>
         )}
       </form>
