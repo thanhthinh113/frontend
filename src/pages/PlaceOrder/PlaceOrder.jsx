@@ -202,7 +202,7 @@ export const PlaceOrder = () => {
               <option value="">Không dùng voucher</option>
               {user.redeemedVouchers.map((v, i) => (
                 <option key={i} value={v.code}>
-                  {v.code} - Giảm {v.discountPercent}%
+                  {v.code} - Giảm {formatVND(v.discountPercent)} VND
                 </option>
               ))}
             </select>
@@ -229,7 +229,7 @@ export const PlaceOrder = () => {
               <>
                 <hr />
                 <div className="cart-total-details discount">
-                  <p>Giảm giá ({discountPercent}%)</p>
+                  <p>Voucher</p>
                   <p>-{formatVND(total - discountedTotal)} VND</p>
                 </div>
               </>

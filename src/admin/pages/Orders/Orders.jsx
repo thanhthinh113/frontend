@@ -8,6 +8,9 @@ import { StoreContext } from "../../../context/StoreContext";
 export const Orders = () => {
   const { url, token } = useContext(StoreContext);
   const [orders, setOrders] = useState([]);
+  const formatVND = (amount) => {
+    return amount.toLocaleString("vi-VN");
+  };
 
   const fetchAllOrders = async () => {
     try {
@@ -95,7 +98,7 @@ export const Orders = () => {
                   Số lượng: <strong>{order.items.length}</strong> sản phẩm
                 </p>
                 <p>
-                  Tổng tiền: <strong>{order.amount} VND</strong>
+                  Tổng tiền: <strong>{formatVND(order.amount)} VND</strong>
                 </p>
                 <p>
                   Ngày đặt:{" "}
