@@ -32,6 +32,7 @@ import FoodDetail from "./admin/pages/FoodDetail/FoodDetail";
 import { Voucher } from "./admin/pages/Voucher/Voucher";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import { ChangePassword } from "./components/ChangePassword/ChangePassword";
+import Analytics from "./admin/pages/Analytics/Analytics";
 
 const UserLayout = ({ setShowLogin }) => (
   <>
@@ -102,6 +103,7 @@ export const App = () => {
           <Route path="categories" element={<Categories />} />
           <Route path="combos" element={<AdminCombo />} />
           <Route path="voucher" element={<Voucher />} />
+          <Route path="analytics" element={<Analytics />} />
         </Route>
       </Routes>
     </>

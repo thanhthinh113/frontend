@@ -1,19 +1,38 @@
 import React from "react";
 import "./sidebar.css";
-import { assets } from "../../../assets/assets";
 import { NavLink } from "react-router-dom";
+import {
+  FaChartBar,
+  FaPlusCircle,
+  FaListAlt,
+  FaThLarge,
+  FaShoppingCart,
+  FaUsers,
+  FaLayerGroup,
+  FaTicketAlt,
+} from "react-icons/fa";
 
 export const Sidebar = () => {
   return (
     <div className="sidebar">
       <div className="sidebar-options">
         <NavLink
+          to="/admin/analytics"
+          className={({ isActive }) =>
+            isActive ? "sidebar-option active" : "sidebar-option"
+          }
+        >
+          <FaChartBar className="sidebar-icon" />
+          <p>Analytics</p>
+        </NavLink>
+
+        <NavLink
           to="/admin/add"
           className={({ isActive }) =>
             isActive ? "sidebar-option active" : "sidebar-option"
           }
         >
-          <img src={assets.add_icon} alt="Add Items Icon" />
+          <FaPlusCircle className="sidebar-icon" />
           <p>Add Items</p>
         </NavLink>
 
@@ -23,7 +42,7 @@ export const Sidebar = () => {
             isActive ? "sidebar-option active" : "sidebar-option"
           }
         >
-          <img src={assets.order_icon} alt="List Items Icon" />
+          <FaListAlt className="sidebar-icon" />
           <p>List Items</p>
         </NavLink>
 
@@ -33,7 +52,7 @@ export const Sidebar = () => {
             isActive ? "sidebar-option active" : "sidebar-option"
           }
         >
-          <img src={assets.order_icon} alt="Categories Icon" />
+          <FaThLarge className="sidebar-icon" />
           <p>Categories</p>
         </NavLink>
 
@@ -43,7 +62,7 @@ export const Sidebar = () => {
             isActive ? "sidebar-option active" : "sidebar-option"
           }
         >
-          <img src={assets.order_icon} alt="Orders Icon" />
+          <FaShoppingCart className="sidebar-icon" />
           <p>Orders</p>
         </NavLink>
 
@@ -53,34 +72,27 @@ export const Sidebar = () => {
             isActive ? "sidebar-option active" : "sidebar-option"
           }
         >
-          <img src={assets.order_icon} alt="Users Icon" />
+          <FaUsers className="sidebar-icon" />
           <p>Users</p>
         </NavLink>
+
         <NavLink
           to="/admin/combos"
           className={({ isActive }) =>
             isActive ? "sidebar-option active" : "sidebar-option"
           }
         >
-          <img src={assets.order_icon} alt="Combo Icon" />
+          <FaLayerGroup className="sidebar-icon" />
           <p>Combo</p>
         </NavLink>
-        <NavLink
-          to="/admin/statistics"
-          className={({ isActive }) =>
-            isActive ? "sidebar-option active" : "sidebar-option"
-          }
-        >
-          <img src={assets.order_icon} alt="Statistics Icon" />
-          <p>Thống kê</p>
-        </NavLink>
+
         <NavLink
           to="/admin/voucher"
           className={({ isActive }) =>
             isActive ? "sidebar-option active" : "sidebar-option"
           }
         >
-          <img src={assets.order_icon} alt="Statistics Icon" />
+          <FaTicketAlt className="sidebar-icon" />
           <p>Voucher</p>
         </NavLink>
       </div>

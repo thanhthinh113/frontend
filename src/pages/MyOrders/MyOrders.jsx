@@ -7,7 +7,9 @@ import { assets } from "../../assets/assets";
 export const MyOrders = () => {
   const { url, token } = useContext(StoreContext);
   const [data, setData] = useState([]);
-
+  const formatVND = (amount) => {
+    return amount.toLocaleString("vi-VN");
+  };
   const fetchOrders = async () => {
     const response = await axios.post(
       `${url}/api/order/userorders`,
@@ -61,7 +63,7 @@ export const MyOrders = () => {
               <div className="order-info-group">
                 <img src={assets.parcel_icon} alt="parcel icon" />
                 <p>
-                  Tổng tiền: <strong>{order.amount} VND</strong>
+                  Tổng tiền: <strong>{formatVND(order.amount)} VND</strong>
                 </p>
                 <p>
                   Số lượng: <strong>{order.items.length}</strong> sản phẩm

@@ -1,0 +1,199 @@
+.analytics-dashboard {
+  padding: 30px;
+  background-color: #f4f7f6;
+  min-height: 100vh;
+}
+
+.analytics-dashboard h2 {
+  margin-bottom: 30px;
+  color: #333;
+}
+
+/* --- GRID THẺ SỐ LIỆU TỔNG QUAN --- */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  padding: 20px 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  background-color: white;
+  transition: transform 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.stat-icon {
+  font-size: 2.5rem;
+  margin-right: 20px;
+  padding: 15px;
+  border-radius: 50%;
+  color: white;
+}
+
+.stat-card.revenue .stat-icon { background-color: #00a680; } /* Xanh lá */
+.stat-card.orders .stat-icon { background-color: #ff9f43; }  /* Cam */
+.stat-card.users .stat-icon { background-color: #1e90ff; }   /* Xanh dương */
+.stat-card.foods .stat-icon { background-color: #e84118; }   /* Đỏ cam */
+
+.stat-title {
+  font-size: 0.9rem;
+  color: #777;
+  margin: 0;
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 5px 0 0;
+  color: #333;
+}
+
+/* --- PHẦN BẢNG DỮ LIỆU --- */
+.data-sections-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Chia 2 cột */
+  gap: 25px;
+  margin-bottom: 25px; 
+}
+
+/* Thiết lập cho phần Monthly Sales chiếm toàn bộ chiều rộng */
+.data-sections-grid.full-width {
+    grid-template-columns: 1fr; 
+}
+.full-row {
+    grid-column: 1 / -1;
+}
+
+.panel {
+  background-color: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.panel h3 {
+  border-bottom: 2px solid #eee;
+  padding-bottom: 15px;
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* --- BẢNG THỐNG KÊ THEO THÁNG --- */
+.analytics-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+.analytics-table th,
+.analytics-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+.analytics-table th {
+    background-color: #f8f8f8;
+    font-weight: 600;
+    color: #555;
+}
+.analytics-table tr:hover {
+    background-color: #fbfbfb;
+}
+.analytics-table .revenue-col {
+    font-weight: 600;
+    color: #00a680; /* Màu xanh lá cho doanh thu */
+}
+.no-data-msg {
+    color: #999;
+    text-align: center;
+    padding: 20px;
+}
+
+
+/* --- Danh sách trạng thái --- */
+.status-list {
+  list-style: none;
+  padding: 0;
+}
+.status-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px dashed #eee;
+  font-size: 1rem;
+}
+.status-list li:last-child {
+  border-bottom: none;
+}
+
+.status-label {
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 4px;
+  color: white;
+  font-size: 0.9rem;
+}
+/* CSS cho các trạng thái cụ thể */
+.status-dang-cho-thanh-toan { background-color: #ffc107; color: #333; }
+.status-dang-xu-ly { background-color: #17a2b8; }
+.status-dang-giao-hang { background-color: #007bff; }
+.status-da-giao { background-color: #28a745; }
+.status-da-huy { background-color: #dc3545; }
+
+.status-count {
+  font-weight: 700;
+  color: #333;
+}
+
+/* --- Danh sách Top Selling & Category Sales (Dùng chung) --- */
+.top-list {
+  padding-left: 0;
+  list-style-type: none; /* Bỏ bullet mặc định của ul/ol */
+}
+.top-list li {
+  padding: 10px 0;
+  border-bottom: 1px dashed #eee;
+  display: flex;
+  align-items: baseline;
+}
+.top-list li:last-child {
+  border-bottom: none;
+}
+
+.rank-num {
+  font-weight: bold;
+  margin-right: 15px;
+  color: #00a680;
+}
+
+.food-name {
+  flex-grow: 1;
+  font-weight: 500;
+}
+/* Styling cho category list */
+.category-sales-section .quantity {
+    color: #1e90ff; /* Màu xanh dương cho doanh thu danh mục */
+    font-weight: 600;
+}
+
+/* Styling cho top selling foods list */
+.top-selling-section .quantity {
+  color: #777;
+  font-size: 0.9rem;
+}
+.stat-card.categories .stat-icon {
+  background-color: #6f42c1; /* tím nhẹ */
+}
+
+.stat-card.vouchers .stat-icon {
+  background-color: #ff6b6b; /* đỏ nhạt */
+}

@@ -1,113 +1,118 @@
-sidebar.css
-
 /* --- Sidebar Container --- */
 .sidebar {
-  width: 220px; /* Chiều rộng cố định, có thể điều chỉnh */
+  width: 220px;
   min-height: 100vh;
-  background-color: #ffffff; /* Nền trắng sạch */
+  background-color: #ffffff;
   padding-top: 20px;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05); /* Bóng nhẹ tạo chiều sâu */
-  position: sticky; /* Giữ sidebar ở vị trí */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+  position: sticky;
   top: 0;
   left: 0;
-  transition: width 0.3s ease-in-out; /* Hiệu ứng chuyển động khi responsive */
-  font-family: "Outfit", sans-serif; /* Sử dụng font Outfit */
-  color: #333; /* Màu chữ tối hơn */
-  overflow-y: auto; /* Cho phép cuộn nếu nội dung quá dài */
+  transition: width 0.3s ease-in-out;
+  font-family: "Outfit", sans-serif;
+  color: #333;
+  overflow-y: auto;
 }
 
-/* --- Sidebar Options (Container for links) --- */
+/* --- Sidebar Options Container --- */
 .sidebar-options {
   display: flex;
   flex-direction: column;
-  gap: 15px; /* Giảm khoảng cách giữa các mục */
-  padding: 0 15px; /* Padding ngang để căn chỉnh tốt hơn */
+  gap: 10px;
+  padding: 0 15px;
 }
 
-/* --- Individual Sidebar Option (Link) --- */
+/* --- Individual Option --- */
 .sidebar-option {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 15px; /* Tăng padding để tạo không gian */
-  border-radius: 8px; /* Bo góc nhẹ nhàng */
+  padding: 10px 15px;
+  border-radius: 8px;
   cursor: pointer;
-  color: #555; /* Màu chữ mặc định */
-  font-size: 15px; /* Kích thước chữ */
-  font-weight: 500; /* Độ đậm của chữ */
-  transition: all 0.2s ease-in-out; /* Hiệu ứng chuyển động mượt mà */
-  text-decoration: none; /* Bỏ gạch chân mặc định */
+  color: #555;
+  font-size: 15px;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  text-decoration: none;
 }
 
-/* --- Icon within Sidebar Option --- */
-.sidebar-option img {
-  width: 22px; /* Kích thước icon chuẩn hơn */
-  height: 22px;
-  object-fit: contain; /* Đảm bảo icon không bị biến dạng */
-  opacity: 0.7; /* Làm mờ nhẹ icon */
-  transition: opacity 0.2s ease-in-out;
+/* --- Icon --- */
+.sidebar-icon {
+  font-size: 20px;
+  opacity: 0.8;
+  transition: all 0.2s ease-in-out;
 }
 
-/* --- Text within Sidebar Option --- */
+/* --- Text --- */
 .sidebar-option p {
-  margin: 0; /* Xóa margin mặc định của p */
-  flex-grow: 1; /* Cho phép text mở rộng */
+  margin: 0;
+  flex-grow: 1;
 }
 
 /* --- Hover Effect --- */
 .sidebar-option:hover {
-  background-color: #f5f5f5; /* Nền xám nhạt khi hover */
-  color: #333; /* Chữ đậm hơn khi hover */
+  background-color: #f5f5f5;
+  color: #222;
+  transform: translateX(4px);
 }
-.sidebar-option:hover img {
-  opacity: 1; /* Icon sáng hơn khi hover */
+
+.sidebar-option:hover .sidebar-icon {
+  opacity: 1;
+  transform: scale(1.1);
+  color: #e74c3c; /* Màu nhấn */
 }
 
 /* --- Active State --- */
 .sidebar-option.active {
-  background-color: #ffe0e0; /* Nền màu đỏ nhạt */
-  color: #e74c3c; /* Màu chữ đỏ tươi */
-  font-weight: 600; /* Chữ đậm hơn */
-  box-shadow: 0 2px 5px rgba(231, 76, 60, 0.2); /* Bóng nhẹ màu đỏ */
+  background-color: #ffe0e0;
+  color: #e74c3c;
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(231, 76, 60, 0.2);
 }
 
-.sidebar-option.active img {
-  opacity: 1; /* Icon sáng hoàn toàn khi active */
-  filter: brightness(0.8) sepia(1) hue-rotate(-20deg) saturate(3); /* Hiệu ứng màu cho icon */
+.sidebar-option.active .sidebar-icon {
+  opacity: 1;
+  color: #e74c3c;
 }
 
-/* --- Responsive Design (for smaller screens) --- */
+/* --- Responsive Design (Tablet & Mobile) --- */
 @media (max-width: 900px) {
   .sidebar {
-    width: 60px; /* Thu gọn sidebar, chỉ hiển thị icon */
+    width: 60px;
     padding-top: 15px;
   }
+
   .sidebar-options {
-    padding: 0 5px; /* Giảm padding */
+    padding: 0 5px;
   }
+
   .sidebar-option {
-    padding: 10px; /* Giảm padding */
-    justify-content: center; /* Căn giữa icon */
+    padding: 10px;
+    justify-content: center;
   }
+
   .sidebar-option p {
-    display: none; /* Ẩn chữ */
+    display: none;
   }
-  .sidebar-option img {
-    width: 25px; /* Tăng kích thước icon một chút */
-    height: 25px;
+
+  .sidebar-icon {
+    font-size: 22px;
   }
 }
 
-/* Một vài style chung nếu chưa có (có thể đặt ở file global.css) */
+/* --- Misc Helpers --- */
 .flex-col {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
 .app-content {
   display: flex;
-  flex-grow: 1; /* Đảm bảo nội dung chính chiếm không gian còn lại */
+  flex-grow: 1;
 }
+
 hr {
   border: none;
   border-top: 1px solid #e0e0e0;
