@@ -1,240 +1,153 @@
-/* =============================
-   🛒 CART PAGE STYLE
-   ============================= */
 .cart {
-  margin-top: 120px;
-  margin-left: 10%;
-  margin-right: 10%;
-  color: #222;
-  font-family: "Poppins", sans-serif;
+  margin: 120px auto;
+  padding: 0 5%;
+  max-width: 1200px;
+  font-family: "Inter", sans-serif;
+  color: #333;
 }
 
-/* Tiêu đề bảng giỏ hàng */
+/* ===== Bảng giỏ hàng ===== */
+.cart-items {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 25px;
+}
+
 .cart-items-title {
   display: grid;
-  grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr 0.5fr;
+  grid-template-columns: 1fr 1.8fr 1fr 1fr 1fr 0.5fr;
   align-items: center;
-  color: #666;
+  font-size: 15px;
   font-weight: 600;
+  color: #666;
   text-transform: uppercase;
-  font-size: max(0.9vw, 13px);
-  border-bottom: 2px solid #eaeaea;
-  padding-bottom: 10px;
 }
 
-/* Dòng sản phẩm */
 .cart-items-item {
   display: grid;
-  grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr 0.5fr;
+  grid-template-columns: 1fr 1.8fr 1fr 1fr 1fr 0.5fr;
   align-items: center;
-  margin: 12px 0;
-  color: black;
-  font-size: 15px;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
-  padding: 10px 15px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.cart-items-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin: 15px 0;
+  color: #333;
 }
 
 .cart-items-item img {
   width: 55px;
   height: 55px;
-  object-fit: cover;
   border-radius: 8px;
-}
-
-/* Dấu X */
-.cart-items-item .cross {
-  cursor: pointer;
-  color: #e63946;
-  font-weight: bold;
-  font-size: 18px;
-  transition: 0.2s;
-}
-
-.cart-items-item .cross:hover {
-  color: #ff0000;
-  transform: scale(1.2);
+  object-fit: cover;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .cart hr {
   height: 1px;
-  background-color: #e2e2e2;
+  background-color: #eee;
   border: none;
+  margin: 10px 0;
 }
 
-/* =============================
-   📦 PHẦN DƯỚI - TỔNG TIỀN & MÃ KM
-   ============================= */
+/* Nút xóa */
+.cart-items-item .cross {
+  cursor: pointer;
+  color: tomato;
+  font-size: 20px;
+  font-weight: bold;
+  transition: transform 0.2s ease, color 0.2s ease;
+  text-align: center;
+}
+
+.cart-items-item .cross:hover {
+  transform: scale(1.3);
+  color: #ff6f61;
+}
+
+/* ===== Tổng tiền ===== */
 .cart-bottom {
-  margin-top: 60px;
+  margin-top: 50px;
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: max(10vw, 40px);
+  justify-content: flex-end;
+  flex-wrap: wrap;
 }
 
-/* Tổng tiền */
 .cart-total {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
   background: #fff;
   padding: 25px 30px;
-  border-radius: 10px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  min-width: 320px;
 }
 
 .cart-total h2 {
-  margin-bottom: 10px;
   color: #222;
+  margin-bottom: 20px;
+  font-size: 20px;
 }
 
 .cart-total-details {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin: 8px 0;
   color: #555;
   font-size: 15px;
 }
 
 .cart-total hr {
   margin: 10px 0;
+  border: none;
+  height: 1px;
+  background-color: #eee;
 }
 
 .cart-total button {
   border: none;
-  color: white;
   background-color: tomato;
-  width: 100%;
-  padding: 14px 0;
-  border-radius: 6px;
-  cursor: pointer;
+  color: white;
   font-size: 16px;
   font-weight: 600;
-  transition: 0.3s;
+  padding: 14px 0;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 25px;
+  transition: all 0.3s ease;
 }
 
 .cart-total button:hover {
-  background-color: #e0432f;
+  background-color: #ff6347;
   box-shadow: 0 4px 10px rgba(255, 99, 71, 0.3);
 }
 
-/* Mã khuyến mãi */
-.cart-promocode {
-  flex: 1;
-  background: #fff;
-  padding: 25px 30px;
-  border-radius: 10px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-}
-
-.cart-promocode p {
-  color: #444;
-  font-weight: 500;
-}
-
-.cart-promocode-input {
-  margin-top: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #f6f6f6;
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.cart-promocode-input input {
-  background: transparent;
-  border: none;
-  outline: none;
-  padding: 12px;
-  font-size: 15px;
-  width: 100%;
-  color: #222;
-}
-
-.cart-promocode-input button {
-  width: max(10vw, 140px);
-  padding: 12px 10px;
-  background-color: black;
-  border: none;
-  color: white;
-  border-radius: 0 6px 6px 0;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.cart-promocode-input button:hover {
-  background-color: #333;
-}
-
-/* =============================
-   🧹 NÚT XÓA GIỎ HÀNG
-   ============================= */
-.clear-cart-btn {
-  margin-top: 18px;
-  background-color: #f4172d;
-  color: black;
-  border: none;
-  padding: 12px 18px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
-  width: 100%;
-}
-
-.clear-cart-btn:hover {
-  background-color: #d80f24;
-  color: #fff;
-}
-
-.clear-cart-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* =============================
-   🧍 EMPTY CART
-   ============================= */
-.empty-cart {
-  text-align: center;
-  color: #777;
-  font-size: 18px;
-  margin-top: 40px;
-}
-
-/* =============================
-   📱 RESPONSIVE
-   ============================= */
+/* ===== Responsive ===== */
 @media (max-width: 900px) {
-  .cart {
-    margin: 100px 5%;
+  .cart-items-title {
+    display: none; /* ẩn tiêu đề bảng */
   }
 
-  .cart-bottom {
-    flex-direction: column-reverse;
-  }
-
-  .cart-items-title,
   .cart-items-item {
-    grid-template-columns: 1fr 1fr 1fr;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 15px 0;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
   }
 
   .cart-items-item img {
-    width: 60px;
+    width: 70px;
+    height: 70px;
+    margin-bottom: 10px;
   }
 
-  .cart-total,
-  .cart-promocode {
+  .cart-bottom {
+    justify-content: center;
+  }
+
+  .cart-total {
     width: 100%;
+    margin-top: 20px;
   }
 }

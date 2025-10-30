@@ -11,7 +11,9 @@ const ComboDeals = () => {
   };
 
   const handleAddCombo = (combo) => {
-    addToCart(combo._id, "combo");
+    if (combo.items && combo.items.length > 0) {
+      combo.items.forEach((foodId) => addToCart(foodId));
+    }
   };
 
   return (

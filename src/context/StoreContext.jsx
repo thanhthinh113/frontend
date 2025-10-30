@@ -13,11 +13,7 @@ const StoreContextProvider = ({ children }) => {
   });
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [cartItems, setCartItems] = useState(() => {
-    const storedCart = localStorage.getItem("guestCart");
-    return storedCart ? JSON.parse(storedCart) : {};
-  });
-
+  const [cartItems, setCartItems] = useState({});
   const [token, setToken] = useState(() => localStorage.getItem("token") || "");
   const [food_list, setFoodList] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -26,38 +22,43 @@ const StoreContextProvider = ({ children }) => {
 
   const url = "http://localhost:4000";
 
-  // ========================= 🛒 THÊM VÀO GIỎ =========================
-  const addToCart = async (itemId, type = "food") => {
-    const key = `${type}_${itemId}`;
+  const addToCart = async (itemOrId) => {
+    const itemId = typeof itemOrId === "object" ? itemOrId._id : itemOrId;
 
-    setCartItems((prev) => {
-      const updated = { ...prev, [key]: (prev[key] || 0) + 1 };
-      localStorage.setItem("guestCart", JSON.stringify(updated)); // ✅ Lưu lại
-      return updated;
-    });
+    setCartItems((prev) => ({
+      ...prev,
+      [itemId]: prev[itemId] ? prev[itemId] + 1 : 1,
+    }));
 
-    if (!token) return; // Nếu chưa đăng nhập thì chỉ lưu local
+    if (token) {
+      try {
+        await axios.post(
+          `${url}/api/cart/add`,
+          { itemId },
+          { headers: { token } }
+        );
+      } catch (err) {
+        console.error("Error adding to cart", err);
+      }
+      return;
+    }
 
     try {
-      await axios.post(
-        `${url}/api/cart/add`,
-        { itemId, type },
-        { headers: { token } }
-      );
+      const guestCart = JSON.parse(localStorage.getItem("guestCart") || "{}");
+      guestCart[itemId] = guestCart[itemId] ? guestCart[itemId] + 1 : 1;
+      localStorage.setItem("guestCart", JSON.stringify(guestCart));
+      setCartItems(guestCart);
+      console.log("Added to guest cart (localStorage)", itemId);
     } catch (err) {
-      console.error("❌ Error adding to cart", err);
+      console.error("Error saving guest cart", err);
     }
   };
 
-  // ========================= 🗑️ XÓA KHỎI GIỎ =========================
-  const removeFromCart = async (itemId, type = "food") => {
-    const key = `${type}_${itemId}`;
-
+  const removeFromCart = async (itemId) => {
     setCartItems((prev) => {
       const updated = { ...prev };
-      if (updated[key] > 1) updated[key] -= 1;
-      else delete updated[key];
-      localStorage.setItem("guestCart", JSON.stringify(updated)); // ✅ Lưu lại
+      if (updated[itemId] > 1) updated[itemId] -= 1;
+      else delete updated[itemId];
       return updated;
     });
 
@@ -65,106 +66,86 @@ const StoreContextProvider = ({ children }) => {
       try {
         await axios.post(
           `${url}/api/cart/remove`,
-          { itemId, type },
+          { itemId },
           { headers: { token } }
         );
       } catch (err) {
-        console.error("❌ Error removing from cart", err);
+        console.error("Error removing from cart", err);
       }
     }
   };
 
-  // ========================= 💰 TÍNH TỔNG GIÁ =========================
   const getTotalCartAmount = () => {
     let total = 0;
-    for (const key in cartItems) {
-      if (cartItems[key] > 0) {
-        const [type, id] = key.split("_");
-        let item = null;
-
-        if (type === "combo") {
-          item = combos.find((c) => c._id === id);
-          if (item)
-            total += (item.discountPrice || item.price) * cartItems[key];
-        } else {
-          item = food_list.find((f) => f._id === id);
-          if (item) total += item.price * cartItems[key];
-        }
+    for (const itemId in cartItems) {
+      if (cartItems[itemId] > 0) {
+        const item = food_list.find((f) => f._id === itemId);
+        if (item) total += item.price * cartItems[itemId];
       }
     }
     return total;
   };
 
-  // 🧹 Xóa toàn bộ giỏ hàng
-   const clearCart = async () => {
-  try {
-    // ✅ Nếu user đã đăng nhập, gọi API backend để xóa luôn trên server
-    if (token) {
-      await axios.post(`${url}/api/cart/clear`, {}, { headers: { token } });
-    }
-
-    // ✅ Reset giỏ hàng local về rỗng
-    setCartItems({});
-    localStorage.removeItem("guestCart");
-
-    console.log("🧹 Giỏ hàng đã được xóa toàn bộ!");
-  } catch (err) {
-    console.error("❌ Error clearing cart:", err);
-  }
-};
-
-
-  // ========================= 📦 FETCH DỮ LIỆU =========================
+  // ================= FETCH FOOD & CATEGORIES & COMBO =================
   const fetchFoodList = async () => {
     try {
-      const res = await axios.get(`${url}/api/food/list`);
-      if (res.data.success) setFoodList(res.data.data);
-      else if (Array.isArray(res.data)) setFoodList(res.data);
-      else setFoodList([]);
-    } catch (err) {
-      console.error("❌ Error fetching food list:", err);
+      const response = await axios.get(`${url}/api/food/list`);
+      if (response.data.success) {
+        setFoodList(response.data.data);
+      } else if (Array.isArray(response.data)) {
+        setFoodList(response.data);
+      } else {
+        setFoodList([]);
+      }
+    } catch (error) {
+      console.error("Error fetching food list:", error);
     }
   };
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get(`${url}/api/categories`);
-      if (res.data.success) setCategories(res.data.data || []);
-      else if (Array.isArray(res.data)) setCategories(res.data);
-      else setCategories([]);
-    } catch (err) {
-      console.error("❌ Error fetching categories:", err);
+      const response = await axios.get(`${url}/api/categories`);
+      if (response.data.success) {
+        setCategories(response.data.data || []);
+      } else if (Array.isArray(response.data)) {
+        setCategories(response.data);
+      } else {
+        setCategories([]);
+      }
+    } catch (error) {
+      console.error("Error fetching categories:", error);
     }
   };
 
   const fetchCombos = async () => {
     try {
-      const res = await axios.get(`${url}/api/combos`);
-      if (res.data.success) setCombos(res.data.data || []);
-      else if (Array.isArray(res.data)) setCombos(res.data);
-      else setCombos([]);
-    } catch (err) {
-      console.error("❌ Error fetching combos:", err);
+      const response = await axios.get(`${url}/api/combos`);
+      if (response.data.success) {
+        setCombos(response.data.data || []);
+      } else if (Array.isArray(response.data)) {
+        setCombos(response.data);
+      } else {
+        setCombos([]);
+      }
+    } catch (error) {
+      console.error("Error fetching combos:", error);
     }
   };
 
-  // ========================= 🔁 LOAD CART (CHỈ KHI CẦN) =========================
+  // ================= LOAD CART =================
   const loadCartData = async (token) => {
     try {
-      const res = await axios.post(
+      const response = await axios.post(
         `${url}/api/cart/get`,
         {},
         { headers: { token } }
       );
-      if (res.data.cartData && Object.keys(res.data.cartData).length > 0) {
-        setCartItems(res.data.cartData);
-      }
+      setCartItems(response.data.cartData || {});
     } catch (err) {
-      console.error("❌ Error loading cart data:", err);
+      console.error("Error loading cart data", err);
     }
   };
 
-  // ========================= 👤 USER =========================
   const refreshUser = async () => {
     if (!token) return;
     try {
@@ -175,63 +156,28 @@ const StoreContextProvider = ({ children }) => {
         setUser(res.data.user);
         localStorage.setItem("user", JSON.stringify(res.data.user));
       } else {
-        console.warn("⚠️ Không thể lấy thông tin user:", res.data.message);
+        console.warn("Không thể lấy thông tin user:", res.data.message);
       }
     } catch (err) {
-      console.error("❌ Lỗi tải user mới:", err);
+      console.error("Lỗi tải user mới:", err);
     }
   };
 
-  // ========================= 🧠 USE EFFECT CHÍNH =========================
   useEffect(() => {
-    let isMounted = true;
+    async function loadData() {
+      await fetchFoodList();
+      await fetchCategories();
+      await fetchCombos();
 
-    const loadData = async () => {
-      try {
-        // Tải song song để nhanh hơn
-        await Promise.all([fetchFoodList(), fetchCategories(), fetchCombos()]);
-
-        if (token) {
-          await refreshUser();
-
-          // ✅ Chỉ tải lại giỏ hàng nếu đang trống
-          if (Object.keys(cartItems).length === 0) {
-            const res = await axios.post(
-              `${url}/api/cart/get`,
-              {},
-              { headers: { token } }
-            );
-            if (isMounted && res.data.cartData) {
-              setCartItems(res.data.cartData);
-            }
-          }
-        } else {
-          // ✅ Chưa đăng nhập → chỉ khôi phục từ localStorage
-          if (isMounted && Object.keys(cartItems).length === 0) {
-            const stored = localStorage.getItem("guestCart");
-            if (stored) {
-              const parsed = JSON.parse(stored);
-              if (Object.keys(parsed).length > 0) setCartItems(parsed);
-            }
-          }
-        }
-      } catch (err) {
-        console.error("❌ Lỗi khi load dữ liệu:", err);
+      if (token) {
+        await refreshUser();
+        await loadCartData(token);
       }
-    };
-
+    }
     loadData();
-    return () => {
-      isMounted = false;
-    };
   }, [token]);
 
-  // ✅ Luôn lưu giỏ hàng xuống localStorage khi thay đổi
-  useEffect(() => {
-    localStorage.setItem("guestCart", JSON.stringify(cartItems));
-  }, [cartItems]);
-
-  // ========================= 🔐 AUTH =========================
+  // ================= AUTH =================
   const logoutUser = () => {
     setToken("");
     setUser(null);
@@ -248,7 +194,6 @@ const StoreContextProvider = ({ children }) => {
     localStorage.setItem("user", JSON.stringify(data.user));
   };
 
-  // ========================= 🌟 CONTEXT VALUE =========================
   const contextValue = {
     food_list,
     categories,
@@ -269,7 +214,6 @@ const StoreContextProvider = ({ children }) => {
     searchTerm,
     setSearchTerm,
     refreshUser,
-    clearCart,
   };
 
   return (
