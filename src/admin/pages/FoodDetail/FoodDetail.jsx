@@ -8,21 +8,22 @@ import { FaStar } from "react-icons/fa";
 const FoodDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addToCart, url, user } = useContext(StoreContext);
+
+  // 🧠 Lấy các hàm và biến từ StoreContext (đã cập nhật)
+  const { addToCart, url, user, syncGuestCartToUser } = useContext(StoreContext);
 
   const [food, setFood] = useState(null);
-  const [relatedFoods, setRelatedFoods] = useState([]);
+  const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
-  const [reviews, setReviews] = useState([]);
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
   const [canReview, setCanReview] = useState(false);
 
+  // 📦 Lấy dữ liệu món ăn + đánh giá + kiểm tra quyền review
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // ✅ Lấy dữ liệu món ăn và đánh giá
         const [foodRes, reviewRes] = await Promise.all([
           axios.get(`${url}/api/food/${id}`),
           axios.get(`${url}/api/reviews/${id}`),
@@ -31,49 +32,25 @@ const FoodDetail = () => {
         setFood(foodRes.data);
         setReviews(reviewRes.data);
 
-        // ✅ Lấy món ăn liên quan
-        if (foodRes.data?.categoryId?._id) {
-          const relatedRes = await axios.get(
-            `${url}/api/food?categoryId=${foodRes.data.categoryId._id}`
-          );
-
-          // Hỗ trợ cả dạng object hay array
-          const relatedData = Array.isArray(relatedRes.data)
-            ? relatedRes.data
-            : relatedRes.data.foods || [];
-
-          setRelatedFoods(
-            relatedData.filter((item) => item._id !== foodRes.data._id)
-          );
-        }
-
-        // ✅ Kiểm tra user đã mua món ăn này chưa
+        // ✅ Kiểm tra quyền đánh giá (đã mua hay chưa)
         if (user && user._id) {
           const orderRes = await axios.post(
             `${url}/api/order/userorders`,
             {},
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-              },
-            }
+            { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
           );
 
-          // Lấy mảng orders chuẩn
           const orders = Array.isArray(orderRes.data)
             ? orderRes.data
-            : orderRes.data.orders || orderRes.data.data || [];
-
-          console.log("🧾 Orders từ backend:", orders);
+            : orderRes.data.orders || [];
 
           const hasPurchased = orders.some((order) =>
             order.items.some((item) => {
-              const itemId = item.foodId?._id || item.foodId || item._id; // ✅ thêm item._id fallback
+              const itemId = item.foodId?._id || item.foodId || item._id;
               return itemId?.toString() === id.toString();
             })
           );
 
-          console.log("✅ hasPurchased =", hasPurchased);
           setCanReview(hasPurchased);
         } else {
           setCanReview(false);
@@ -88,154 +65,113 @@ const FoodDetail = () => {
     fetchData();
   }, [id, url, user]);
 
-  // ✅ Gửi đánh giá
+  // ✍️ Gửi đánh giá
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
-
-    if (!user) {
-      alert("Vui lòng đăng nhập để bình luận.");
-      return navigate("/login");
-    }
-
-    if (!canReview) {
-      alert("Bạn chỉ có thể đánh giá món ăn đã mua.");
-      return;
-    }
-
-    if (!comment.trim()) {
-      alert("Vui lòng nhập nội dung bình luận.");
-      return;
-    }
+    if (!user) return navigate("/login");
+    if (!canReview) return alert("Chỉ được đánh giá khi đã mua món này!");
 
     try {
       await axios.post(
         `${url}/api/reviews`,
-        {
-          foodId: id,
-          userId: user._id,
-          userName: user.name,
-          rating,
-          comment,
-        },
-        {
-          headers: { token: localStorage.getItem("token") },
-        }
+        { foodId: id, userId: user._id, userName: user.name, rating, comment },
+        { headers: { token: localStorage.getItem("token") } }
       );
-
       const res = await axios.get(`${url}/api/reviews/${id}`);
       setReviews(res.data);
       setComment("");
       setRating(5);
     } catch (err) {
-      console.error("❌ Lỗi khi gửi đánh giá:", err);
-      alert("Không thể gửi đánh giá, vui lòng thử lại sau.");
+      console.error(err);
     }
   };
 
+  // 🛒 Thêm vào giỏ hàng — đã cập nhật tương thích với StoreContext mới
+  const handleAddToCart = () => {
+    if (!food) return;
+    addToCart(food, quantity, "food");
+    alert(`${quantity} ${food.name} đã được thêm vào giỏ hàng!`);
+    setQuantity(1);
+  };
+
+  // ⭐ Tính điểm trung bình
   const averageRating =
     reviews.length > 0
-      ? (
-          reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
-        ).toFixed(1)
+      ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
       : 0;
 
-  if (loading) return <p>Đang tải dữ liệu...</p>;
+  if (loading) return <p className="loading">Đang tải dữ liệu...</p>;
   if (!food) return <p>Không tìm thấy món ăn</p>;
 
   return (
-    <div className="food-detail">
-      <img
-        src={
-          food.image?.startsWith("http") ? food.image : `${url}/${food.image}`
-        }
-        alt={food.name}
-        className="food-detail-img"
-      />
-
-      <div className="food-detail-info">
-        <h2>{food.name}</h2>
-
-        <div className="food-rating-summary">
-          {averageRating > 0 ? (
-            <>
-              {Array.from({ length: 5 }, (_, i) => (
-                <FaStar
-                  key={i}
-                  color={i < Math.round(averageRating) ? "#FFD700" : "#ddd"}
-                />
-              ))}
-              <span className="rating-text">
-                {averageRating} / 5 ({reviews.length} đánh giá)
-              </span>
-            </>
-          ) : (
-            <span className="rating-text">Chưa có đánh giá</span>
-          )}
+    <div className="food-detail-container">
+      <div className="food-card">
+        <div className="food-image">
+          <img
+            src={food.image?.startsWith("http") ? food.image : `${url}/${food.image}`}
+            alt={food.name}
+          />
         </div>
 
-        <p className="food-category">
-          Danh mục: {food.categoryId?.name || "Chưa có"}
-        </p>
+        <div className="food-info">
+          <h2>{food.name}</h2>
+          <div className="food-rating">
+            {Array.from({ length: 5 }, (_, i) => (
+              <FaStar
+                key={i}
+                color={i < Math.round(averageRating) ? "#FFD700" : "#ddd"}
+              />
+            ))}
+            <span>{averageRating} / 5 ({reviews.length} đánh giá)</span>
+          </div>
 
-        <p className="food-price">
-          {food.price
-            ? `${food.price.toLocaleString("vi-VN")} đ`
-            : "Giá chưa cập nhật"}
-        </p>
+          <p className="category">Danh mục: {food.categoryId?.name || "Chưa có"}</p>
+          <h3 className="price">{food.price?.toLocaleString("vi-VN")} đ</h3>
+          <p className="desc">{food.description}</p>
 
-        <p className="food-desc">{food.description || "Không có mô tả"}</p>
+          <div className="quantity-box">
+            <button onClick={() => setQuantity((q) => Math.max(1, q - 1))}>-</button>
+            <span>{quantity}</span>
+            <button onClick={() => setQuantity((q) => q + 1)}>+</button>
+          </div>
 
-        <div className="quantity-control">
-          <button onClick={() => setQuantity((q) => Math.max(1, q - 1))}>
-            -
+          <button className="btn-cart" onClick={handleAddToCart}>
+            🛒 Thêm vào giỏ hàng
           </button>
-          <span>{quantity}</span>
-          <button onClick={() => setQuantity((q) => q + 1)}>+</button>
         </div>
-
-        <button
-          className="add-to-cart"
-          onClick={() => addToCart(food, quantity)}
-        >
-          Thêm vào giỏ hàng
-        </button>
       </div>
 
-      {/* 💬 ĐÁNH GIÁ & BÌNH LUẬN */}
       <div className="review-section">
-        <h3>⭐ Đánh giá & Bình luận</h3>
+        <h3>Đánh giá & Bình luận</h3>
 
         {!user ? (
-          <p className="login-warning">
-            ⚠️ Vui lòng{" "}
-            <span onClick={() => navigate("/login")}>đăng nhập</span> để bình
-            luận.
+          <p className="warning">
+            ⚠️ Vui lòng <span onClick={() => navigate("/login")}>đăng nhập</span> để bình luận.
           </p>
         ) : !canReview ? (
-          <p className="login-warning">
+          <p className="warning">
             ⚠️ Bạn chỉ có thể đánh giá khi đã mua món ăn này.
           </p>
         ) : (
-          <form className="review-form" onSubmit={handleReviewSubmit}>
+          <form onSubmit={handleReviewSubmit} className="review-form">
             <div className="rating-select">
               {Array.from({ length: 5 }, (_, i) => (
                 <FaStar
                   key={i}
                   onClick={() => setRating(i + 1)}
                   color={i < rating ? "#FFD700" : "#ddd"}
-                  style={{ cursor: "pointer", fontSize: "20px" }}
                 />
               ))}
             </div>
-
             <textarea
-              placeholder="Viết bình luận..."
               value={comment}
               onChange={(e) => setComment(e.target.value)}
+              placeholder="Viết bình luận..."
               required
             ></textarea>
-
-            <button type="submit">Gửi đánh giá</button>
+            <button type="submit" className="btn-submit">
+              Gửi đánh giá
+            </button>
           </form>
         )}
 
@@ -245,12 +181,14 @@ const FoodDetail = () => {
           ) : (
             reviews.map((r) => (
               <div key={r._id} className="review-item">
-                <strong>{r.userName}</strong>{" "}
-                <span>
-                  {Array.from({ length: r.rating }, (_, i) => (
-                    <FaStar key={i} color="#FFD700" />
-                  ))}
-                </span>
+                <div className="review-header">
+                  <strong>{r.userName}</strong>
+                  <span>
+                    {Array.from({ length: r.rating }, (_, i) => (
+                      <FaStar key={i} color="#FFD700" />
+                    ))}
+                  </span>
+                </div>
                 <p>{r.comment}</p>
                 <small>{new Date(r.createdAt).toLocaleString()}</small>
               </div>

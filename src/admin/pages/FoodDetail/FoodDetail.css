@@ -1,123 +1,174 @@
-.food-detail {
+/* =======================
+   🌟 Tổng thể bố cục
+======================= */
+.food-detail-container {
   max-width: 1200px;
-  margin: 30px auto;
-  padding: 20px;
+  margin: 40px auto;
+  padding: 24px;
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
 
-.food-detail-img {
+/* =======================
+   🍱 Card hiển thị món ăn
+======================= */
+.food-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.food-image {
+  flex: 1 1 400px;
+  text-align: center;
+}
+
+.food-image img {
   width: 100%;
-  height: auto;                /* ✅ Tự co theo tỉ lệ thật */
-  max-height: 500px;           /* Giới hạn chiều cao tối đa để không quá dài */
-  border-radius: 12px;
-  object-fit: contain;          /* ✅ Hiển thị toàn bộ ảnh, không cắt */
-  background-color: #f8f8f8;    /* Thêm nền sáng nếu ảnh có vùng trống */
-  display: block;
-  margin: 0 auto;
+  max-width: 450px;
+  height: auto;
+  max-height: 420px;
+  border-radius: 14px;
+  object-fit: contain;
+  background-color: #f8f8f8;
+  padding: 10px;
+  transition: transform 0.3s ease;
 }
 
-.food-detail-info {
-  margin-top: 20px;
+.food-image img:hover {
+  transform: scale(1.05);
 }
 
-.food-detail-info h2 {
-  font-size: 28px;
+/* =======================
+   📄 Thông tin món ăn
+======================= */
+.food-info {
+  flex: 1 1 400px;
+}
+
+.food-info h2 {
+  font-size: 30px;
+  font-weight: 700;
   color: #333;
-  margin-bottom: 6px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* ⭐ Điểm trung bình sao */
-.food-rating-summary {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 12px;
-}
-
-.avg-star {
-  color: #ffc107;
-  font-size: 18px;
-}
-
-.rating-text {
-  color: #555;
-  font-size: 15px;
-}
-
-.food-category {
-  color: #666;
-  font-style: italic;
   margin-bottom: 10px;
 }
 
-.food-price {
-  font-size: 22px;
-  color: #ff4b4b;
+.food-rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.food-rating svg {
+  font-size: 20px;
+}
+
+.food-rating span {
+  font-size: 14px;
+  color: #666;
+}
+
+.category {
+  color: #777;
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+.price {
+  font-size: 26px;
   font-weight: 600;
+  color: #ff4b4b;
   margin-bottom: 12px;
 }
 
-.food-desc {
-  line-height: 1.6;
+.desc {
   color: #444;
+  line-height: 1.6;
   margin-bottom: 20px;
 }
 
-/* Số lượng */
-.quantity-control {
+/* =======================
+   🔢 Số lượng & Giỏ hàng
+======================= */
+.quantity-box {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: 14px;
+  margin-bottom: 18px;
 }
 
-.quantity-control button {
-  background: #eee;
+.quantity-box button {
+  background: #f2f2f2;
   border: none;
-  padding: 6px 12px;
-  font-size: 18px;
-  cursor: pointer;
+  width: 36px;
+  height: 36px;
   border-radius: 6px;
-  transition: 0.2s;
+  font-size: 20px;
+  cursor: pointer;
+  transition: 0.25s;
 }
 
-.quantity-control button:hover {
+.quantity-box button:hover {
   background: #ddd;
 }
 
-.add-to-cart {
+.quantity-box span {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.btn-cart {
+  display: inline-block;
   background: #ff4b4b;
-  color: #fff;
+  color: white;
   border: none;
   border-radius: 8px;
   padding: 10px 20px;
   cursor: pointer;
-  transition: 0.3s;
   font-size: 15px;
+  font-weight: 500;
+  transition: 0.3s ease;
 }
 
-.add-to-cart:hover {
+.btn-cart:hover {
   background: #e63c3c;
   transform: translateY(-2px);
 }
 
-/* 🔶 Review Section */
+/* =======================
+   💬 Phần đánh giá
+======================= */
 .review-section {
   margin-top: 40px;
   background: #fafafa;
   border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .review-section h3 {
   color: #ff4b4b;
   margin-bottom: 16px;
+  font-size: 22px;
+}
+
+.warning {
+  background: #fff3cd;
+  color: #856404;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.warning span {
+  color: #ff4b4b;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .review-form {
@@ -126,28 +177,32 @@
   gap: 10px;
 }
 
-.review-form input,
-.review-form select,
+.rating-select {
+  display: flex;
+  gap: 5px;
+}
+
+.rating-select svg {
+  cursor: pointer;
+  font-size: 22px;
+}
+
 .review-form textarea {
-  padding: 8px 10px;
+  padding: 10px;
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 14px;
+  resize: vertical;
+  min-height: 90px;
   transition: 0.2s;
 }
 
-.review-form input:focus,
-.review-form select:focus,
 .review-form textarea:focus {
   border-color: #ff4b4b;
   outline: none;
 }
 
-.review-form textarea {
-  min-height: 80px;
-}
-
-.review-form button {
+.btn-submit {
   align-self: flex-end;
   background: #ff4b4b;
   color: white;
@@ -155,70 +210,68 @@
   padding: 8px 16px;
   border-radius: 8px;
   cursor: pointer;
-  transition: 0.2s;
+  font-size: 14px;
+  transition: 0.3s;
 }
 
-.review-form button:hover {
+.btn-submit:hover {
   background: #e63c3c;
 }
 
+/* =======================
+   🧾 Danh sách đánh giá
+======================= */
 .review-list {
   margin-top: 20px;
 }
 
 .review-item {
   border-top: 1px solid #eee;
-  padding: 10px 0;
+  padding: 12px 0;
 }
 
-.review-item strong {
+.review-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.review-header strong {
   color: #333;
 }
 
-/* Món ăn liên quan */
-.related-foods {
-  margin-top: 40px;
+.review-item p {
+  color: #555;
+  margin: 5px 0;
 }
 
-.related-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
+.review-item small {
+  color: #999;
+  font-size: 12px;
 }
 
-.related-item img {
-  width: 100%;
-  height: 150px;
-  object-fit: contain;          /* ✅ Giữ nguyên tỉ lệ, không phóng to */
-  border-radius: 10px;
-  background-color: #f8f8f8;
-  display: block;
-  margin: 0 auto;
-}
-
-.related-item img {
-  width: 100%;
-  height: 140px;
-  object-fit: cover;
-  border-radius: 10px;
-}
-
-.related-item:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* Responsive */
+/* =======================
+   📱 Responsive
+======================= */
 @media (max-width: 768px) {
-  .food-detail-info h2 {
+  .food-card {
+    flex-direction: column;
+  }
+
+  .food-image img {
+    max-width: 100%;
+    max-height: 350px;
+  }
+
+  .food-info h2 {
+    font-size: 24px;
+  }
+
+  .price {
     font-size: 22px;
   }
 
-  .food-price {
-    font-size: 20px;
-  }
-
-  .add-to-cart {
+  .btn-cart {
     width: 100%;
   }
 }
