@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import {
   FaUsers,
@@ -9,22 +9,14 @@ import {
   FaLayerGroup,
 } from "react-icons/fa";
 import "./analytics.css";
-
-// Thẻ hiển thị số liệu
-const StatCard = ({ title, value, icon, className }) => (
-  <div className={`stat-card ${className}`}>
-    <div className="stat-icon">{icon}</div>
-    <div className="stat-content">
-      <p className="stat-title">{title}</p>
-      <h3 className="stat-value">{value.toLocaleString("vi-VN")}</h3>
-    </div>
-  </div>
-);
+import { StoreContext } from "../../../context/StoreContext";
+import StatCard from "../../components/StatCard/StatCard";
 
 const Analytics = () => {
   const [summaryData, setSummaryData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { url } = useContext(StoreContext);
 
   const fetchSummary = async () => {
     setLoading(true);
@@ -32,10 +24,9 @@ const Analytics = () => {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await axios.get(
-        "http://localhost:4000/api/analytics/summary",
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const response = await axios.get(`${url}/api/analytics/summary`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setSummaryData(response.data.data);
     } catch (err) {
       console.error("Lỗi khi fetch dữ liệu thống kê:", err);
@@ -82,7 +73,7 @@ const Analytics = () => {
 
   return (
     <div className="analytics-dashboard">
-      <h2>📊 Bảng điều khiển Quản trị (Dashboard)</h2>
+      <h3>📊 Bảng điều khiển Quản trị (Dashboard)</h3>
 
       {/* Tổng quan */}
       <div className="stats-grid">
@@ -160,7 +151,7 @@ const Analytics = () => {
         </div>
 
         {/* 2. Doanh thu theo danh mục */}
-        <div className="category-sales-section panel full-row">
+        {/* <div className="category-sales-section panel full-row">
           <h3>🍱 Thống kê Doanh thu theo Danh mục</h3>
           {categorySales?.length ? (
             <ol className="top-list">
@@ -178,7 +169,7 @@ const Analytics = () => {
           ) : (
             <div className="no-data-msg">Không có dữ liệu danh mục.</div>
           )}
-        </div>
+        </div> */}
 
         {/* 3. Trạng thái đơn hàng */}
         <div className="status-section panel">
@@ -207,7 +198,7 @@ const Analytics = () => {
               topSellingFoods.map((item, index) => (
                 <li key={index}>
                   <span className="rank-num">{index + 1}.</span>
-                  <span className="food-name">{item.foodName}</span>
+                  <span className="food-name">{item.name}</span>
                   <span className="quantity">
                     ({item.totalQuantity} lượt bán)
                   </span>
