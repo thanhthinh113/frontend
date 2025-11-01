@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import "./AdminCombo.css";
+import { StoreContext } from "../../../context/StoreContext";
 
 export const AdminCombo = () => {
   const [combos, setCombos] = useState([]);
@@ -16,7 +17,7 @@ export const AdminCombo = () => {
     image: null,
   });
   const [editingId, setEditingId] = useState(null);
-  const url = "http://localhost:4000";
+  const { url } = useContext(StoreContext);
 
   const formatCurrency = (value) =>
     !value ? "0" : value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -64,7 +65,11 @@ export const AdminCombo = () => {
         updatedItems = [...prev.items, { id: foodId, quantity: 1 }];
       }
 
-      return { ...prev, items: updatedItems, price: updateTotalPrice(updatedItems) };
+      return {
+        ...prev,
+        items: updatedItems,
+        price: updateTotalPrice(updatedItems),
+      };
     });
   };
 
@@ -82,7 +87,11 @@ export const AdminCombo = () => {
         updatedItems = prev.items.filter((i) => i.id !== foodId);
       }
 
-      return { ...prev, items: updatedItems, price: updateTotalPrice(updatedItems) };
+      return {
+        ...prev,
+        items: updatedItems,
+        price: updateTotalPrice(updatedItems),
+      };
     });
   };
 
@@ -148,48 +157,59 @@ export const AdminCombo = () => {
   };
 
   // --- Lọc món ăn theo danh mục ---
-const filteredFoods =
-  selectedCategory === "all"
-    ? foods
-    : foods.filter((f) => {
-        const categoryId =
-          typeof f.categoryId === "object"
-            ? f.categoryId._id
-            : f.categoryId;
-        return categoryId?.toString() === selectedCategory.toString();
-      });
-;
-
-
+  const filteredFoods =
+    selectedCategory === "all"
+      ? foods
+      : foods.filter((f) => {
+          const categoryId =
+            typeof f.categoryId === "object" ? f.categoryId._id : f.categoryId;
+          return categoryId?.toString() === selectedCategory.toString();
+        });
   return (
     <div className="admin-combo">
       <h2 className="title">🎁 Quản lý Combo Ưu Đãi</h2>
 
       <form className="combo-form glassy" onSubmit={handleSubmit}>
         <div className="form-grid">
-          <input
-            type="text"
-            placeholder="Tên combo"
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Giá ưu đãi"
-            value={formatCurrency(formData.discountPrice)}
-            onChange={(e) =>
-              setFormData({ ...formData, discountPrice: e.target.value })
-            }
-          />
-          <input
-            type="text"
-            placeholder="Giá gốc"
-            value={formatCurrency(formData.price)}
-            readOnly
-          />
-        </div>
+          {/* TRƯỜNG 1: Tên combo */}
+          <div className="input-group">
+            <p className="input-label">Tên combo:</p>
+            <input
+              type="text"
+              placeholder="Nhập tên combo (ví dụ: Combo Tiết Kiệm)"
+              value={formData.name}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
+              required
+            />
+          </div>
 
+          {/* TRƯỜNG 2: Giá ưu đãi */}
+          <div className="input-group">
+            <p className="input-label">Giá ưu đãi:</p>
+            <input
+              type="text"
+              placeholder="Nhập giá ưu đãi (ví dụ: 120,000)"
+              value={formatCurrency(formData.discountPrice)}
+              onChange={(e) =>
+                setFormData({ ...formData, discountPrice: e.target.value })
+              }
+            />
+          </div>
+
+          {/* TRƯỜNG 3: Giá gốc */}
+          <div className="input-group">
+            <p className="input-label">Giá gốc (Tự động tính):</p>
+            <input
+              type="text"
+              placeholder="Giá gốc"
+              value={formatCurrency(formData.price)}
+              readOnly
+            />
+          </div>
+        </div>
+        <p className="input-label combo">Mô tả:</p>
         <textarea
           placeholder="Mô tả combo..."
           value={formData.description}
@@ -276,13 +296,13 @@ const filteredFoods =
               </p>
               <div className="btn-group">
                 <button className="edit" onClick={() => handleEdit(combo)}>
-                  ✏️ Sửa
+                  Sửa
                 </button>
                 <button
                   className="delete"
                   onClick={() => handleDelete(combo._id)}
                 >
-                  🗑️ Xóa
+                  Xóa
                 </button>
               </div>
             </div>

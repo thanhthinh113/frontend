@@ -7,6 +7,9 @@ import "./User.css";
 export const User = () => {
   const { url, token } = useContext(StoreContext);
   const [users, setUsers] = useState([]);
+  const formatVNDSimple = (amount) => {
+    return amount.toLocaleString("vi-VN");
+  };
 
   const fetchUsers = async () => {
     try {
@@ -29,7 +32,29 @@ export const User = () => {
       fetchUsers();
     }
   }, [token]);
+  const formatAddress = (address) => {
+    if (
+      !address ||
+      (Object.keys(address).length === 0 && address.constructor === Object)
+    ) {
+      return "Chưa cập nhật";
+    }
 
+    // Lấy các giá trị địa chỉ
+    const { street, district, city } = address;
+
+    // Tạo mảng chỉ chứa các giá trị không rỗng (non-empty strings)
+    const addressParts = [street, district, city].filter(
+      (part) => part && part.trim() !== ""
+    );
+
+    if (addressParts.length === 0) {
+      return "Chưa cập nhật";
+    }
+
+    // Kết hợp các phần bằng dấu phẩy
+    return addressParts.join(", ");
+  };
   return (
     <div className="user-container">
       <h3>Danh sách người dùng</h3>
@@ -38,6 +63,9 @@ export const User = () => {
           <b>STT</b>
           <b>Tên</b>
           <b>Email</b>
+          <b>Số điện thoại</b>
+          <b>Địa chỉ</b>
+          <b>Điểm tích lũy</b>
           <b>Vai trò</b>
           <b>Ngày tạo</b>
         </div>
@@ -46,7 +74,12 @@ export const User = () => {
             <p>{index + 1}</p>
             <p>{u.name}</p>
             <p>{u.email}</p>
+            {/* Sử dụng optional chaining và fallback cho dữ liệu có thể rỗng */}
+            <p>{u.phone || "N/A"}</p>
+            <p>{formatAddress(u.address)}</p>
+            <p>{formatVNDSimple(u.points || 0)}</p>
             <p>{u.role}</p>
+            {/* Định dạng ngày giờ theo chuẩn Việt Nam */}
             <p>{new Date(u.createdAt).toLocaleString("vi-VN")}</p>
           </div>
         ))}
