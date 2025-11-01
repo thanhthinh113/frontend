@@ -103,7 +103,6 @@ const FoodDetail = () => {
   const handleAddToCart = () => {
     if (!food) return;
     addToCart(food, quantity, "food");
-    alert(`${quantity} ${food.name} đã được thêm vào giỏ hàng!`);
     setQuantity(1);
   };
 
