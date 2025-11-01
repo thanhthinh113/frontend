@@ -15,6 +15,9 @@ const ComboDeals = () => {
       combo.items.forEach((foodId) => addToCart(foodId));
     }
   };
+  //   const handleAddCombo = (combo) => {
+  //   addToCart(combo);
+  // };
 
   return (
     <div className="combo-deals">

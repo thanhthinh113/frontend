@@ -23,36 +23,42 @@ const StoreContextProvider = ({ children }) => {
 
   const url = "http://localhost:4000";
 
-  const addToCart = async (itemOrId) => {
+  const addToCart = async (itemOrId, quantity = 1) => {
     const itemId = typeof itemOrId === "object" ? itemOrId._id : itemOrId;
 
+    // 🛒 Cập nhật giỏ hàng trong state
     setCartItems((prev) => ({
       ...prev,
-      [itemId]: prev[itemId] ? prev[itemId] + 1 : 1,
+      [itemId]: prev[itemId] ? prev[itemId] + quantity : quantity,
     }));
 
+    // 🔐 Nếu có token (đăng nhập)
     if (token) {
       try {
         await axios.post(
           `${url}/api/cart/add`,
-          { itemId },
+          { itemId, quantity }, // ✅ gửi kèm quantity
           { headers: { token } }
         );
       } catch (err) {
-        console.error("Error adding to cart", err);
+        console.error("❌ Error adding to cart (user):", err);
       }
-
       return;
     }
 
+    // 👤 Nếu là khách (localStorage)
     try {
       const guestCart = JSON.parse(localStorage.getItem("guestCart") || "{}");
-      guestCart[itemId] = guestCart[itemId] ? guestCart[itemId] + 1 : 1;
+      guestCart[itemId] = guestCart[itemId]
+        ? guestCart[itemId] + quantity
+        : quantity;
+
       localStorage.setItem("guestCart", JSON.stringify(guestCart));
       setCartItems(guestCart);
-      console.log("Added to guest cart (localStorage)", itemId);
+
+      console.log(`Added ${quantity} of ${itemId} to guest cart`);
     } catch (err) {
-      console.error("Error saving guest cart", err);
+      console.error("❌ Error saving guest cart:", err);
     }
   };
 

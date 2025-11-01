@@ -8,9 +8,7 @@ import { FaStar } from "react-icons/fa";
 const FoodDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-
-  // 🧠 Lấy các hàm và biến từ StoreContext (đã cập nhật)
-  const { addToCart, url, user, syncGuestCartToUser } = useContext(StoreContext);
+  const { addToCart, url, user } = useContext(StoreContext);
 
   const [food, setFood] = useState(null);
   const [reviews, setReviews] = useState([]);
@@ -20,24 +18,39 @@ const FoodDetail = () => {
   const [comment, setComment] = useState("");
   const [canReview, setCanReview] = useState(false);
 
+  const [relatedFoods, setRelatedFoods] = useState([]); // 🔥 Thêm
+
   // 📦 Lấy dữ liệu món ăn + đánh giá + kiểm tra quyền review
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [foodRes, reviewRes] = await Promise.all([
+        const [foodRes, reviewRes, allFoodsRes] = await Promise.all([
           axios.get(`${url}/api/food/${id}`),
           axios.get(`${url}/api/reviews/${id}`),
+          axios.get(`${url}/api/food`), // 🔥 Lấy tất cả món ăn
         ]);
 
         setFood(foodRes.data);
         setReviews(reviewRes.data);
 
-        // ✅ Kiểm tra quyền đánh giá (đã mua hay chưa)
+        const allFoods = Array.isArray(allFoodsRes.data)
+          ? allFoodsRes.data
+          : allFoodsRes.data.data || [];
+
+        const filtered = allFoods.filter((f) => f._id !== id);
+        const shuffled = filtered.sort(() => 0.5 - Math.random());
+        setRelatedFoods(shuffled.slice(0, 4));
+
+        // ✅ Kiểm tra quyền đánh giá
         if (user && user._id) {
           const orderRes = await axios.post(
             `${url}/api/order/userorders`,
             {},
-            { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
           );
 
           const orders = Array.isArray(orderRes.data)
@@ -86,7 +99,7 @@ const FoodDetail = () => {
     }
   };
 
-  // 🛒 Thêm vào giỏ hàng — đã cập nhật tương thích với StoreContext mới
+  // 🛒 Thêm vào giỏ hàng
   const handleAddToCart = () => {
     if (!food) return;
     addToCart(food, quantity, "food");
@@ -94,10 +107,11 @@ const FoodDetail = () => {
     setQuantity(1);
   };
 
-  // ⭐ Tính điểm trung bình
   const averageRating =
     reviews.length > 0
-      ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
+      ? (
+          reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+        ).toFixed(1)
       : 0;
 
   if (loading) return <p className="loading">Đang tải dữ liệu...</p>;
@@ -105,10 +119,15 @@ const FoodDetail = () => {
 
   return (
     <div className="food-detail-container">
+      {/* Chi tiết món ăn */}
       <div className="food-card">
         <div className="food-image">
           <img
-            src={food.image?.startsWith("http") ? food.image : `${url}/${food.image}`}
+            src={
+              food.image?.startsWith("http")
+                ? food.image
+                : `${url}/${food.image}`
+            }
             alt={food.name}
           />
         </div>
@@ -122,15 +141,21 @@ const FoodDetail = () => {
                 color={i < Math.round(averageRating) ? "#FFD700" : "#ddd"}
               />
             ))}
-            <span>{averageRating} / 5 ({reviews.length} đánh giá)</span>
+            <span>
+              {averageRating} / 5 ({reviews.length} đánh giá)
+            </span>
           </div>
 
-          <p className="category">Danh mục: {food.categoryId?.name || "Chưa có"}</p>
+          <p className="category">
+            Danh mục: {food.categoryId?.name || "Chưa có"}
+          </p>
           <h3 className="price">{food.price?.toLocaleString("vi-VN")} đ</h3>
           <p className="desc">{food.description}</p>
 
           <div className="quantity-box">
-            <button onClick={() => setQuantity((q) => Math.max(1, q - 1))}>-</button>
+            <button onClick={() => setQuantity((q) => Math.max(1, q - 1))}>
+              -
+            </button>
             <span>{quantity}</span>
             <button onClick={() => setQuantity((q) => q + 1)}>+</button>
           </div>
@@ -141,12 +166,42 @@ const FoodDetail = () => {
         </div>
       </div>
 
+      {/* 🔥 Các món ăn liên quan */}
+      {relatedFoods.length > 0 && (
+        <div className="related-section">
+          <h3>Món ăn liên quan</h3>
+          <div className="related-grid">
+            {relatedFoods.map((item) => (
+              <div
+                key={item._id}
+                className="related-item"
+                onClick={() => navigate(`/food/${item._id}`)}
+              >
+                <img
+                  src={
+                    item.image?.startsWith("http")
+                      ? item.image
+                      : `${url}/${item.image}`
+                  }
+                  alt={item.name}
+                />
+                <h4>{item.name}</h4>
+                <p>{item.price?.toLocaleString("vi-VN")} đ</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Đánh giá */}
       <div className="review-section">
         <h3>Đánh giá & Bình luận</h3>
 
         {!user ? (
           <p className="warning">
-            ⚠️ Vui lòng <span onClick={() => navigate("/login")}>đăng nhập</span> để bình luận.
+            ⚠️ Vui lòng{" "}
+            <span onClick={() => navigate("/login")}>đăng nhập</span> để bình
+            luận.
           </p>
         ) : !canReview ? (
           <p className="warning">

@@ -151,3 +151,15 @@
     margin-top: 20px;
   }
 }
+.combo-item {
+  background-color: #fff9f0;
+}
+
+.combo-badge {
+  background-color: #ff9800;
+  color: white;
+  padding: 2px 6px;
+  font-size: 12px;
+  border-radius: 4px;
+  margin-left: 4px;
+}
