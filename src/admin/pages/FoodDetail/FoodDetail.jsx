@@ -103,7 +103,6 @@ const FoodDetail = () => {
   const handleAddToCart = () => {
     if (!food) return;
     addToCart(food, quantity, "food");
-    alert(`${quantity} ${food.name} đã được thêm vào giỏ hàng!`);
     setQuantity(1);
   };
 
@@ -168,7 +167,7 @@ const FoodDetail = () => {
 
       {/* 🔥 Các món ăn liên quan */}
       {relatedFoods.length > 0 && (
-        <div className="related-section">
+        <div className="review-section">
           <h3>Món ăn liên quan</h3>
           <div className="related-grid">
             {relatedFoods.map((item) => (
@@ -237,15 +236,22 @@ const FoodDetail = () => {
             reviews.map((r) => (
               <div key={r._id} className="review-item">
                 <div className="review-header">
-                  <strong>{r.userName}</strong>
-                  <span>
+                  <div className="user-info">
+                    <div className="user-icon">
+                      {r.userName?.charAt(0).toUpperCase()}
+                    </div>
+                    <strong>{r.userName}</strong>
+                  </div>
+                  <span className="user-rating">
                     {Array.from({ length: r.rating }, (_, i) => (
                       <FaStar key={i} color="#FFD700" />
                     ))}
                   </span>
                 </div>
-                <p>{r.comment}</p>
-                <small>{new Date(r.createdAt).toLocaleString()}</small>
+                <p className="review-comment">{r.comment}</p>
+                <small className="review-date">
+                  {new Date(r.createdAt).toLocaleString()}
+                </small>
               </div>
             ))
           )}
