@@ -1,17 +1,16 @@
-
 import React, { useEffect, useState, useContext } from "react";
 import { StoreContext } from "../../context/StoreContext";
 import "./ExploreMenu.css";
 
 export default function ExploreMenu() {
-  const { setSelectedCategory } = useContext(StoreContext);
+  const { setSelectedCategory, url } = useContext(StoreContext);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch("http://localhost:4000/api/categories");
+        const res = await fetch(`${url}/api/categories`);
         const data = await res.json();
         setCategories(data);
       } catch (error) {

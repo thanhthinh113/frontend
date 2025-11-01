@@ -2,11 +2,11 @@
   position: relative;
   width: 100%;
   max-width: 1200px;
-  height: 400px;
+  height: 480px;
   margin: auto;
   overflow: hidden;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
 
 .slider-track {
@@ -16,6 +16,7 @@
 }
 
 .slide {
+  position: relative;
   min-width: 100%;
   height: 100%;
 }
@@ -24,71 +25,149 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  filter: brightness(75%);
 }
 
-/* Nút mũi tên */
+/* ===== TEXT OVERLAY (bottom left) ===== */
+.slide-text {
+  position: absolute;
+  left: 40px;
+  bottom: 40px;
+  color: #fff;
+  z-index: 2;
+  max-width: 550px;
+  animation: fadeInUp 0.9s ease;
+}
+
+.slide-text h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+}
+
+.slide-text p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #f1f1f1;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* ===== MŨI TÊN (ARROW BUTTONS) BỎ BACKGROUND ===== */
 .arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.7);
+  /* Đặt nền trong suốt */
+  background: transparent; 
   border: none;
-  font-size: 2rem;
+  font-size: 2.2rem; /* Tăng kích thước mũi tên để dễ nhìn hơn */
+  font-weight: bold;
   cursor: pointer;
-  padding: 5px 10px;
+  padding: 10px; 
   border-radius: 50%;
-  transition: background 0.3s;
+  /* Bỏ box-shadow */
+  transition: color 0.3s, transform 0.3s;
+  z-index: 3;
+  /* Màu trắng cho mũi tên để nổi bật trên ảnh */
+  color: rgba(255, 255, 255, 0.9); 
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.7); /* Thêm shadow cho mũi tên */
 }
 
 .arrow:hover {
-  background: rgba(255, 255, 255, 1);
+  /* Màu sáng hơn khi hover */
+  color: #fff; 
+  /* Hiệu ứng scale khi hover */
+  transform: translateY(-50%) scale(1.25); 
+  /* Bỏ box-shadow */
 }
 
+/* Giữ nguyên vị trí */
 .arrow.left {
-  left: 15px;
+  left: 18px;
 }
 
 .arrow.right {
-  right: 15px;
+  right: 18px;
 }
 
-/* Chấm tròn */
+.arrow.right {
+  right: 18px;
+}
+
+/* ===== CHẤM TRÒN ===== */
 .dots {
   position: absolute;
   bottom: 15px;
   width: 100%;
   text-align: center;
+  z-index: 3;
 }
 
 .dot {
   display: inline-block;
   width: 12px;
   height: 12px;
-  margin: 0 5px;
-  background: #ddd;
+  margin: 0 6px;
+  background: #ccc;
   border-radius: 50%;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s, transform 0.3s;
 }
 
 .dot.active {
   background: #ff4d4d;
+  transform: scale(1.2);
 }
 
-/* 📱 Responsive cho mobile */
-@media (max-width: 600px) {
+/* ===== ANIMATION ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
   .slider {
-    height: 220px;
-    border-radius: 8px;
+    height: 320px;
   }
 
-  .arrow {
-    font-size: 1.5rem;
-    padding: 4px 8px;
+  .slide-text {
+    left: 20px;
+    bottom: 25px;
+    max-width: 80%;
   }
 
-  .dot {
-    width: 10px;
-    height: 10px;
+  .slide-text h2 {
+    font-size: 1.3rem;
+  }
+
+  .slide-text p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .slider {
+    height: 230px;
+  }
+
+  .slide-text {
+    left: 15px;
+    bottom: 18px;
+  }
+
+  .slide-text h2 {
+    font-size: 1.1rem;
+  }
+
+  .slide-text p {
+    font-size: 0.8rem;
   }
 }

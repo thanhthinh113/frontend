@@ -1,111 +1,138 @@
+/* ====== KHỐI CHÍNH ====== */
 .explore-menu {
-  padding: 20px 20px 20px 0px;
-  max-width: 1200px; /* Đồng bộ với .slider */
-  margin: 0 auto; /* Căn giữa */
+  padding: 30px 15px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .explore-menu-header {
-  text-align: left;
-  margin: 20px auto 10px;
-  max-width: 1200px;
+  text-align: center;
+  margin-bottom: 25px;
 }
 
 .explore-menu h2 {
-  margin-bottom: 20px;
-  font-size: 1.8rem; /* Tăng kích thước chữ cho nhất quán */
-  color: #333; /* Đồng bộ màu sắc */
+  font-size: 1.9rem;
+  color: #333;
+  font-weight: 700;
+  position: relative;
+  display: inline-block;
 }
 
+/* Gạch chân gradient nhẹ */
+.explore-menu h2::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #ff7e5f, #ff6b81);
+}
+
+/* ====== DANH SÁCH ====== */
 .explore-menu-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;
-  max-width: 1200px; /* Đồng bộ với .slider */
-  margin: 0 auto; /* Căn giữa */
+  gap: 25px;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
+/* ====== MỤC DANH MỤC ====== */
 .explore-menu-item {
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-/* Chỉ áp dụng hiệu ứng hover cho hình tròn */
+/* ẢNH TRÒN */
 .explore-menu-img {
-  width: 100px;
-  height: 100px;
+  width: 105px;
+  height: 105px;
   border-radius: 50%;
-  border: 2px solid #ddd;
-  margin-bottom: 8px;
+  border: 3px solid #fff;
+  background-color: #f8f8f8;
   object-fit: cover;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-/* Hover mượt và không hiện ô vuông */
 .explore-menu-img:hover {
   transform: scale(1.08);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* Các loại hình đặc biệt */
+/* ẢNH ĐẶC BIỆT */
 .explore-menu-img.all {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: tomato;
+  background: linear-gradient(135deg, #ff7e5f, #ff6b81);
   color: #fff;
   font-size: 20px;
-  font-weight: bold;
+  font-weight: 700;
+  border: none;
+  box-shadow: 0 4px 12px rgba(255, 107, 129, 0.4);
 }
 
 .explore-menu-img.placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #ddd;
-  color: #888;
-  font-size: 20px;
-  font-weight: bold;
+  background: #eee;
+  color: #999;
+  font-size: 18px;
+  font-weight: 700;
 }
 
+/* TÊN DANH MỤC */
 .explore-menu-item p {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
-  color: #333;
+  color: #444;
+  margin-top: 8px;
+  transition: color 0.2s ease;
 }
 
-/* 📱 Responsive cho mobile */
-@media (max-width: 600px) {
-  .explore-menu {
-    padding: 10px; /* Giảm padding */
-    max-width: 100%;
-  }
+.explore-menu-item:hover p {
+  color: #ff6b81;
+}
 
-  .explore-menu-header {
-    max-width: 100%;
-    margin: 15px auto 8px;
-  }
-
+/* ====== RESPONSIVE ====== */
+@media (max-width: 768px) {
   .explore-menu h2 {
-    font-size: 1.5rem; /* Giảm kích thước chữ */
+    font-size: 1.6rem;
   }
 
   .explore-menu-list {
-    gap: 15px; /* Giảm khoảng cách */
-    max-width: 100%;
+    gap: 18px;
   }
 
   .explore-menu-img,
-  .explore-menu-img.placeholder,
-  .explore-menu-img.all {
-    width: 80px; /* Giảm kích thước ảnh */
-    height: 80px;
-    font-size: 16px; /* Đồng bộ font-size */
+  .explore-menu-img.all,
+  .explore-menu-img.placeholder {
+    width: 85px;
+    height: 85px;
+    font-size: 16px;
   }
 
   .explore-menu-item p {
-    font-size: 12px; /* Giảm font cho mobile */
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .explore-menu-img {
+    width: 75px;
+    height: 75px;
+  }
+
+  .explore-menu h2::after {
+    width: 40%;
   }
 }
