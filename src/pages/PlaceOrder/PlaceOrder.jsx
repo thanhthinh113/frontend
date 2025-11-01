@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export const PlaceOrder = () => {
-  const { getTotalCartAmount, token, food_list, cartItems, url, user, combos } =
+  const { getTotalCartAmount, token, food_list, cartItems, url, user } =
     useContext(StoreContext);
 
   const [data, setData] = useState({
@@ -21,17 +21,16 @@ export const PlaceOrder = () => {
     phone: "",
   });
 
-  const [selectedVoucher, setSelectedVoucher] = useState("");
+  const [selectedVoucher, setSelectedVoucher] = useState(""); // voucher code được chọn
   const [discountPercent, setDiscountPercent] = useState(0);
-  const navigate = useNavigate();
 
-  // ✅ Xử lý khi người dùng nhập thông tin
   const onChangeHandler = (e) => {
-    const { name, value } = e.target;
-    setData((prev) => ({ ...prev, [name]: value }));
+    const name = e.target.name;
+    const value = e.target.value;
+    setData((data) => ({ ...data, [name]: value }));
   };
 
-  // 🎟️ Khi chọn voucher, tính % giảm
+  // Khi chọn voucher -> cập nhật discount
   useEffect(() => {
     if (!selectedVoucher || !user?.redeemedVouchers) {
       setDiscountPercent(0);
@@ -43,70 +42,38 @@ export const PlaceOrder = () => {
     setDiscountPercent(voucher ? voucher.discountPercent : 0);
   }, [selectedVoucher, user]);
 
-  // 🚫 Nếu chưa đăng nhập hoặc giỏ hàng rỗng thì quay lại
-  useEffect(() => {
-    if (!token) {
-      navigate("/cart");
-      toast.error("Vui lòng đăng nhập để đặt hàng");
-    } else if (getTotalCartAmount() === 0) {
-      navigate("/cart");
-      toast.error("Giỏ hàng của bạn đang trống");
-    }
-  }, [token, getTotalCartAmount, navigate]);
+  const navigate = useNavigate();
 
-  // 💰 Định dạng VND
-  const formatVND = (amount) =>
-    amount.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
-
-  const totalBeforeShipping = getTotalCartAmount();
-  const shippingFee = totalBeforeShipping === 0 ? 0 : 30000;
-  const total = totalBeforeShipping + shippingFee;
-  const discountedTotal =
-    discountPercent > 0
-      ? Math.floor(total * (1 - discountPercent / 100))
-      : total;
-
-  // 🧾 Gửi đơn hàng
   const placeOrder = async (e) => {
     e.preventDefault();
 
-    // ✅ Lấy danh sách sản phẩm từ giỏ hàng (hỗ trợ cả food_ và combo_)
-    const orderItems = [];
-    for (const key in cartItems) {
-      const qty = cartItems[key];
-      if (qty > 0) {
-        const [type, id] = key.split("_");
-        const dataList = type === "combo" ? combos : food_list;
-        const product = dataList.find((p) => p._id === id);
-        if (product) {
-          orderItems.push({
-            foodId: id,
-            name: product.name,
-            price:
-              type === "combo"
-                ? product.discountPrice || product.price
-                : product.price,
-            quantity: qty,
-            type,
-          });
-        }
+    let orderItems = [];
+    food_list.forEach((item) => {
+      if (cartItems[item._id] > 0) {
+        orderItems.push({
+          foodId: item._id,
+          name: item.name,
+          price: item.price,
+          quantity: cartItems[item._id],
+        });
       }
-    }
+    });
 
-    if (orderItems.length === 0) {
-      toast.error("Không có sản phẩm nào trong giỏ hàng");
-      return;
-    }
+    // Tổng tiền tạm tính
+    let totalAmount = getTotalCartAmount() + 30000;
+
+    // // Giảm giá nếu có voucher
+    // if (discountPercent > 0) {
+    //   totalAmount = Math.floor(totalAmount * (1 - discountPercent / 100));
+    // }
 
     const orderData = {
       userId: user?._id,
       address: data,
       items: orderItems,
-      amount: discountedTotal,
-      voucherCode: selectedVoucher || null,
+      amount: totalAmount,
+      voucherCode: selectedVoucher || null, // 🧾 gửi voucher lên backend
     };
-
-    console.log("🧾 Dữ liệu gửi lên server:", orderData);
 
     try {
       const response = await axios.post(`${url}/api/order/place`, orderData, {
@@ -124,10 +91,24 @@ export const PlaceOrder = () => {
     }
   };
 
-  // 🧍 Giao diện hiển thị
+  useEffect(() => {
+    if (!token) {
+      navigate("/cart");
+      toast.error("Vui lòng đăng nhập để đặt hàng");
+    } else if (getTotalCartAmount() === 0) {
+      navigate("/cart");
+      toast.error("Giỏ hàng của bạn đang trống");
+    }
+  }, [token]);
+
+  const formatVND = (amount) => amount.toLocaleString("vi-VN");
+
+  const total = getTotalCartAmount() + 30000;
+  const discountedTotal =
+    discountPercent > 0 ? Math.max(total - discountPercent, 0) : total;
+
   return (
     <form onSubmit={placeOrder} className="place-order">
-      {/* ======== THÔNG TIN GIAO HÀNG ======== */}
       <div className="place-order-left">
         <p className="title">Thông tin giao hàng</p>
         <div className="multi-fields">
@@ -152,7 +133,7 @@ export const PlaceOrder = () => {
           required
           name="email"
           onChange={onChangeHandler}
-          type="email"
+          type="text"
           placeholder="Địa chỉ Email"
           value={data.email}
         />
@@ -209,7 +190,7 @@ export const PlaceOrder = () => {
           value={data.phone}
         />
 
-        {/* 🎟️ Voucher */}
+        {/* 🎟️ Voucher section */}
         {user?.redeemedVouchers?.length > 0 ? (
           <div className="voucher-section">
             <label htmlFor="voucher">Chọn voucher:</label>
@@ -221,7 +202,7 @@ export const PlaceOrder = () => {
               <option value="">Không dùng voucher</option>
               {user.redeemedVouchers.map((v, i) => (
                 <option key={i} value={v.code}>
-                  {v.code} - Giảm {v.discountPercent}%
+                  {v.code} - Giảm {formatVND(v.discountPercent)} VND
                 </option>
               ))}
             </select>
@@ -231,34 +212,33 @@ export const PlaceOrder = () => {
         )}
       </div>
 
-      {/* ======== TỔNG TIỀN ======== */}
       <div className="place-order-right">
         <div className="cart-total">
           <h2>Tổng tiền giỏ hàng</h2>
           <div>
             <div className="cart-total-details">
               <p>Tổng phụ</p>
-              <p>{formatVND(totalBeforeShipping)}</p>
+              <p>{formatVND(getTotalCartAmount())} VND</p>
             </div>
             <hr />
             <div className="cart-total-details">
               <p>Phí giao hàng</p>
-              <p>{formatVND(shippingFee)}</p>
+              <p>{getTotalCartAmount() === 0 ? "0 VND" : "30.000 VND"}</p>
             </div>
 
             {discountPercent > 0 && (
               <>
                 <hr />
                 <div className="cart-total-details discount">
-                  <p>Giảm giá ({discountPercent}%)</p>
-                  <p>-{formatVND(total - discountedTotal)}</p>
+                  <p>Voucher</p>
+                  <p>-{formatVND(total - discountedTotal)} VND</p>
                 </div>
               </>
             )}
             <hr />
             <div className="cart-total-details">
               <b>Tổng cộng</b>
-              <b>{formatVND(discountedTotal)}</b>
+              <b>{formatVND(discountedTotal)} VND</b>
             </div>
           </div>
           <button type="submit">Tiến hành thanh toán</button>
