@@ -105,44 +105,39 @@ export const FoodDisplay = () => {
         <h2>Danh sách món ăn</h2>
       </div>
 
-      {/* 🔍 Thanh tìm kiếm */}
-      <SearchBar
-        className="search-bar"
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-      />
+      {/* 🔎 Bộ tìm kiếm + lọc + sắp xếp */}
+      <div className="control-bar">
+        <SearchBar
+          className="search-bar"
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+        />
 
-      {/* ⚙️ Bộ lọc sắp xếp & giá */}
-      <div className="filter-sort-container">
-        <div className="filter-left">
-          <label>
+        <div className="filter-controls">
+          <div className="filter-item">
             <FaFilter className="filter-icon" />
-            Lọc theo giá:
-          </label>
-          <select
-            value={priceRange}
-            onChange={(e) => setPriceRange(e.target.value)}
-          >
-            <option value="all">Tất cả</option>
-            <option value="0-30000">Dưới 30.000đ</option>
-            <option value="30000-100000">30.000đ - 100.000đ</option>
-            <option value="100000+">Trên 100.000đ</option>
-          </select>
-        </div>
+            <select
+              value={priceRange}
+              onChange={(e) => setPriceRange(e.target.value)}
+            >
+              <option value="all">Tất cả giá</option>
+              <option value="0-30000">Dưới 30k</option>
+              <option value="30000-100000">30k - 100k</option>
+              <option value="100000+">Trên 100k</option>
+            </select>
+          </div>
 
-        <div className="filter-right">
-          <label>
+          <div className="filter-item">
             <FaSortAmountDownAlt className="sort-icon" />
-            Sắp xếp theo:
-          </label>
-          <select
-            value={sortOrder}
-            onChange={(e) => setSortOrder(e.target.value)}
-          >
-            <option value="none">Mặc định</option>
-            <option value="asc">Giá thấp đến cao</option>
-            <option value="desc">Giá cao đến thấp</option>
-          </select>
+            <select
+              value={sortOrder}
+              onChange={(e) => setSortOrder(e.target.value)}
+            >
+              <option value="none">Mặc định</option>
+              <option value="asc">Giá ↑</option>
+              <option value="desc">Giá ↓</option>
+            </select>
+          </div>
         </div>
       </div>
 
