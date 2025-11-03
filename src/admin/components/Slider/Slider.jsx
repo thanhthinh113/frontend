@@ -13,7 +13,7 @@ const slides = [
     desc: "Dù bạn ở đâu, các món ăn luôn được giao tận tay với hương vị nguyên vẹn, nóng hổi, giúp bạn tận hưởng bữa ăn trọn vẹn ngay tại nhà.",
   },
   {
-    image: "/images/slider2.jpg",
+    image: "/images/slider7.jpg",
     title: "Tinh hoa ẩm thực Việt",
     desc: "Mỗi món ăn là sự kết hợp tinh tế giữa truyền thống và hiện đại, mang đậm bản sắc Việt trong từng hương vị và cách trình bày.",
   },

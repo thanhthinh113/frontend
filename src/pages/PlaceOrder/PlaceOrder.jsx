@@ -55,6 +55,9 @@ export const PlaceOrder = () => {
           name: item.name,
           price: item.price,
           quantity: cartItems[item._id],
+          image: item.image,
+          description: item.description,
+          categoryId: item.categoryId,
         });
       }
     });

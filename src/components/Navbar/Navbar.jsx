@@ -22,77 +22,79 @@ export const Navbar = ({ setShowLogin }) => {
   };
 
   return (
-    <div className="navbar">
-      <Link to={"/"}>
-        <img src={assets.logo} alt="Logo" className="logo" />
-      </Link>
-
-      <ul className="navbar-menu">
-        <Link
-          to="/"
-          onClick={() => setMenu("home")}
-          className={menu === "home" ? "active" : ""}
-        >
-          home
+    <div className="navbar-container">
+      <div className="navbar">
+        <Link to={"/"}>
+          <img src={assets.logo} alt="Logo" className="logo" />
         </Link>
-        <a
-          href="#explore-menu"
-          onClick={() => setMenu("menu")}
-          className={menu === "menu" ? "active" : ""}
-        >
-          menu
-        </a>
-        <a
-          href="#app-download"
-          onClick={() => setMenu("policy")}
-          className={menu === "policy" ? "active" : ""}
-        >
-          policy
-        </a>
-        <a
-          href="#footer"
-          onClick={() => setMenu("contact-us")}
-          className={menu === "contact-us" ? "active" : ""}
-        >
-          contact us
-        </a>
-      </ul>
 
-      <div className="navbar-right">
-        <img src={assets.search_icon} alt="Search icon" />
-        <div className="navbar-search-icon" style={{ position: "relative" }}>
-          <Link to={"/cart"}>
-            <img src={assets.basket_icon} alt="Basket icon" />
-            {/* 🧮 Hiển thị số lượng sản phẩm trong giỏ */}
-            {getCartItemCount() > 0 && (
-              <span className="cart-count">{getCartItemCount()}</span>
-            )}
+        <ul className="navbar-menu">
+          <Link
+            to="/"
+            onClick={() => setMenu("home")}
+            className={menu === "home" ? "active" : ""}
+          >
+            home
           </Link>
-        </div>
+          <a
+            href="#explore-menu"
+            onClick={() => setMenu("menu")}
+            className={menu === "menu" ? "active" : ""}
+          >
+            menu
+          </a>
+          <a
+            href="#app-download"
+            onClick={() => setMenu("policy")}
+            className={menu === "policy" ? "active" : ""}
+          >
+            policy
+          </a>
+          <a
+            href="#footer"
+            onClick={() => setMenu("contact-us")}
+            className={menu === "contact-us" ? "active" : ""}
+          >
+            contact us
+          </a>
+        </ul>
 
-        {!token ? (
-          <button onClick={handleSignInClick}>sign in</button>
-        ) : (
-          <div className="navbar-profile">
-            <img src={assets.profile_icon} alt="Profile icon" />
-            <span className="profile-name">{user?.name}</span>
-            <ul className="navbar-profile-dropdown">
-              <li onClick={() => navigate("/profile")}>
-                <FaUserCircle size={30} color="tomato" />
-                <p>Profile</p>
-              </li>
-              <li onClick={() => navigate("/myorders")}>
-                <img src={assets.bag_icon} alt="Bag icon" />
-                <p>Orders</p>
-              </li>
-              <hr />
-              <li onClick={logoutUser}>
-                <img src={assets.logout_icon} alt="Logout icon" />
-                <p>Logout</p>
-              </li>
-            </ul>
+        <div className="navbar-right">
+          <img src={assets.search_icon} alt="Search icon" />
+          <div className="navbar-search-icon" style={{ position: "relative" }}>
+            <Link to={"/cart"}>
+              <img src={assets.basket_icon} alt="Basket icon" />
+              {/* 🧮 Hiển thị số lượng sản phẩm trong giỏ */}
+              {getCartItemCount() > 0 && (
+                <span className="cart-count">{getCartItemCount()}</span>
+              )}
+            </Link>
           </div>
-        )}
+
+          {!token ? (
+            <button onClick={handleSignInClick}>sign in</button>
+          ) : (
+            <div className="navbar-profile">
+              <img src={assets.profile_icon} alt="Profile icon" />
+              <span className="profile-name">{user?.name}</span>
+              <ul className="navbar-profile-dropdown">
+                <li onClick={() => navigate("/profile")}>
+                  <FaUserCircle size={30} color="tomato" />
+                  <p>Profile</p>
+                </li>
+                <li onClick={() => navigate("/myorders")}>
+                  <img src={assets.bag_icon} alt="Bag icon" />
+                  <p>Orders</p>
+                </li>
+                <hr />
+                <li onClick={logoutUser}>
+                  <img src={assets.logout_icon} alt="Logout icon" />
+                  <p>Logout</p>
+                </li>
+              </ul>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

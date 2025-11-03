@@ -10,6 +10,17 @@
 body {
   min-height: 100vh;
 }
+/* ✅ thêm */
+html, body, #root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ✅ thêm */
+main {
+  flex: 1;
+}
 
 a{
   text-decoration: none;

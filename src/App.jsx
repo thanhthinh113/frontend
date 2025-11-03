@@ -37,7 +37,9 @@ import Analytics from "./admin/pages/Analytics/Analytics";
 const UserLayout = ({ setShowLogin }) => (
   <>
     <Navbar setShowLogin={setShowLogin} />
-    <Outlet />
+    <main>
+      <Outlet />
+    </main>
     <Footer />
   </>
 );
