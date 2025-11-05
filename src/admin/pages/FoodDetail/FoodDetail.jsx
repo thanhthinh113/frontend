@@ -8,7 +8,7 @@ import { FaStar } from "react-icons/fa";
 const FoodDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addToCart, url, user } = useContext(StoreContext);
+  const { addToCart, url, user, url_AI } = useContext(StoreContext);
 
   const [food, setFood] = useState(null);
   const [reviews, setReviews] = useState([]);
@@ -24,22 +24,20 @@ const FoodDetail = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [foodRes, reviewRes, allFoodsRes] = await Promise.all([
+        const [foodRes, reviewRes, recommendRes] = await Promise.all([
           axios.get(`${url}/api/food/${id}`),
           axios.get(`${url}/api/reviews/${id}`),
-          axios.get(`${url}/api/food`), // 🔥 Lấy tất cả món ăn
+          axios.get(`${url_AI}/recommend/${id}`),
         ]);
 
         setFood(foodRes.data);
         setReviews(reviewRes.data);
 
-        const allFoods = Array.isArray(allFoodsRes.data)
-          ? allFoodsRes.data
-          : allFoodsRes.data.data || [];
-
-        const filtered = allFoods.filter((f) => f._id !== id);
-        const shuffled = filtered.sort(() => 0.5 - Math.random());
-        setRelatedFoods(shuffled.slice(0, 4));
+        // 🧠 Gán danh sách món tương tự do Flask trả về
+        const recommended = Array.isArray(recommendRes.data)
+          ? recommendRes.data
+          : [];
+        setRelatedFoods(recommended);
 
         // ✅ Kiểm tra quyền đánh giá
         if (user && user._id) {
@@ -174,7 +172,7 @@ const FoodDetail = () => {
               <div
                 key={item._id}
                 className="related-item"
-                onClick={() => navigate(`/food/${item._id}`)}
+                onClick={() => navigate(`/food/${item.id}`)}
               >
                 <img
                   src={

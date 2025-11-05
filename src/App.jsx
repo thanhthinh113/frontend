@@ -33,6 +33,7 @@ import { Voucher } from "./admin/pages/Voucher/Voucher";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import { ChangePassword } from "./components/ChangePassword/ChangePassword";
 import Analytics from "./admin/pages/Analytics/Analytics";
+import ChatBot from "./components/Chatbot/ChatBot";
 
 const UserLayout = ({ setShowLogin }) => (
   <>
@@ -52,6 +53,7 @@ export const App = () => {
       <ToastContainer autoClose={3000} transition={Slide} />
       {showLogin && <LoginPopup setShowLogin={setShowLogin} />}
       <ScrollToTop />
+      <ChatBot />
       <Routes>
         {/* USER LAYOUT */}
         <Route path="/" element={<UserLayout setShowLogin={setShowLogin} />}>

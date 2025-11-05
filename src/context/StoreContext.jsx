@@ -22,6 +22,7 @@ const StoreContextProvider = ({ children }) => {
   const [selectedCategory, setSelectedCategory] = useState("all");
 
   const url = "http://localhost:4000";
+  const url_AI = "https://food-del-ai.onrender.com";
 
   const addToCart = async (itemOrId, quantity = 1) => {
     const itemId = typeof itemOrId === "object" ? itemOrId._id : itemOrId;
@@ -224,6 +225,7 @@ const StoreContextProvider = ({ children }) => {
     searchTerm,
     setSearchTerm,
     refreshUser,
+    url_AI,
   };
 
   return (
