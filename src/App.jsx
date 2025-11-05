@@ -36,6 +36,7 @@ import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import { ChangePassword } from "./components/ChangePassword/ChangePassword";
 import Analytics from "./admin/pages/Analytics/Analytics";
 import ChatBot from "./components/Chatbot/ChatBot";
+import { MenuPage } from "./pages/MenuPage/MenuPage";
 
 const UserLayout = ({ setShowLogin }) => (
   <>
@@ -62,6 +63,7 @@ export const App = () => {
           <Route index element={<Home />} />
           <Route path="policy" element={<PolicyPage />} />
           <Route path="contact" element={<ContactPage />} />
+          <Route path="menu" element={<MenuPage />} />
           <Route path="cart" element={<Cart />} />
           <Route path="order" element={<PlaceOrder />} />
           <Route path="verify" element={<Verify />} />

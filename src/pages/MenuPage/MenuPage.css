@@ -1,0 +1,180 @@
+.menu-page {
+    max-width: 1200px;
+    margin: 40px auto 60px;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    margin-top: 80px; /* Để tránh Navbar */
+    font-family: 'Arial', sans-serif;
+}
+
+/* --- Menu Header/Banner --- */
+.menu-header {
+    background: url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?fit=crop&w=1200&q=80');
+    background-size: cover;
+    background-position: center;
+    border-radius: 12px;
+    padding: 60px 40px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.menu-header-content {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.menu-page-title {
+    font-size: 3rem;
+    color: white;
+    text-align: center;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    font-weight: 700;
+}
+
+.menu-page-subtitle {
+    font-size: 1.2rem;
+    color: #f0f0f0;
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 30px;
+}
+
+.menu-cta-button {
+    background-color: #e74c3c;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    display: inline-block;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.menu-cta-button:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+}
+
+/* --- Các Section chính --- */
+.menu-section-explore h2,
+.menu-section-display .display-title {
+    font-size: 2rem;
+    color: #333;
+    text-align: center;
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.menu-section-explore h2::after,
+.menu-section-display .display-title::after {
+    content: '';
+    position: absolute;
+    width: 60px;
+    height: 3px;
+    background-color: #e74c3c;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 2px;
+}
+
+/* --- Vùng Cam kết --- */
+.menu-commitment {
+    background-color: #fff8f8;
+    border: 1px solid #ffebeb;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.menu-commitment h3 {
+    color: #e74c3c;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.menu-commitment p {
+    color: #555;
+    font-style: italic;
+    line-height: 1.6;
+}
+
+.loading-message {
+    text-align: center;
+    color: #999;
+    font-size: 1.2rem;
+    padding: 50px 0;
+}
+
+/* ------------------------------------ */
+/* RESPONSIVE STYLES (Đồng bộ với Navbar) */
+/* ------------------------------------ */
+
+/* Màn hình Tablet (Max 900px, đồng bộ với Navbar ẩn menu) */
+@media (max-width: 900px) {
+    .menu-page {
+        gap: 30px;
+        margin-top: 70px; /* Điều chỉnh lại vì Navbar padding nhỏ hơn */
+    }
+    .menu-header {
+        padding: 40px 30px;
+    }
+    .menu-page-title {
+        font-size: 2.5rem; /* Giảm cỡ tiêu đề chính */
+    }
+    .menu-page-subtitle {
+        font-size: 1.1rem;
+    }
+    .menu-cta-button {
+        padding: 10px 25px;
+        font-size: 1rem;
+    }
+    .menu-section-explore h2,
+    .menu-section-display .display-title {
+        font-size: 1.8rem;
+    }
+}
+
+
+/* Màn hình Mobile (Max 480px) */
+@media (max-width: 480px) {
+    .menu-page {
+        padding: 0 10px;
+        gap: 20px;
+    }
+    .menu-header {
+        padding: 30px 15px;
+    }
+    .menu-header-content {
+        padding: 10px;
+    }
+    .menu-page-title {
+        font-size: 2rem; /* Giảm cỡ chữ đáng kể cho mobile */
+        margin-bottom: 10px;
+    }
+    .menu-page-subtitle {
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+    }
+    .menu-cta-button {
+        padding: 8px 20px;
+        font-size: 0.9rem;
+    }
+    .menu-section-explore h2,
+    .menu-section-display .display-title {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+    .menu-commitment {
+        padding: 20px 15px;
+    }
+    .menu-commitment h3 {
+        font-size: 1.5rem;
+    }
+}
