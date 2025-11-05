@@ -86,8 +86,8 @@ export const Orders = () => {
                     </strong>
                   </p>
                   <p className="order-customer-address">
-                    {order.address.street}, {order.address.city},{" "}
-                    {order.address.country}
+                    {order.address.street}, {order.address.district},{" "}
+                    {order.address.city}
                   </p>
                   <p className="order-customer-phone">{order.address.phone}</p>
                 </div>

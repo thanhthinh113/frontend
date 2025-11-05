@@ -15,9 +15,7 @@ export const PlaceOrder = () => {
     email: "",
     street: "",
     city: "",
-    state: "",
-    zipCode: "",
-    country: "",
+    district: "",
     phone: "",
   });
 
@@ -120,7 +118,7 @@ export const PlaceOrder = () => {
             name="firstName"
             onChange={onChangeHandler}
             type="text"
-            placeholder="Tên"
+            placeholder="Họ"
             value={data.firstName}
           />
           <input
@@ -128,7 +126,7 @@ export const PlaceOrder = () => {
             name="lastName"
             onChange={onChangeHandler}
             type="text"
-            placeholder="Họ"
+            placeholder="Tên"
             value={data.lastName}
           />
         </div>
@@ -151,37 +149,19 @@ export const PlaceOrder = () => {
         <div className="multi-fields">
           <input
             required
+            name="district"
+            onChange={onChangeHandler}
+            type="text"
+            placeholder="Quận/Huyện"
+            value={data.district}
+          />
+          <input
+            required
             name="city"
             onChange={onChangeHandler}
             type="text"
             placeholder="Thành phố"
             value={data.city}
-          />
-          <input
-            required
-            name="state"
-            onChange={onChangeHandler}
-            type="text"
-            placeholder="Quận/Huyện"
-            value={data.state}
-          />
-        </div>
-        <div className="multi-fields">
-          <input
-            required
-            name="zipCode"
-            onChange={onChangeHandler}
-            type="text"
-            placeholder="Mã bưu chính"
-            value={data.zipCode}
-          />
-          <input
-            required
-            name="country"
-            onChange={onChangeHandler}
-            type="text"
-            placeholder="Quốc gia"
-            value={data.country}
           />
         </div>
         <input
