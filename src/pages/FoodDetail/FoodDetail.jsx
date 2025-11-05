@@ -2,8 +2,8 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./FoodDetail.css";
-import { StoreContext } from "../../../context/StoreContext";
 import { FaStar } from "react-icons/fa";
+import { StoreContext } from "../../context/StoreContext";
 
 const FoodDetail = () => {
   const { id } = useParams();

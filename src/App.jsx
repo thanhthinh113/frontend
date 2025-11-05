@@ -14,7 +14,7 @@ import { PolicyPage } from "./pages/PolicyPage/PolicyPage";
 import { ContactPage } from "./pages/ContactPage/ContactPage";
 import { MyOrders } from "./pages/MyOrders/MyOrders";
 import { VoucherUser } from "./pages/VoucherUser/VoucherUser";
-import { Profile } from "./components/Profile/Profile";
+import { Profile } from "./pages/Profile/Profile";
 
 import CheckAdmin from "./CheckAdmin/CheckAdmin";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
@@ -30,13 +30,13 @@ import { Categories } from "./admin/pages/Categories/Categories";
 import { AdminCombo } from "./admin/pages/Combo/AdminCombo";
 
 // User FoodDetail
-import FoodDetail from "./admin/pages/FoodDetail/FoodDetail";
 import { Voucher } from "./admin/pages/Voucher/Voucher";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
-import { ChangePassword } from "./components/ChangePassword/ChangePassword";
+import { ChangePassword } from "./pages/ChangePassword/ChangePassword";
 import Analytics from "./admin/pages/Analytics/Analytics";
 import ChatBot from "./components/Chatbot/ChatBot";
 import { MenuPage } from "./pages/MenuPage/MenuPage";
+import FoodDetail from "./pages/FoodDetail/FoodDetail";
 
 const UserLayout = ({ setShowLogin }) => (
   <>
