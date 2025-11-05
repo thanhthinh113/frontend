@@ -38,6 +38,7 @@
 .navbar-menu a {
   text-decoration: none;
   transition: color 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
 }
 
 .navbar-menu a:hover {
@@ -172,6 +173,18 @@ hr {
   justify-content: center;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
+.mobile-menu-icon {
+  display: none; /* Mặc định ẩn trên desktop */
+  cursor: pointer;
+  color: #49557e;
+  order: 3; /* Đảm bảo nó nằm bên phải */
+  font-size: 24px;
+  transition: transform 0.2s ease;
+}
+
+.mobile-menu-icon:hover {
+  color: tomato;
+}
 /* Hiệu ứng chuyển động */
 @keyframes fadeIn {
   from {
@@ -208,11 +221,46 @@ hr {
   .navbar .logo {
     width: 100px;
   }
-  .navbar-menu {
-    display: none;
+
+  .navbar {
+    padding: 15px 0;
   }
+
+  /* 💡 HIỂN THỊ ICON VÀ ẨN THANH MENU DƯỚI DẠNG DESKTOP */
+  .mobile-menu-icon {
+    display: block; /* Hiển thị icon trên mobile */
+  }
+  
+  /* Ẩn navbar-menu trên mobile và định vị lại */
+  .navbar-menu {
+    position: fixed;
+    top: 0; 
+    right: -250px; /* Ẩn ra khỏi màn hình */
+    height: 100vh;
+    width: 250px;
+    background-color: #fff;
+    flex-direction: column;
+    padding-top: 80px;
+    box-shadow: -4px 0 10px rgba(0, 0, 0, 0.1);
+    transition: right 0.3s ease-in-out;
+    z-index: 998; 
+    gap: 20px;
+    align-items: flex-start;
+    padding-left: 20px;
+    /* Loại bỏ hiệu ứng gạch chân cho link menu trên mobile */
+  }
+  
+  /* 💡 STYLE KHI MENU ĐƯỢC MỞ */
+  .navbar-menu.open {
+    right: 0; /* Hiện menu */
+  }
+
   .navbar-right {
-    gap: 15px;
+    gap: 15px; /* Giảm gap */
+  }
+
+  .mobile-menu-icon {
+    display: block; /* 💡 HIỂN THỊ ICON MOBILE */
   }
   .navbar button {
     font-size: 14px;
@@ -221,6 +269,7 @@ hr {
   .navbar-profile-dropdown {
     padding: 10px 20px;
   }
+  
 }
 
 

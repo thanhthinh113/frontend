@@ -10,6 +10,8 @@ import { Home } from "./pages/Home/Home";
 import { Cart } from "./pages/Cart/Cart";
 import { PlaceOrder } from "./pages/PlaceOrder/PlaceOrder";
 import { Verify } from "./pages/Verify/Verify";
+import { PolicyPage } from "./pages/PolicyPage/PolicyPage";
+import { ContactPage } from "./pages/ContactPage/ContactPage";
 import { MyOrders } from "./pages/MyOrders/MyOrders";
 import { VoucherUser } from "./pages/VoucherUser/VoucherUser";
 import { Profile } from "./components/Profile/Profile";
@@ -58,6 +60,8 @@ export const App = () => {
         {/* USER LAYOUT */}
         <Route path="/" element={<UserLayout setShowLogin={setShowLogin} />}>
           <Route index element={<Home />} />
+          <Route path="policy" element={<PolicyPage />} />
+          <Route path="contact" element={<ContactPage />} />
           <Route path="cart" element={<Cart />} />
           <Route path="order" element={<PlaceOrder />} />
           <Route path="verify" element={<Verify />} />

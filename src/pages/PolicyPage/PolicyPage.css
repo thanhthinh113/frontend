@@ -1,0 +1,119 @@
+
+.policyContainer {
+    font-family: 'Arial', sans-serif;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    line-height: 1.6;
+    color: #333;
+    margin-top: 70px;
+}
+
+.policyTitle {
+    font-size: 2.5em;
+    color: #e74c3c; 
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #e74c3c;
+    padding-bottom: 15px;
+}
+
+.policySection {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #fdfdfd;
+    border-left: 5px solid #e74c3c;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.sectionTitle {
+    font-size: 1.8em;
+    color: #2c3e50; 
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.subSectionTitle {
+    font-size: 1.3em;
+    color: #34495e; 
+    margin-top: 20px;
+    margin-bottom: 10px;
+    border-bottom: 1px dashed #ccc;
+    padding-bottom: 5px;
+}
+
+.sectionText {
+    font-size: 1em;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.policyList {
+    list-style-type: disc;
+    margin-left: 25px;
+    margin-bottom: 15px;
+    color: #555;
+}
+
+.policyList li {
+    margin-bottom: 8px;
+}
+
+.contactLink {
+    color: #e74c3c;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.contactLink:hover {
+    text-decoration: underline;
+}
+
+.lastUpdated {
+    text-align: right;
+    font-size: 0.9em;
+    color: #777;
+    margin-top: 40px;
+    font-style: italic;
+}
+
+@media (max-width: 768px) {
+    .policyContainer {
+        margin: 20px;
+        padding: 20px;
+        margin-top: 70px;
+    }
+    .policyTitle {
+        font-size: 2em;
+    }
+    .sectionTitle {
+        font-size: 1.5em;
+    }
+    .subSectionTitle {
+        font-size: 1.2em;
+    }
+}
+
+@media (max-width: 480px) {
+    .policyContainer {
+        margin: 10px;
+        padding: 15px;
+        margin-top: 70px;
+    }
+    .policyTitle {
+        font-size: 1.8em;
+    }
+    .sectionTitle {
+        font-size: 1.3em;
+    }
+    .subSectionTitle {
+        font-size: 1.1em;
+    }
+    .policyList {
+        margin-left: 15px;
+    }
+}

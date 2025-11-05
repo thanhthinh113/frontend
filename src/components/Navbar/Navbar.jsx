@@ -1,24 +1,35 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState } from "react"; // 💡 THÊM useState
 import "./Navbar.css";
 import { assets } from "../../assets/assets";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { StoreContext } from "../../context/StoreContext";
-import { FaUserCircle } from "react-icons/fa";
+import { FaUserCircle, FaBars, FaTimes } from "react-icons/fa";
 
 export const Navbar = ({ setShowLogin }) => {
-  const [menu, setMenu] = useState("home");
   const { token, user, logoutUser, cartItems } = useContext(StoreContext);
   const navigate = useNavigate();
+  const location = useLocation();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // 👉 Đếm tổng số lượng sản phẩm trong giỏ
   const getCartItemCount = () => {
     return Object.values(cartItems).reduce((sum, qty) => sum + qty, 0);
   };
 
-  // 👉 Hàm mở form đăng nhập và tự cuộn lên đầu
   const handleSignInClick = () => {
     setShowLogin(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleLinkClick = (path) => {
+    navigate(path);
+    setIsMenuOpen(false);
+  };
+
+  const isActive = (path) => {
+    if (path === "/") {
+      return location.pathname === "/";
+    }
+    return location.pathname.startsWith(path);
   };
 
   return (
@@ -28,32 +39,32 @@ export const Navbar = ({ setShowLogin }) => {
           <img src={assets.logo} alt="Logo" className="logo" />
         </Link>
 
-        <ul className="navbar-menu">
+        <ul className={`navbar-menu ${isMenuOpen ? "open" : ""}`}>
           <Link
             to="/"
-            onClick={() => setMenu("home")}
-            className={menu === "home" ? "active" : ""}
+            className={isActive("/") ? "active" : ""}
+            onClick={() => setIsMenuOpen(false)}
           >
             home
           </Link>
+
           <a
-            href="#explore-menu"
-            onClick={() => setMenu("menu")}
-            className={menu === "menu" ? "active" : ""}
+            onClick={() => handleLinkClick("/menu")}
+            className={isActive("/menu") ? "active" : ""}
           >
             menu
           </a>
+
           <a
-            href="#app-download"
-            onClick={() => setMenu("policy")}
-            className={menu === "policy" ? "active" : ""}
+            onClick={() => handleLinkClick("/policy")}
+            className={isActive("/policy") ? "active" : ""}
           >
             policy
           </a>
+
           <a
-            href="#footer"
-            onClick={() => setMenu("contact-us")}
-            className={menu === "contact-us" ? "active" : ""}
+            onClick={() => handleLinkClick("/contact")}
+            className={isActive("/contact") ? "active" : ""}
           >
             contact us
           </a>
@@ -64,11 +75,17 @@ export const Navbar = ({ setShowLogin }) => {
           <div className="navbar-search-icon" style={{ position: "relative" }}>
             <Link to={"/cart"}>
               <img src={assets.basket_icon} alt="Basket icon" />
-              {/* 🧮 Hiển thị số lượng sản phẩm trong giỏ */}
               {getCartItemCount() > 0 && (
                 <span className="cart-count">{getCartItemCount()}</span>
               )}
             </Link>
+          </div>
+
+          <div
+            className="mobile-menu-icon"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
           </div>
 
           {!token ? (
