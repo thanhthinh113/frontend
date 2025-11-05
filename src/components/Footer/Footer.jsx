@@ -31,21 +31,21 @@ export const Footer = () => {
               <a href="/">Home</a>
             </li>
             <li>
-              <a href="/about">About us</a>
+              <a href="/about">About</a>
             </li>
             <li>
-              <a href="/delivery">Delivery</a>
+              <a href="/contact">Contact us</a>
             </li>
             <li>
-              <a href="/privacy">Privacy policy</a>
+              <a href="/policy">Privacy policy</a>
             </li>
           </ul>
         </div>
         <div className="footer-content-right">
           <h2>GET IN TOUCH</h2>
           <ul>
-            <li>Email: info@example.com</li>
-            <li>Phone: +123456789</li>
+            <li>Email: support@tomato.com</li>
+            <li>Phone: 1900 1234</li>
           </ul>
         </div>
       </div>

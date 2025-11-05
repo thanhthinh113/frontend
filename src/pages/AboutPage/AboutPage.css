@@ -1,0 +1,144 @@
+.about-page {
+    max-width: 1200px;
+    margin: 40px auto 80px;
+    padding: 0 20px;
+    font-family: Arial, sans-serif;
+    margin-top: 70px; /* Tránh Navbar */
+}
+
+/* --- Header/Banner --- */
+.about-header {
+    text-align: center;
+    padding: 40px 0;
+    margin-bottom: 30px;
+}
+
+.about-title {
+    font-size: 3rem;
+    color: #e74c3c; /* Màu đỏ cà chua */
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.about-subtitle {
+    font-size: 1.2rem;
+    color: #555;
+    max-width: 800px;
+    margin: 0 auto 30px;
+}
+
+.header-image-desktop {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Các Section chung --- */
+.about-section {
+    padding: 30px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.about-section h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 25px;
+    text-align: center;
+    position: relative;
+}
+
+.about-section h2::after {
+    content: '';
+    position: absolute;
+    width: 80px;
+    height: 4px;
+    background-color: #e74c3c;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 2px;
+}
+
+.about-section p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #666;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: justify;
+}
+
+/* --- Giá trị Cốt lõi (Values Grid) --- */
+.values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+    text-align: center;
+}
+
+.value-item {
+    padding: 20px;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+}
+
+.value-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.value-item h3 {
+    font-size: 1.2rem;
+    color: #333;
+    margin: 15px 0 10px;
+    font-weight: 600;
+}
+
+/* --- Cam kết và CTA --- */
+.commitment-section {
+    text-align: center;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.cta-button-about {
+    background-color: #e74c3c;
+    color: white;
+    padding: 15px 40px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 25px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cta-button-about:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .about-title {
+        font-size: 2.5rem;
+    }
+    .about-subtitle {
+        font-size: 1rem;
+    }
+    .about-section h2 {
+        font-size: 1.7rem;
+    }
+    .values-grid {
+        grid-template-columns: 1fr;
+    }
+}

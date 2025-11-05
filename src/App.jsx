@@ -37,6 +37,7 @@ import Analytics from "./admin/pages/Analytics/Analytics";
 import ChatBot from "./components/Chatbot/ChatBot";
 import { MenuPage } from "./pages/MenuPage/MenuPage";
 import FoodDetail from "./pages/FoodDetail/FoodDetail";
+import { AboutPage } from "./pages/AboutPage/AboutPage";
 
 const UserLayout = ({ setShowLogin }) => (
   <>
@@ -64,6 +65,7 @@ export const App = () => {
           <Route path="policy" element={<PolicyPage />} />
           <Route path="contact" element={<ContactPage />} />
           <Route path="menu" element={<MenuPage />} />
+          <Route path="about" element={<AboutPage />} />
           <Route path="cart" element={<Cart />} />
           <Route path="order" element={<PlaceOrder />} />
           <Route path="verify" element={<Verify />} />
