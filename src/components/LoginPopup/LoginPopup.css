@@ -82,3 +82,9 @@ display: grid;
   font-weight: bold;
   font-size: 18px;
 }
+.login-popup-inputs input[type="text"] {
+  text-align: center;
+  letter-spacing: 3px;
+  font-weight: bold;
+  font-size: 18px;
+}
