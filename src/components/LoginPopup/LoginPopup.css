@@ -76,3 +76,9 @@ display: grid;
   cursor: pointer;
   color: #555;
 }
+.login-popup-inputs input[type="text"] {
+  text-align: center;
+  letter-spacing: 4px;
+  font-weight: bold;
+  font-size: 18px;
+}

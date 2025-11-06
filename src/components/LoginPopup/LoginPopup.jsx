@@ -9,24 +9,19 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export const LoginPopup = ({ setShowLogin }) => {
   const { url, loginUser } = useContext(StoreContext);
-  const [currState, setCurrState] = useState("Login"); // login || signup
-  const navigate = useNavigate();
-
-  const [data, setData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-
+  const [currState, setCurrState] = useState("Login"); // "Login" | "Sign Up" | "Verify"
+  const [data, setData] = useState({ name: "", email: "", password: "" });
+  const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false); // trạng thái con mắt
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const onLogin = async (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     if (
@@ -40,39 +35,59 @@ export const LoginPopup = ({ setShowLogin }) => {
 
     try {
       setLoading(true);
-      let newUrl =
-        url +
-        (currState === "Login" ? "/api/user/login" : "/api/user/register");
+      const endpoint =
+        currState === "Login" ? "/api/user/login" : "/api/user/register";
+      const response = await axios.post(url + endpoint, data);
 
-      const response = await axios.post(newUrl, data);
-
-      if (response.data.success && response.data.user) {
-        // Chỉ khi thành công và có user mới xử lý
-        toast.success(
-          currState === "Login"
-            ? "Đăng nhập thành công!"
-            : "Đăng ký tài khoản thành công!"
-        );
-
-        loginUser({
-          token: response.data.token,
-          user: response.data.user,
-        });
-
-        localStorage.setItem("role", response.data.user.role);
-
-        if (response.data.user.role === "admin") {
-          navigate("/admin/analytics");
+      if (currState === "Login") {
+        if (response.data.success && response.data.user) {
+          toast.success("Đăng nhập thành công!");
+          loginUser({
+            token: response.data.token,
+            user: response.data.user,
+          });
+          localStorage.setItem("role", response.data.user.role);
+          if (response.data.user.role === "admin") navigate("/admin/analytics");
+          setShowLogin(false);
+        } else {
+          toast.error(response.data.message || "Sai thông tin đăng nhập");
         }
-
-        setShowLogin(false);
-        // window.location.reload(); // không nên reload ngay, để toast hiển thị
-      } else {
-        toast.error(response.data.message || "Có lỗi xảy ra");
+      } else if (currState === "Sign Up") {
+        if (response.data.success) {
+          toast.info("Vui lòng kiểm tra email để lấy mã OTP");
+          setCurrState("Verify"); // chuyển qua màn hình nhập OTP
+        } else {
+          toast.error(response.data.message || "Đăng ký thất bại");
+        }
       }
-    } catch (error) {
-      console.error(error);
-      toast.error("Đã xảy ra lỗi khi xử lý. Vui lòng thử lại.");
+    } catch (err) {
+      console.error(err);
+      toast.error("Đã xảy ra lỗi, vui lòng thử lại");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const verifyOtp = async (e) => {
+    e.preventDefault();
+    if (!otp) return toast.warn("Vui lòng nhập mã OTP");
+
+    try {
+      setLoading(true);
+      const res = await axios.post(url + "/api/user/verify-email", {
+        email: data.email,
+        otpCode: otp,
+      });
+
+      if (res.data.success) {
+        toast.success("Xác thực thành công! Giờ bạn có thể đăng nhập.");
+        setCurrState("Login");
+      } else {
+        toast.error(res.data.message || "Mã OTP không hợp lệ");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Lỗi khi xác thực OTP");
     } finally {
       setLoading(false);
     }
@@ -80,9 +95,18 @@ export const LoginPopup = ({ setShowLogin }) => {
 
   return (
     <div className="login-popup">
-      <form onSubmit={onLogin} className="login-popup-container">
+      <form
+        onSubmit={currState === "Verify" ? verifyOtp : onSubmit}
+        className="login-popup-container"
+      >
         <div className="login-popup-title">
-          <h2>{currState === "Login" ? "Đăng nhập" : "Đăng ký"}</h2>
+          <h2>
+            {currState === "Login"
+              ? "Đăng nhập"
+              : currState === "Sign Up"
+              ? "Đăng ký"
+              : "Nhập mã OTP"}
+          </h2>
           <img
             onClick={() => setShowLogin(false)}
             src={assets.cross_icon}
@@ -90,46 +114,63 @@ export const LoginPopup = ({ setShowLogin }) => {
           />
         </div>
 
-        <div className="login-popup-inputs">
-          {currState === "Sign Up" && (
+        {currState !== "Verify" ? (
+          <div className="login-popup-inputs">
+            {currState === "Sign Up" && (
+              <input
+                name="name"
+                onChange={onChangeHandler}
+                value={data.name}
+                type="text"
+                placeholder="Nhập tên của bạn"
+                required
+              />
+            )}
             <input
-              name="name"
+              name="email"
               onChange={onChangeHandler}
-              value={data.name}
-              type="text"
-              placeholder="Nhập tên của bạn"
+              value={data.email}
+              type="email"
+              placeholder="Nhập email"
               required
             />
-          )}
-          <input
-            name="email"
-            onChange={onChangeHandler}
-            value={data.email}
-            type="email"
-            placeholder="Nhập email"
-            required
-          />
-          <div className="password-input">
-            <input
-              name="password"
-              onChange={onChangeHandler}
-              value={data.password}
-              type={showPassword ? "text" : "password"}
-              placeholder="Nhập mật khẩu"
-              required
-            />
-            <span onClick={() => setShowPassword(!showPassword)}>
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
-            </span>
+            <div className="password-input">
+              <input
+                name="password"
+                onChange={onChangeHandler}
+                value={data.password}
+                type={showPassword ? "text" : "password"}
+                placeholder="Nhập mật khẩu"
+                required
+              />
+              <span onClick={() => setShowPassword(!showPassword)}>
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="login-popup-inputs">
+            <p style={{ color: "#444", fontSize: "14px" }}>
+              Mã xác thực đã được gửi đến email của bạn.
+            </p>
+            <input
+              type="text"
+              placeholder="Nhập mã OTP 6 số"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              maxLength={6}
+            />
+          </div>
+        )}
 
         <button type="submit" disabled={loading}>
           {loading
             ? "Đang xử lý..."
+            : currState === "Login"
+            ? "Đăng nhập"
             : currState === "Sign Up"
-            ? "Tạo tài khoản"
-            : "Đăng nhập"}
+            ? "Đăng ký"
+            : "Xác thực OTP"}
         </button>
 
         {currState === "Login" ? (
@@ -137,10 +178,16 @@ export const LoginPopup = ({ setShowLogin }) => {
             Chưa có tài khoản?{" "}
             <span onClick={() => setCurrState("Sign Up")}>Đăng ký ngay</span>
           </p>
-        ) : (
+        ) : currState === "Sign Up" ? (
           <p>
             Đã có tài khoản?{" "}
             <span onClick={() => setCurrState("Login")}>Đăng nhập</span>
+          </p>
+        ) : (
+          <p>
+            <span onClick={() => setCurrState("Login")}>
+              Quay lại đăng nhập
+            </span>
           </p>
         )}
       </form>
