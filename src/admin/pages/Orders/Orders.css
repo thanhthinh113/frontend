@@ -140,6 +140,27 @@
     background-size: 10px;
     outline: none;
 }
+.pagination {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.pagination button {
+  padding: 6px 12px;
+  border: 1px solid #d1d1d1;
+  border-radius: 6px;
+  background-color: #fcfcfc;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+
 
 /* Responsive adjustments */
 @media (max-width: 768px) {

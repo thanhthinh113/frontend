@@ -1,3 +1,4 @@
+// Orders.jsx
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import "./orders.css";
@@ -8,6 +9,9 @@ import { StoreContext } from "../../../context/StoreContext";
 export const Orders = () => {
   const { url, token } = useContext(StoreContext);
   const [orders, setOrders] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [ordersPerPage] = useState(5);
+
   const formatVND = (amount) => {
     return amount.toLocaleString("vi-VN");
   };
@@ -20,10 +24,10 @@ export const Orders = () => {
       if (response.data.success) {
         setOrders(response.data.orders);
       } else {
-        toast.error("Error fetching orders");
+        toast.error("Lỗi không tìm thấy đơn hàng");
       }
     } catch (err) {
-      toast.error("Server error fetching orders");
+      toast.error("Lỗi máy chủ khi tải đơn hàng");
       console.error(err);
     }
   };
@@ -39,13 +43,13 @@ export const Orders = () => {
         { headers: { token } }
       );
       if (response.data.success) {
-        toast.success("Order status updated");
+        toast.success("Trạng thái đơn hàng đã được cập nhật");
         fetchAllOrders();
       } else {
-        toast.error("Error updating order status");
+        toast.error("Lỗi cập nhật trạng thái đơn hành");
       }
     } catch (err) {
-      toast.error("Server error updating order status");
+      toast.error("Lỗi máy chủ khi cập nhật trạng thái đơn hàng");
       console.error(err);
     }
   };
@@ -55,17 +59,24 @@ export const Orders = () => {
       fetchAllOrders();
     }
   }, [token]);
+
+  // ---- Phân trang ----
+  const indexOfLastOrder = currentPage * ordersPerPage;
+  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+  const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <div className="orders-container">
       <h3>Quản lý Đơn hàng</h3>
       <div className="order-list">
-        {orders.map((order, index) => (
+        {currentOrders.map((order, index) => (
           <div key={index} className="order-card">
             <div className="order-card-header">
               <img src={assets.parcel_icon} alt="parcel icon" />
-              {/* Hiển thị 6 ký tự cuối cùng của ID đơn hàng */}
               <h4>
-                {index + 1}. Đơn hàng #{order._id.slice(-6)}
+                {indexOfFirstOrder + index + 1}. Đơn hàng #{order._id.slice(-6)}
               </h4>
             </div>
 
@@ -130,6 +141,22 @@ export const Orders = () => {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Phân trang */}
+      <div className="pagination">
+        {Array.from(
+          { length: Math.ceil(orders.length / ordersPerPage) },
+          (_, i) => (
+            <button
+              key={i + 1}
+              onClick={() => paginate(i + 1)}
+              className={currentPage === i + 1 ? "active" : ""}
+            >
+              {i + 1}
+            </button>
+          )
+        )}
       </div>
     </div>
   );
