@@ -95,6 +95,15 @@ export const Sidebar = () => {
           <FaTicketAlt className="sidebar-icon" />
           <p>Voucher</p>
         </NavLink>
+        <NavLink
+          to="/admin/contact"
+          className={({ isActive }) =>
+            isActive ? "sidebar-option active" : "sidebar-option"
+          }
+        >
+          <FaTicketAlt className="sidebar-icon" />
+          <p>Contact Messages</p>
+        </NavLink>
       </div>
     </div>
   );

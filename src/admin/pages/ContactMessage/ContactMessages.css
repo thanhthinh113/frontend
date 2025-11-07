@@ -1,0 +1,338 @@
+.mailbox-container {
+  padding: 40px;
+  background-color: #f4f6f8;
+  min-height: 100vh;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.mailbox-title {
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  text-align: center;
+  color: #333;
+}
+
+.mailbox-loading,
+.mailbox-empty {
+  text-align: center;
+  color: #777;
+  font-size: 16px;
+}
+
+.mailbox-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Mỗi tin nhắn */
+.mailbox-item {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 18px 22px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.mailbox-item:hover {
+  background-color: #fff8f6;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(255, 99, 71, 0.2);
+}
+
+.mailbox-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+
+.mailbox-sender {
+  color: #333;
+}
+
+.mailbox-sender span {
+  color: #777;
+  font-size: 14px;
+}
+
+.mailbox-time {
+  color: #999;
+  font-size: 13px;
+}
+
+.mailbox-subject {
+  font-weight: 600;
+  font-size: 16px;
+  color: #ff6347;
+  margin: 5px 0 10px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mailbox-body {
+  font-size: 15px;
+  color: #444;
+  line-height: 1.6;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+}
+
+.icon {
+  color: #ff6347;
+}
+
+/* -------- Badge trạng thái -------- */
+.status-badge {
+  margin-left: 10px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* Màu cho từng trạng thái */
+.status-badge.new {
+  background-color: #ff6347; /* đỏ cam */
+}
+
+.status-badge.viewed {
+  background-color: #ffa534; /* cam nhạt */
+}
+
+.status-badge.replied {
+  background-color: #4caf50; /* xanh lá */
+}
+
+/* ---------- Modal ---------- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-content {
+  background: white;
+  padding: 25px 30px;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  position: relative;
+  animation: slideUp 0.3s ease;
+}
+
+.modal-content h2 {
+  color: #ff6347;
+  margin-bottom: 10px;
+}
+
+.modal-content p {
+  color: #333;
+  margin: 6px 0;
+  font-size: 15px;
+}
+
+.modal-message {
+  margin-top: 10px;
+  line-height: 1.6;
+}
+
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  border: none;
+  background: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #ff6347;
+  transition: 0.2s;
+}
+
+.close-btn:hover {
+  transform: scale(1.2);
+}
+
+.reply-title {
+  color: #333;
+  font-size: 16px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.reply-input {
+  width: 100%;
+  height: 100px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 14px;
+  resize: vertical;
+}
+
+.reply-btn {
+  margin-top: 10px;
+  background-color: #ff6347;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: 0.3s;
+}
+
+.reply-btn:hover {
+  background-color: #e64a2e;
+}
+.reply-readonly {
+  background: #f8f9fa;
+  padding: 12px 15px;
+  border-left: 4px solid #4caf50;
+  border-radius: 6px;
+  color: #333;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-top: 6px;
+}
+
+/* Thanh công cụ tìm kiếm và lọc */
+.mailbox-tools {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+/* Ô tìm kiếm kiểu đẹp */
+.search-box.pretty {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 2px solid #ff7b73;
+  border-radius: 8px;
+  padding: 8px 14px;
+  flex: 1;
+  min-width: 280px;
+  max-width: 500px;
+  transition: all 0.25s ease;
+  height: 40px;
+}
+
+.search-box.pretty:focus-within {
+  border-color: #ff3b2f;
+  box-shadow: 0 0 0 4px rgba(255, 99, 71, 0.15);
+}
+
+.search-box.pretty input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 15px;
+  color: #444;
+  background: transparent;
+}
+.search-box.pretty input:focus {
+  outline: none !important; 
+  box-shadow: none !important; 
+}
+
+.search-box.pretty .search-icon {
+  color: #ff3b2f;
+  margin-right: 10px;
+}
+
+/* Nút lọc */
+.filter-btn {
+  border: 1.8px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  color: #444;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.filter-btn span {
+  font-size: 16px;
+  color: #ff3b2f;
+}
+
+.filter-btn:hover {
+  border-color: #ffb3a7;
+  background: #fff6f5;
+}
+
+.filter-btn.active {
+  border-color: #ff3b2f;
+  color: #ff3b2f;
+  background: #fff5f3;
+  box-shadow: 0 0 0 3px rgba(255, 99, 71, 0.15);
+}
+
+
+
+/* Phân trang */
+.pagination {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.pagination button {
+  border: none;
+  background: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: 0.2s;
+}
+
+.pagination button:hover {
+  background: #ffeae6;
+}
+
+.pagination button.active {
+  background: #ff6347;
+  color: white;
+  font-weight: 600;
+}
+
+
+/* Hiệu ứng */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

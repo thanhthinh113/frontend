@@ -38,6 +38,7 @@ import ChatBot from "./components/Chatbot/ChatBot";
 import { MenuPage } from "./pages/MenuPage/MenuPage";
 import FoodDetail from "./pages/FoodDetail/FoodDetail";
 import { AboutPage } from "./pages/AboutPage/AboutPage";
+import { ContactMessages } from "./admin/pages/ContactMessage/ContactMessages";
 
 const UserLayout = ({ setShowLogin }) => (
   <>
@@ -115,6 +116,7 @@ export const App = () => {
           <Route path="categories" element={<Categories />} />
           <Route path="combos" element={<AdminCombo />} />
           <Route path="voucher" element={<Voucher />} />
+          <Route path="contact" element={<ContactMessages />} />
           <Route path="analytics" element={<Analytics />} />
         </Route>
       </Routes>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 // Đã thay đổi cách import sang Global CSS
 import "./ContactPage.css";
 import {
@@ -10,8 +10,10 @@ import {
   FaInstagram,
 } from "react-icons/fa";
 import { toast } from "react-toastify";
+import { StoreContext } from "../../context/StoreContext";
 
 export const ContactPage = () => {
+  const { url } = useContext(StoreContext);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -22,24 +24,34 @@ export const ContactPage = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Logic gửi form
-    console.log("Form data submitted:", formData);
+    try {
+      const response = await fetch(`${url}/api/contact/send`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-    toast.success("Cảm ơn bạn! Tin nhắn của bạn đã được gửi thành công.", {
-      position: "top-center",
-    });
+      const data = await response.json();
 
-    // Reset form
-    setFormData({
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-    });
+      if (data.success) {
+        toast.success("Cảm ơn bạn! Tin nhắn đã được gửi thành công.", {
+          position: "top-center",
+        });
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else {
+        toast.error(data.message || "Gửi thất bại, vui lòng thử lại.", {
+          position: "top-center",
+        });
+      }
+    } catch (error) {
+      console.error("Lỗi gửi form:", error);
+      toast.error("Không thể kết nối máy chủ.", { position: "top-center" });
+    }
   };
 
   return (
