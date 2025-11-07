@@ -10,6 +10,7 @@ import {
   FaUsers,
   FaLayerGroup,
   FaTicketAlt,
+  FaEnvelope,
 } from "react-icons/fa";
 
 export const Sidebar = () => {
@@ -101,7 +102,7 @@ export const Sidebar = () => {
             isActive ? "sidebar-option active" : "sidebar-option"
           }
         >
-          <FaTicketAlt className="sidebar-icon" />
+          <FaEnvelope className="sidebar-icon" />
           <p>Contact Messages</p>
         </NavLink>
       </div>
