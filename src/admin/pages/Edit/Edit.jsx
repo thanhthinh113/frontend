@@ -1,4 +1,3 @@
-
 import React, { useContext, useEffect, useState } from "react";
 import "./Edit.css";
 import axios from "axios";
@@ -16,7 +15,6 @@ export const Edit = ({ food, onClose, onUpdated }) => {
     price: food.price || "",
   });
 
-  // Lấy danh mục từ BE
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -29,14 +27,11 @@ export const Edit = ({ food, onClose, onUpdated }) => {
     fetchCategories();
   }, [url]);
 
-  // Handle input
   const onChangeHandler = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
+    const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Submit cập nhật
   const onSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -47,7 +42,9 @@ export const Edit = ({ food, onClose, onUpdated }) => {
     if (image) formData.append("image", image);
 
     try {
-      const response = await axios.put(`${url}/api/food/${food._id}`, formData);
+      const response = await axios.put(`${url}/api/food/${food._id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       if (response.data.success) {
         toast.success("Cập nhật sản phẩm thành công");
         onUpdated();
@@ -73,7 +70,9 @@ export const Edit = ({ food, onClose, onUpdated }) => {
                 src={
                   image
                     ? URL.createObjectURL(image)
-                    : `${url}/images/${food.image}`
+                    : food.image?.startsWith("https://")
+                    ? food.image // 🔥 là link S3
+                    : `${url}/${food.image}`
                 }
                 alt="Ảnh sản phẩm"
               />

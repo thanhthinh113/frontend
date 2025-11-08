@@ -10,12 +10,8 @@ export const List = () => {
   const [list, setList] = useState([]);
   const [editingFood, setEditingFood] = useState(null);
 
-  // format giá VND
-  const formatVND = (amount) => {
-    return amount.toLocaleString("vi-VN");
-  };
+  const formatVND = (amount) => amount.toLocaleString("vi-VN");
 
-  // Lấy danh sách món ăn
   const fetchList = async () => {
     try {
       const response = await axios.get(`${url}/api/food/list`);
@@ -30,7 +26,6 @@ export const List = () => {
     }
   };
 
-  // Xóa món ăn
   const removeFood = async (id) => {
     try {
       const response = await axios.post(`${url}/api/food/remove`, { id });
@@ -66,8 +61,14 @@ export const List = () => {
         {list.map((item, index) => (
           <div className="table-row table-item" key={item._id}>
             <p className="item-number">{index + 1}</p>
-            {/* <img src={`${url}/images/` + item.image} alt={item.name} /> */}
-            <img src={`${url}/${item.image}`} alt={item.name} />
+            <img
+              src={
+                item.image?.startsWith("https://")
+                  ? item.image // 🔥 là link S3
+                  : `${url}/${item.image}`
+              }
+              alt={item.name}
+            />
             <p>{item.name}</p>
             <p className="item-description">{item.description}</p>
             <p>{item.categoryId?.name || "Chưa có danh mục"}</p>
@@ -84,7 +85,6 @@ export const List = () => {
         ))}
       </div>
 
-      {/* popup Edit */}
       {editingFood && (
         <Edit
           food={editingFood}

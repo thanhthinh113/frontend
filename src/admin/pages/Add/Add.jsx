@@ -1,4 +1,3 @@
-
 import React, { useContext, useState, useEffect } from "react";
 import "./add.css";
 import axios from "axios";
@@ -8,7 +7,7 @@ import { StoreContext } from "../../../context/StoreContext";
 
 export const Add = () => {
   const { url } = useContext(StoreContext);
-  const [image, setImage] = useState(false);
+  const [image, setImage] = useState(null);
   const [categories, setCategories] = useState([]);
 
   const [data, setData] = useState({
@@ -18,7 +17,6 @@ export const Add = () => {
     price: "",
   });
 
-  // Lấy danh mục từ BE
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -31,14 +29,11 @@ export const Add = () => {
     fetchCategories();
   }, [url]);
 
-  // Handle input
   const onChangeHandler = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setData((data) => ({ ...data, [name]: value }));
+    const { name, value } = e.target;
+    setData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Submit form
   const onSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -46,21 +41,18 @@ export const Add = () => {
     formData.append("description", data.description);
     formData.append("categoryId", data.category);
     formData.append("price", Number(data.price));
-    formData.append("image", image);
+    if (image) formData.append("image", image);
 
     try {
-      // ✅ gọi đúng endpoint BE: /api/food/add
-      const response = await axios.post(`${url}/api/food/add`, formData);
+      // 🔥 BE sẽ upload ảnh lên S3 và trả về S3 URL
+      const response = await axios.post(`${url}/api/food/add`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       if (response.data.success) {
-        setData({
-          name: "",
-          description: "",
-          category: "",
-          price: "",
-        });
-        setImage(false);
         toast.success(response.data.message || "Thêm sản phẩm thành công");
+        setData({ name: "", description: "", category: "", price: "" });
+        setImage(null);
       } else {
         toast.error(response.data.message || "Không thể thêm sản phẩm");
       }
