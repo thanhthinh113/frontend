@@ -145,14 +145,11 @@ export const FoodDisplay = () => {
       <div className="food-display-list">
         {currentFoods.length > 0 ? (
           currentFoods.map((item) => {
-            const imgSrc = item.image?.startsWith("http")
-              ? item.image
-              : `${url}/${item.image}`;
             return (
               <div className="food-item" key={item._id}>
                 <div className="food-img-wrapper">
                   <Link to={`/food/${item._id}`}>
-                    <img src={imgSrc} alt={item.name} />
+                    <img src={`${item.image}`} alt={item.name} />
                   </Link>
                   <button
                     className="add-btn"

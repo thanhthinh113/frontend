@@ -32,7 +32,7 @@ export const Cart = () => {
             return (
               <div key={item._id}>
                 <div className="cart-items-title cart-items-item">
-                  <img src={`${url}/${item.image}`} alt={item.name} />
+                  <img src={`${item.image}`} alt={item.name} />
                   <p>{item.name}</p>
                   <p>{formatVNDSimple(item.price)} VND</p>
                   <p>{cartItems[item._id]}</p>

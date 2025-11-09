@@ -244,7 +244,7 @@ export const AdminCombo = () => {
             const item = formData.items.find((i) => i.id === food._id);
             return (
               <div key={food._id} className="food-item-row">
-                <img src={`${url}/${food.image}`} alt={food.name} />
+                <img src={`${food.image}`} alt={food.name} />
                 <div className="food-info">
                   <span>{food.name}</span>
                   <p>{formatCurrency(food.price)}₫</p>

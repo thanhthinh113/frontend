@@ -1,7 +1,14 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { StoreContext } from "../../../context/StoreContext";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 import "./AdminDashboard.css";
 
 export const AdminDashboard = () => {
@@ -81,7 +88,9 @@ export const AdminDashboard = () => {
             <div key={food._id} className="food-item">
               <img src={`${url}/images/${food.image}`} alt={food.name} />
               <div>
-                <p><strong>{food.name}</strong></p>
+                <p>
+                  <strong>{food.name}</strong>
+                </p>
                 <p>Đã bán: {food.totalSold}</p>
                 <p>Doanh thu: {food.totalRevenue.toLocaleString()} VND</p>
               </div>
