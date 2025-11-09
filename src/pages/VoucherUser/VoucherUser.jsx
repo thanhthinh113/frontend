@@ -111,19 +111,30 @@ export const VoucherUser = () => {
       </div>
 
       {/* Danh sách voucher đã đổi */}
+      {/* Danh sách voucher đã đổi */}
       <div className="voucher-section">
         <h3>🧾 Voucher của bạn</h3>
         <div className="voucher-list">
           {!user?.redeemedVouchers || user.redeemedVouchers.length === 0 ? (
             <p>Bạn chưa đổi voucher nào.</p>
           ) : (
-            user.redeemedVouchers.map((v, index) => (
-              <div key={index} className="voucher-card owned">
+            // ✅ Gộp voucher trùng code
+            Object.entries(
+              user.redeemedVouchers.reduce((acc, v) => {
+                const key = v.code;
+                if (!acc[key]) acc[key] = { ...v, count: 0 };
+                acc[key].count += 1;
+                return acc;
+              }, {})
+            ).map(([code, v]) => (
+              <div key={code} className="voucher-card owned">
+                {/* 🟢 Huy hiệu số lượng */}
+                {v.count > 1 && (
+                  <span className="voucher-badge">x{v.count}</span>
+                )}
+
                 <h3>{v.code}</h3>
-                <p>
-                  Giảm giá:
-                  {formatVND(v.discountPercent)} VND
-                </p>
+                <p>Giảm giá: {formatVND(v.discountPercent)} VND</p>
                 <p>Hết hạn: {new Date(v.expiryDate).toLocaleDateString()}</p>
                 <p
                   className={
