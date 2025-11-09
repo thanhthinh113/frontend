@@ -35,14 +35,26 @@ export const MyOrders = () => {
             <div key={index} className="my-orders-order">
               <div className="order-details-group">
                 <div className="order-items-list">
-                  <p>
+                  <div className="order-items-list">
                     {order.items.map((item, itemIndex) => (
-                      <span key={itemIndex}>
-                        {item.name} x {item.quantity}
-                        {itemIndex < order.items.length - 1 ? ", " : ""}
-                      </span>
+                      <div key={itemIndex} className="order-item">
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="order-item-img"
+                        />
+                        <div className="order-item-info">
+                          <p className="order-item-name">{item.name}</p>
+                          <p className="order-item-qty">
+                            Số lượng: <strong>{item.quantity}</strong>
+                          </p>
+                          <p className="order-item-price">
+                            Giá: <strong>{formatVND(item.price)} VND</strong>
+                          </p>
+                        </div>
+                      </div>
                     ))}
-                  </p>
+                  </div>
                 </div>
                 <div className="order-customer-info">
                   <p>

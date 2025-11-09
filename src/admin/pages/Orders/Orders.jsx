@@ -82,14 +82,29 @@ export const Orders = () => {
 
             <div className="order-card-body">
               <div className="order-items">
-                <p className="order-item-list">
+                <div className="order-item-list">
                   {order.items.map((item, itemIndex) => (
-                    <span key={itemIndex}>
-                      {item.name} x {item.quantity}
-                      {itemIndex < order.items.length - 1 ? ", " : ""}
-                    </span>
+                    <div key={itemIndex} className="order-item">
+                      <img
+                        src={item.image || assets.default_food}
+                        alt={item.name}
+                        className="order-item-img"
+                      />
+                      <div className="order-item-info">
+                        <p className="item-name">{item.name}</p>
+
+                        <p className="item-quantity">
+                          {" "}
+                          Số lượng: <strong>{item.quantity}</strong>
+                        </p>
+                        <p className="item-price">
+                          Giá: <strong>{formatVND(item.price)} VND</strong>
+                        </p>
+                      </div>
+                    </div>
                   ))}
-                </p>
+                </div>
+
                 <div className="order-customer-info">
                   <p className="order-customer-name">
                     <strong>
