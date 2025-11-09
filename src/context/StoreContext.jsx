@@ -1,6 +1,7 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { io } from "socket.io-client";
 
 export const StoreContext = createContext();
 
@@ -20,10 +21,71 @@ const StoreContextProvider = ({ children }) => {
   const [categories, setCategories] = useState([]);
   const [combos, setCombos] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [notifications, setNotifications] = useState([]);
 
   const url = "http://localhost:4000";
   const url_AI = "https://food-del-ai.onrender.com";
 
+  // StoreContext
+  const socketRef = useRef(null);
+
+  // 🔹 Khởi tạo socket 1 lần
+  useEffect(() => {
+    socketRef.current = io(url);
+
+    return () => {
+      socketRef.current.disconnect();
+    };
+  }, []);
+  useEffect(() => {
+    if (!user?._id || !socketRef.current) return;
+
+    // Tham gia room riêng cho user
+    socketRef.current.emit("joinRoom", user._id.toString());
+
+    // Handler notification
+    const handleNotification = (notification) => {
+      setNotifications((prev) => [notification, ...prev]);
+    };
+
+    socketRef.current.on("orderStatusUpdate", handleNotification);
+
+    // Cleanup khi user thay đổi/unmount
+    return () => {
+      socketRef.current.off("orderStatusUpdate", handleNotification);
+    };
+  }, [user]);
+
+  // ================= API Notifications =================
+  const fetchNotifications = async () => {
+    try {
+      const res = await fetch(`${url}/api/notifications/`, {
+        headers: { token },
+      });
+      const data = await res.json();
+      if (data.success) {
+        setNotifications(data.notifications);
+      }
+    } catch (err) {
+      console.error("Error fetching notifications:", err);
+    }
+  };
+
+  const markAsReadST = async (notifId) => {
+    if (!token) return;
+    try {
+      await fetch(`${url}/api/notifications/mark-read`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", token },
+        body: JSON.stringify({ id: notifId }),
+      });
+      setNotifications((prev) =>
+        prev.map((n) => (n._id === notifId ? { ...n, read: true } : n))
+      );
+    } catch (err) {
+      console.error("Error marking notification read:", err);
+    }
+  };
   const addToCart = async (itemOrId, quantity = 1) => {
     const itemId = typeof itemOrId === "object" ? itemOrId._id : itemOrId;
 
@@ -226,6 +288,10 @@ const StoreContextProvider = ({ children }) => {
     setSearchTerm,
     refreshUser,
     url_AI,
+    notifications,
+    setNotifications,
+    fetchNotifications,
+    markAsReadST,
   };
 
   return (

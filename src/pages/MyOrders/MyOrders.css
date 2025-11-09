@@ -1,7 +1,7 @@
 /* myorders.css - Đã đồng bộ với orders.css */
 
 .my-orders {
-    padding: 30px;
+    padding: 30px 30px 0px 30px;
     margin: 40px auto;
     max-width: 95%; /* Vẫn giữ tối đa 95% để có khoảng trống */
     background-color: #f7f7f7;
