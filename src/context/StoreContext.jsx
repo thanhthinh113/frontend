@@ -31,7 +31,10 @@ const StoreContextProvider = ({ children }) => {
 
   // 🔹 Khởi tạo socket 1 lần
   useEffect(() => {
-    socketRef.current = io(url);
+    socketRef.current = io(url, {
+      transports: ["polling"],
+      timeout: 20000,
+    });
 
     return () => {
       socketRef.current.disconnect();
