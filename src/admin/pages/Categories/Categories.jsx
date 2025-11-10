@@ -1,5 +1,4 @@
-
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { StoreContext } from "../../../context/StoreContext";
@@ -11,8 +10,8 @@ export const Categories = () => {
   const [newName, setNewName] = useState("");
   const [newImage, setNewImage] = useState(null);
   const [editing, setEditing] = useState(null);
+  const fileInputRef = useRef(null); // 👈 thêm ref
 
-  // Lấy danh sách categories
   const fetchCategories = async () => {
     try {
       const res = await axios.get(`${url}/api/categories`);
@@ -27,7 +26,6 @@ export const Categories = () => {
     fetchCategories();
   }, []);
 
-  // Submit form (thêm/sửa)
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -47,9 +45,12 @@ export const Categories = () => {
         toast.success("Thêm danh mục thành công");
       }
 
+      // ✅ Reset form
       setNewName("");
       setNewImage(null);
       setEditing(null);
+      if (fileInputRef.current) fileInputRef.current.value = ""; // 👈 reset file input
+
       fetchCategories();
     } catch (err) {
       toast.error("Lỗi khi lưu danh mục");
@@ -57,9 +58,7 @@ export const Categories = () => {
     }
   };
 
-  // Xóa
   const handleDelete = async (id) => {
-    if (!window.confirm("Bạn có chắc muốn xóa danh mục này?")) return;
     try {
       await axios.delete(`${url}/api/categories/${id}`);
       toast.success("Xóa danh mục thành công");
@@ -74,7 +73,6 @@ export const Categories = () => {
     <div className="categories-container">
       <h3>Quản lý Danh mục</h3>
 
-      {/* Form thêm/sửa */}
       <form className="category-form" onSubmit={handleSubmit}>
         <input
           type="text"
@@ -86,6 +84,7 @@ export const Categories = () => {
         <input
           type="file"
           accept="image/*"
+          ref={fileInputRef} // 👈 gắn ref
           onChange={(e) => setNewImage(e.target.files[0])}
         />
 
@@ -97,6 +96,7 @@ export const Categories = () => {
               setEditing(null);
               setNewName("");
               setNewImage(null);
+              if (fileInputRef.current) fileInputRef.current.value = ""; // 👈 reset file input
             }}
           >
             Hủy
@@ -104,16 +104,11 @@ export const Categories = () => {
         )}
       </form>
 
-      {/* Danh mục dạng hình tròn */}
       <div className="categories-grid">
         {categories.map((cat) => (
           <div className="category-card" key={cat._id}>
             {cat.image ? (
-              <img
-                src={`${url}/${cat.image}`}
-                alt={cat.name}
-                className="category-img"
-              />
+              <img src={cat.image} alt={cat.name} className="category-img" />
             ) : (
               <div className="category-placeholder">?</div>
             )}
@@ -123,6 +118,7 @@ export const Categories = () => {
                 onClick={() => {
                   setEditing(cat);
                   setNewName(cat.name);
+                  if (fileInputRef.current) fileInputRef.current.value = ""; // 👈 clear file khi edit
                 }}
               >
                 Sửa
