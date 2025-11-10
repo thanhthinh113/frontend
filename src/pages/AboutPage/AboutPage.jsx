@@ -1,6 +1,5 @@
 import React from "react";
 import "./AboutPage.css";
-import { assets } from "../../assets/assets"; // Giả định bạn có assets như icons, images.
 import { FaHeart, FaTruck, FaLeaf, FaSmile } from "react-icons/fa"; // Dùng icons để thêm tính trực quan
 import { useNavigate } from "react-router-dom";
 

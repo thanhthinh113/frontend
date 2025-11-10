@@ -9,7 +9,7 @@ import {
   FaLayerGroup,
   FaEnvelope,
 } from "react-icons/fa";
-import "./analytics.css";
+import "./Analytics.css";
 import { StoreContext } from "../../../context/StoreContext";
 import StatCard from "../../components/StatCard/StatCard";
 

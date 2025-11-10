@@ -1,7 +1,7 @@
 // Orders.jsx
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import "./orders.css";
+import "./Orders.css";
 import { toast } from "react-toastify";
 import { assets } from "../../../assets/assets";
 import { StoreContext } from "../../../context/StoreContext";
