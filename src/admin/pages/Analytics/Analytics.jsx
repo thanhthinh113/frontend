@@ -7,6 +7,7 @@ import {
   FaDollarSign,
   FaTags,
   FaLayerGroup,
+  FaEnvelope,
 } from "react-icons/fa";
 import "./analytics.css";
 import { StoreContext } from "../../../context/StoreContext";
@@ -115,6 +116,12 @@ const Analytics = () => {
             className="vouchers"
           />
         )}
+        <StatCard
+          title="Tin nhắn liên hệ"
+          value={totals.contacts}
+          icon={<FaEnvelope />} // hoặc FaEnvelope
+          className="contacts"
+        />
       </div>
 
       {/* Phần nội dung chi tiết */}

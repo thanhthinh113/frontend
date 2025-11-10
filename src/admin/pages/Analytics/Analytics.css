@@ -173,3 +173,7 @@
 .stat-card.vouchers .stat-icon {
   background-color: #ff6b6b; /* đỏ nhạt */
 }
+.stat-card.contacts .stat-icon {
+  background-color: #17a2b8; /* Màu xanh dương nhạt */
+  color: white;
+}
