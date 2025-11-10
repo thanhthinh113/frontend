@@ -10,6 +10,10 @@ export const List = () => {
   const [list, setList] = useState([]);
   const [editingFood, setEditingFood] = useState(null);
 
+  // Phân trang
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
+
   const formatVND = (amount) => amount.toLocaleString("vi-VN");
 
   const fetchList = async () => {
@@ -45,6 +49,13 @@ export const List = () => {
     fetchList();
   }, []);
 
+  // ---- Phân trang ----
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = list.slice(indexOfFirstItem, indexOfLastItem);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <div className="list-container">
       <h3>Tất cả sản phẩm</h3>
@@ -58,13 +69,14 @@ export const List = () => {
           <b>Giá</b>
           <b>Hành động</b>
         </div>
-        {list.map((item, index) => (
+
+        {currentItems.map((item, index) => (
           <div className="table-row table-item" key={item._id}>
-            <p className="item-number">{index + 1}</p>
+            <p className="item-number">{indexOfFirstItem + index + 1}</p>
             <img
               src={
                 item.image?.startsWith("https://")
-                  ? item.image // 🔥 là link S3
+                  ? item.image
                   : `${url}/${item.image}`
               }
               alt={item.name}
@@ -83,6 +95,22 @@ export const List = () => {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Phân trang */}
+      <div className="pagination">
+        {Array.from(
+          { length: Math.ceil(list.length / itemsPerPage) },
+          (_, i) => (
+            <button
+              key={i + 1}
+              onClick={() => paginate(i + 1)}
+              className={currentPage === i + 1 ? "active" : ""}
+            >
+              {i + 1}
+            </button>
+          )
+        )}
       </div>
 
       {editingFood && (
