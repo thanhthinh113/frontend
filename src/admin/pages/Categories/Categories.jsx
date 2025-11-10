@@ -87,7 +87,6 @@ export const Categories = () => {
           ref={fileInputRef} // 👈 gắn ref
           onChange={(e) => setNewImage(e.target.files[0])}
         />
-
         <button type="submit">{editing ? "Cập nhật" : "Thêm mới"}</button>
         {editing && (
           <button

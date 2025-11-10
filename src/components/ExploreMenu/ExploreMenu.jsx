@@ -48,7 +48,7 @@ export default function ExploreMenu() {
           >
             {item.image ? (
               <img
-                src={`http://localhost:4000/${item.image}`}
+                src={item.image}
                 alt={item.name}
                 className="explore-menu-img"
               />
