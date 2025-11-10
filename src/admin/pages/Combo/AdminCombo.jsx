@@ -280,7 +280,8 @@ export const AdminCombo = () => {
       <div className="combo-list-admin">
         {combos.map((combo) => (
           <div key={combo._id} className="combo-card-admin">
-            <img src={`${url}/uploads/${combo.image}`} alt={combo.name} />
+            {/* <img src={`${url}/uploads/${combo.image}`} alt={combo.name} /> */}
+            <img src={combo.image} alt={combo.name} />
             <div className="combo-info">
               <h4>{combo.name}</h4>
               <p className="desc">{combo.description}</p>

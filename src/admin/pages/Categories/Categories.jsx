@@ -1,4 +1,3 @@
-
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -12,7 +11,6 @@ export const Categories = () => {
   const [newImage, setNewImage] = useState(null);
   const [editing, setEditing] = useState(null);
 
-  // Lấy danh sách categories
   const fetchCategories = async () => {
     try {
       const res = await axios.get(`${url}/api/categories`);
@@ -27,7 +25,6 @@ export const Categories = () => {
     fetchCategories();
   }, []);
 
-  // Submit form (thêm/sửa)
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -57,7 +54,6 @@ export const Categories = () => {
     }
   };
 
-  // Xóa
   const handleDelete = async (id) => {
     if (!window.confirm("Bạn có chắc muốn xóa danh mục này?")) return;
     try {
@@ -74,7 +70,6 @@ export const Categories = () => {
     <div className="categories-container">
       <h3>Quản lý Danh mục</h3>
 
-      {/* Form thêm/sửa */}
       <form className="category-form" onSubmit={handleSubmit}>
         <input
           type="text"
@@ -88,7 +83,6 @@ export const Categories = () => {
           accept="image/*"
           onChange={(e) => setNewImage(e.target.files[0])}
         />
-
         <button type="submit">{editing ? "Cập nhật" : "Thêm mới"}</button>
         {editing && (
           <button
@@ -104,16 +98,11 @@ export const Categories = () => {
         )}
       </form>
 
-      {/* Danh mục dạng hình tròn */}
       <div className="categories-grid">
         {categories.map((cat) => (
           <div className="category-card" key={cat._id}>
             {cat.image ? (
-              <img
-                src={`${url}/${cat.image}`}
-                alt={cat.name}
-                className="category-img"
-              />
+              <img src={cat.image} alt={cat.name} className="category-img" />
             ) : (
               <div className="category-placeholder">?</div>
             )}
