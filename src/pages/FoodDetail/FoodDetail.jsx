@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./FoodDetail.css";
 import { FaStar } from "react-icons/fa";
 import { StoreContext } from "../../context/StoreContext";
+import "./FoodDetail.css";
 
 const FoodDetail = () => {
   const { id } = useParams();
@@ -17,10 +17,10 @@ const FoodDetail = () => {
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
   const [canReview, setCanReview] = useState(false);
+  const [, setPendingOrders] = useState([]);
+  const [reviewOrderId, setReviewOrderId] = useState(null);
+  const [relatedFoods, setRelatedFoods] = useState([]);
 
-  const [relatedFoods, setRelatedFoods] = useState([]); // 🔥 Thêm
-
-  // 📦 Lấy dữ liệu món ăn + đánh giá + kiểm tra quyền review
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -32,72 +32,61 @@ const FoodDetail = () => {
 
         setFood(foodRes.data);
         setReviews(reviewRes.data);
+        setRelatedFoods(
+          Array.isArray(recommendRes.data) ? recommendRes.data : []
+        );
 
-        // 🧠 Gán danh sách món tương tự do Flask trả về
-        const recommended = Array.isArray(recommendRes.data)
-          ? recommendRes.data
-          : [];
-        setRelatedFoods(recommended);
-
-        // ✅ Kiểm tra quyền đánh giá
         if (user && user._id) {
-          const orderRes = await axios.post(
-            `${url}/api/order/userorders`,
-            {},
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-              },
-            }
-          );
-
-          const orders = Array.isArray(orderRes.data)
-            ? orderRes.data
-            : orderRes.data.orders || [];
-
-          const hasPurchased = orders.some((order) =>
-            order.items.some((item) => {
-              const itemId = item.foodId?._id || item.foodId || item._id;
-              return itemId?.toString() === id.toString();
-            })
-          );
-
-          setCanReview(hasPurchased);
-        } else {
-          setCanReview(false);
+          const canRes = await axios.get(`${url}/api/reviews/can/${id}`, {
+            headers: { token: localStorage.getItem("token") },
+          });
+          setCanReview(canRes.data.canReview);
+          setPendingOrders(canRes.data.orders || []);
+          if (canRes.data.orders && canRes.data.orders.length > 0) {
+            setReviewOrderId(canRes.data.orders[0]._id);
+          }
         }
       } catch (err) {
-        console.error("❌ Lỗi khi tải dữ liệu:", err);
+        console.error(err);
       } finally {
         setLoading(false);
       }
     };
-
     fetchData();
-  }, [id, url, user]);
+  }, [id, url, url_AI, user]);
 
-  // ✍️ Gửi đánh giá
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     if (!user) return navigate("/login");
-    if (!canReview) return alert("Chỉ được đánh giá khi đã mua món này!");
+    if (!canReview || !reviewOrderId)
+      return alert("Chỉ được đánh giá khi đã mua món này!");
 
     try {
       await axios.post(
         `${url}/api/reviews`,
-        { foodId: id, userId: user._id, userName: user.name, rating, comment },
+        {
+          foodId: id,
+          userId: user._id,
+          userName: user.name,
+          rating,
+          comment,
+          orderId: reviewOrderId,
+        },
         { headers: { token: localStorage.getItem("token") } }
       );
+
       const res = await axios.get(`${url}/api/reviews/${id}`);
       setReviews(res.data);
       setComment("");
       setRating(5);
+      setCanReview(false);
+      setReviewOrderId(null);
     } catch (err) {
       console.error(err);
+      alert(err.response?.data?.message || "Lỗi đánh giá");
     }
   };
 
-  // 🛒 Thêm vào giỏ hàng
   const handleAddToCart = () => {
     if (!food) return;
     addToCart(food, quantity, "food");
@@ -111,12 +100,11 @@ const FoodDetail = () => {
         ).toFixed(1)
       : 0;
 
-  if (loading) return <p className="loading">Đang tải dữ liệu...</p>;
+  if (loading) return <p>Đang tải dữ liệu...</p>;
   if (!food) return <p>Không tìm thấy món ăn</p>;
 
   return (
     <div className="food-detail-container">
-      {/* Chi tiết món ăn */}
       <div className="food-card">
         <div className="food-image">
           <img
@@ -128,7 +116,6 @@ const FoodDetail = () => {
             alt={food.name}
           />
         </div>
-
         <div className="food-info">
           <h2>{food.name}</h2>
           <div className="food-rating">
@@ -142,13 +129,9 @@ const FoodDetail = () => {
               {averageRating} / 5 ({reviews.length} đánh giá)
             </span>
           </div>
-
-          <p className="category">
-            Danh mục: {food.categoryId?.name || "Chưa có"}
-          </p>
-          <h3 className="price">{food.price?.toLocaleString("vi-VN")} đ</h3>
-          <p className="desc">{food.description}</p>
-
+          <p>Danh mục: {food.categoryId?.name || "Chưa có"}</p>
+          <h3>{food.price?.toLocaleString("vi-VN")} đ</h3>
+          <p>{food.description}</p>
           <div className="quantity-box">
             <button onClick={() => setQuantity((q) => Math.max(1, q - 1))}>
               -
@@ -156,44 +139,45 @@ const FoodDetail = () => {
             <span>{quantity}</span>
             <button onClick={() => setQuantity((q) => q + 1)}>+</button>
           </div>
-
           <button className="btn-cart" onClick={handleAddToCart}>
             🛒 Thêm vào giỏ hàng
           </button>
         </div>
       </div>
 
-      {/* 🔥 Các món ăn liên quan */}
+      {/* Món liên quan */}
       {relatedFoods.length > 0 && (
         <div className="review-section">
           <h3>Món ăn liên quan</h3>
           <div className="related-grid">
-            {relatedFoods.map((item) => (
-              <div
-                key={item._id}
-                className="related-item"
-                onClick={() => navigate(`/food/${item.id}`)}
-              >
-                <img
-                  src={
-                    item.image?.startsWith("http")
-                      ? item.image
-                      : `${url}/${item.image}`
-                  }
-                  alt={item.name}
-                />
-                <h4>{item.name}</h4>
-                <p>{item.price?.toLocaleString("vi-VN")} đ</p>
-              </div>
-            ))}
+            {relatedFoods.map((item) => {
+              const foodId = item._id || item.id; // dùng cái tồn tại
+              return (
+                <div
+                  key={foodId}
+                  className="related-item"
+                  onClick={() => navigate(`/food/${foodId}`)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <img
+                    src={
+                      item.image?.startsWith("http")
+                        ? item.image
+                        : `${url}/${item.image}`
+                    }
+                    alt={item.name}
+                  />
+                  <h4>{item.name}</h4>
+                  <p>{item.price?.toLocaleString("vi-VN")} đ</p>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
-
       {/* Đánh giá */}
       <div className="review-section">
         <h3>Đánh giá & Bình luận</h3>
-
         {!user ? (
           <p className="warning">
             ⚠️ Vui lòng{" "}
@@ -220,10 +204,8 @@ const FoodDetail = () => {
               onChange={(e) => setComment(e.target.value)}
               placeholder="Viết bình luận..."
               required
-            ></textarea>
-            <button type="submit" className="btn-submit">
-              Gửi đánh giá
-            </button>
+            />
+            <button type="submit">Gửi đánh giá</button>
           </form>
         )}
 
@@ -246,10 +228,8 @@ const FoodDetail = () => {
                     ))}
                   </span>
                 </div>
-                <p className="review-comment">{r.comment}</p>
-                <small className="review-date">
-                  {new Date(r.createdAt).toLocaleString()}
-                </small>
+                <p>{r.comment}</p>
+                <small>{new Date(r.createdAt).toLocaleString()}</small>
               </div>
             ))
           )}
