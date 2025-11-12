@@ -72,8 +72,8 @@ const FoodDetail = () => {
         headers: { "Content-Type": file.type },
       });
 
-      // Trả về URL public
-      return res.data.fileUrl; // dùng fileUrl BE trả về
+      // Trả về URL public từ BE
+      return res.data.fileUrl;
     } catch (err) {
       console.error("❌ Upload failed:", err.response?.data || err.message);
       throw err;

@@ -135,9 +135,16 @@ const StoreContextProvider = ({ children }) => {
       const updated = { ...prev };
       if (updated[itemId] > 1) updated[itemId] -= 1;
       else delete updated[itemId];
+
+      // 🔹 Cập nhật localStorage nếu là khách
+      if (!token) {
+        localStorage.setItem("guestCart", JSON.stringify(updated));
+      }
+
       return updated;
     });
 
+    // 🔹 Nếu là user có token → gọi API
     if (token) {
       try {
         await axios.post(
@@ -248,6 +255,10 @@ const StoreContextProvider = ({ children }) => {
       if (token) {
         await refreshUser();
         await loadCartData(token);
+      } else {
+        // 🔹 Load giỏ hàng của khách
+        const guestCart = JSON.parse(localStorage.getItem("guestCart") || "{}");
+        setCartItems(guestCart);
       }
     }
     loadData();
@@ -261,15 +272,44 @@ const StoreContextProvider = ({ children }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
 
+    localStorage.removeItem("guestCart");
+    setCartItems({});
     navigate("/");
     window.location.reload();
   };
 
-  const loginUser = (data) => {
+  const loginUser = async (data) => {
     setToken(data.token);
     setUser(data.user);
     localStorage.setItem("token", data.token);
     localStorage.setItem("user", JSON.stringify(data.user));
+
+    try {
+      // 🔹 1. Lấy giỏ hàng của khách từ localStorage
+      const guestCart = JSON.parse(localStorage.getItem("guestCart") || "{}");
+
+      // 🔹 2. Nếu có món thì gửi lên server
+      const itemIds = Object.keys(guestCart);
+      if (itemIds.length > 0) {
+        for (const itemId of itemIds) {
+          const quantity = guestCart[itemId];
+          await axios.post(
+            `${url}/api/cart/add`,
+            { itemId, quantity },
+            { headers: { token: data.token } }
+          );
+        }
+        console.log("✅ Guest cart merged into user account");
+      }
+
+      // 🔹 3. Xóa guestCart cũ
+      localStorage.removeItem("guestCart");
+
+      // 🔹 4. Cập nhật lại giỏ hàng từ server
+      await loadCartData(data.token);
+    } catch (err) {
+      console.error("❌ Error merging guest cart:", err);
+    }
   };
 
   const contextValue = {
