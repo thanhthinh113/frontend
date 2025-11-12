@@ -232,9 +232,11 @@ const FoodDetail = () => {
                   key={i}
                   onClick={() => setRating(i + 1)}
                   color={i < rating ? "#FFD700" : "#ddd"}
+                  style={{ cursor: "pointer" }}
                 />
               ))}
             </div>
+
             <textarea
               value={comment}
               onChange={(e) => setComment(e.target.value)}
@@ -243,28 +245,36 @@ const FoodDetail = () => {
             />
 
             {/* Upload ảnh/video */}
-            <input
-              type="file"
-              accept="image/*,video/*"
-              onChange={(e) => setSelectedFile(e.target.files[0])}
-            />
-            {selectedFile && selectedFile.type.startsWith("image") && (
-              <img
-                src={URL.createObjectURL(selectedFile)}
-                alt="preview"
-                className="review-media"
+            <div className="file-upload">
+              <input
+                type="file"
+                accept="image/*,video/*"
+                onChange={(e) => setSelectedFile(e.target.files[0])}
               />
-            )}
-            {selectedFile && selectedFile.type.startsWith("video") && (
-              <video
-                src={URL.createObjectURL(selectedFile)}
-                controls
-                className="review-media"
-              />
-            )}
-            {uploading && <p>Đang tải lên S3...</p>}
+              {selectedFile && (
+                <div className="preview-container">
+                  {selectedFile.type.startsWith("image") ? (
+                    <img
+                      src={URL.createObjectURL(selectedFile)}
+                      alt="preview"
+                      className="review-media"
+                    />
+                  ) : (
+                    <video
+                      src={URL.createObjectURL(selectedFile)}
+                      controls
+                      className="review-media"
+                    />
+                  )}
+                </div>
+              )}
+            </div>
 
-            <button type="submit" disabled={uploading}>
+            {uploading && (
+              <p className="uploading-text">Đang tải lên dữ liệu...</p>
+            )}
+
+            <button type="submit" className="btn-submit" disabled={uploading}>
               {uploading ? "Đang gửi..." : "Gửi đánh giá"}
             </button>
           </form>
@@ -275,7 +285,7 @@ const FoodDetail = () => {
             <p>Chưa có đánh giá nào.</p>
           ) : (
             reviews.map((r) => (
-              <div key={r._id} className="review-item">
+              <div className="review-item">
                 <div className="review-header">
                   <div className="user-info">
                     <div className="user-icon">
@@ -290,16 +300,19 @@ const FoodDetail = () => {
                   </span>
                 </div>
 
-                <p>{r.comment}</p>
+                <div className="review-body">
+                  <p className="review-comment">{r.comment}</p>
 
-                {/* Render media */}
-                {r.media && r.media.endsWith(".mp4") ? (
-                  <video src={r.media} controls className="review-media" />
-                ) : r.media ? (
-                  <img src={r.media} alt="review" className="review-media" />
-                ) : null}
+                  {r.media && r.media.endsWith(".mp4") ? (
+                    <video src={r.media} controls className="review-media" />
+                  ) : r.media ? (
+                    <img src={r.media} alt="review" className="review-media" />
+                  ) : null}
+                </div>
 
-                <small>{new Date(r.createdAt).toLocaleString()}</small>
+                <small className="review-date">
+                  {new Date(r.createdAt).toLocaleString()}
+                </small>
               </div>
             ))
           )}
