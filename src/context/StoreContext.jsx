@@ -103,22 +103,11 @@ const StoreContextProvider = ({ children }) => {
     // 🔐 Nếu có token (đăng nhập)
     if (token) {
       try {
-        const res = await axios.post(
+        await axios.post(
           `${url}/api/cart/add`,
-          { itemId, quantity },
+          { itemId, quantity }, // ✅ gửi kèm quantity
           { headers: { token } }
         );
-
-        if (res.data.cartData) {
-          // 🔹 Nếu backend trả cartData mới
-          setCartItems(res.data.cartData);
-        } else {
-          // 🔹 Nếu không có, vẫn cập nhật tạm local state
-          setCartItems((prev) => ({
-            ...prev,
-            [itemId]: prev[itemId] ? prev[itemId] + quantity : quantity,
-          }));
-        }
       } catch (err) {
         console.error("❌ Error adding to cart (user):", err);
       }
