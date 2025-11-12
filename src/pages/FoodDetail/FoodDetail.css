@@ -385,6 +385,32 @@
   color: #999;
   margin-left: 45px;
 }
+.btn-submit {
+  display: inline-block;
+  background: linear-gradient(135deg, #ff4b4b, #ff7070);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(255, 75, 75, 0.3);
+  transition: all 0.3s ease;
+  margin-top: 10px;
+  align-self: flex-end;
+}
+
+.btn-submit:hover {
+  background: linear-gradient(135deg, #e63c3c, #ff4b4b);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(255, 75, 75, 0.4);
+}
+
+.btn-submit:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px rgba(255, 75, 75, 0.25);
+}
 
 /* =======================
    📱 Responsive

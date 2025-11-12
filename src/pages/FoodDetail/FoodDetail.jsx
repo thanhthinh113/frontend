@@ -205,7 +205,9 @@ const FoodDetail = () => {
               placeholder="Viết bình luận..."
               required
             />
-            <button type="submit">Gửi đánh giá</button>
+            <button type="submit" className="btn-submit">
+              Gửi đánh giá
+            </button>
           </form>
         )}
 
