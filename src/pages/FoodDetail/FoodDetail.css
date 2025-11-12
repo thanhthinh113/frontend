@@ -347,6 +347,21 @@
   margin-bottom: 4px; /* Khoảng cách giữa tên và rating */
 }
 
+.review-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
+.review-media {
+  max-width: 100%;
+  max-height: 300px;
+  margin-top: 8px;
+  border-radius: 6px;
+}
+
 .user-icon {
   width: 36px;
   height: 36px;

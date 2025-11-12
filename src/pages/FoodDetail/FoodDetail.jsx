@@ -21,6 +21,9 @@ const FoodDetail = () => {
   const [reviewOrderId, setReviewOrderId] = useState(null);
   const [relatedFoods, setRelatedFoods] = useState([]);
 
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -55,6 +58,28 @@ const FoodDetail = () => {
     fetchData();
   }, [id, url, url_AI, user]);
 
+  // Upload file lên S3
+  const uploadFileToS3 = async (file) => {
+    try {
+      const res = await axios.get(
+        `${url}/api/upload-url?fileName=${encodeURIComponent(
+          file.name
+        )}&fileType=${file.type}`
+      );
+      const uploadUrl = res.data.uploadUrl;
+
+      await axios.put(uploadUrl, file, {
+        headers: { "Content-Type": file.type },
+      });
+
+      // Trả về URL public
+      return res.data.fileUrl; // dùng fileUrl BE trả về
+    } catch (err) {
+      console.error("❌ Upload failed:", err.response?.data || err.message);
+      throw err;
+    }
+  };
+
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     if (!user) return navigate("/login");
@@ -62,6 +87,13 @@ const FoodDetail = () => {
       return alert("Chỉ được đánh giá khi đã mua món này!");
 
     try {
+      let mediaUrl = null;
+      if (selectedFile) {
+        setUploading(true);
+        mediaUrl = await uploadFileToS3(selectedFile);
+        setUploading(false);
+      }
+
       await axios.post(
         `${url}/api/reviews`,
         {
@@ -71,6 +103,7 @@ const FoodDetail = () => {
           rating,
           comment,
           orderId: reviewOrderId,
+          media: mediaUrl,
         },
         { headers: { token: localStorage.getItem("token") } }
       );
@@ -79,10 +112,12 @@ const FoodDetail = () => {
       setReviews(res.data);
       setComment("");
       setRating(5);
+      setSelectedFile(null);
       setCanReview(false);
       setReviewOrderId(null);
     } catch (err) {
       console.error(err);
+      setUploading(false);
       alert(err.response?.data?.message || "Lỗi đánh giá");
     }
   };
@@ -151,7 +186,7 @@ const FoodDetail = () => {
           <h3>Món ăn liên quan</h3>
           <div className="related-grid">
             {relatedFoods.map((item) => {
-              const foodId = item._id || item.id; // dùng cái tồn tại
+              const foodId = item._id || item.id;
               return (
                 <div
                   key={foodId}
@@ -175,6 +210,7 @@ const FoodDetail = () => {
           </div>
         </div>
       )}
+
       {/* Đánh giá */}
       <div className="review-section">
         <h3>Đánh giá & Bình luận</h3>
@@ -205,7 +241,32 @@ const FoodDetail = () => {
               placeholder="Viết bình luận..."
               required
             />
-            <button type="submit">Gửi đánh giá</button>
+
+            {/* Upload ảnh/video */}
+            <input
+              type="file"
+              accept="image/*,video/*"
+              onChange={(e) => setSelectedFile(e.target.files[0])}
+            />
+            {selectedFile && selectedFile.type.startsWith("image") && (
+              <img
+                src={URL.createObjectURL(selectedFile)}
+                alt="preview"
+                className="review-media"
+              />
+            )}
+            {selectedFile && selectedFile.type.startsWith("video") && (
+              <video
+                src={URL.createObjectURL(selectedFile)}
+                controls
+                className="review-media"
+              />
+            )}
+            {uploading && <p>Đang tải lên S3...</p>}
+
+            <button type="submit" disabled={uploading}>
+              {uploading ? "Đang gửi..." : "Gửi đánh giá"}
+            </button>
           </form>
         )}
 
@@ -228,7 +289,16 @@ const FoodDetail = () => {
                     ))}
                   </span>
                 </div>
+
                 <p>{r.comment}</p>
+
+                {/* Render media */}
+                {r.media && r.media.endsWith(".mp4") ? (
+                  <video src={r.media} controls className="review-media" />
+                ) : r.media ? (
+                  <img src={r.media} alt="review" className="review-media" />
+                ) : null}
+
                 <small>{new Date(r.createdAt).toLocaleString()}</small>
               </div>
             ))
