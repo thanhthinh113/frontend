@@ -185,23 +185,105 @@
     padding: 8px;
   }
 
-  .voucher-list {
-    flex-wrap: nowrap;
-    gap: 10px;
-  }
+/* --- Voucher Section (đồng bộ style với VoucherUser) --- */
+.voucher-section {
+  margin-top: 35px;
+}
 
-  .voucher-card {
-    flex: 0 0 180px;
-    padding: 10px;
-  }
+.voucher-section h3 {
+  font-size: 20px;
+  color: #444;
+  margin-bottom: 15px;
+  border-left: 5px solid tomato;
+  padding-left: 10px;
+}
 
-  .voucher-card h4 {
-    font-size: 14px;
-  }
+.voucher-list {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 10px;
+}
 
-  .voucher-card p {
-    font-size: 12px;
-  }
+.voucher-list::-webkit-scrollbar {
+  height: 8px;
+}
+
+.voucher-list::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.voucher-card {
+  flex: 0 0 220px;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 15px 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.voucher-card:hover:not(.expired) {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.voucher-card.selected {
+  border-color: tomato;
+  box-shadow: 0 0 10px rgba(255, 99, 71, 0.3);
+}
+
+.voucher-card.expired {
+  opacity: 0.6;
+  background: #f9f9f9;
+  cursor: not-allowed;
+}
+
+.voucher-card h4 {
+  font-size: 16px;
+  color: #222;
+  margin-bottom: 6px;
+}
+
+.voucher-card p {
+  font-size: 14px;
+  margin: 4px 0;
+}
+
+.status-active {
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.status-expired {
+  color: #d32f2f;
+  font-weight: 600;
+}
+
+.no-voucher {
+  color: gray;
+  font-style: italic;
+  margin-left: 10px;
+}
+
+/* --- Huy hiệu số lượng --- */
+.voucher-badge {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background-color: #ff5722;
+  color: #fff;
+  font-weight: bold;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 13px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
 
   .cart-total h2 {
     font-size: 20px;

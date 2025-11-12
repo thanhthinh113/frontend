@@ -173,26 +173,39 @@ export const PlaceOrder = () => {
           value={data.phone}
         />
 
-        {/* 🎟️ Voucher section */}
+        {/* 🎟️ Voucher Section */}
         <div className="voucher-section">
-          <h3>🎁 Voucher của bạn</h3>
-          {user?.redeemedVouchers?.length > 0 ? (
+          <h3>🧾 Voucher của bạn</h3>
+
+          {!user?.redeemedVouchers || user.redeemedVouchers.length === 0 ? (
+            <p className="no-voucher">Bạn chưa có voucher nào</p>
+          ) : (
             <div className="voucher-list">
-              {user.redeemedVouchers.map((v, i) => {
+              {Object.entries(
+                user.redeemedVouchers.reduce((acc, v) => {
+                  const key = v.code;
+                  if (!acc[key]) acc[key] = { ...v, count: 0 };
+                  acc[key].count += 1;
+                  return acc;
+                }, {})
+              ).map(([code, v]) => {
                 const isExpired = new Date(v.expiryDate) < new Date();
                 const isSelected = selectedVoucher === v.code;
 
                 return (
                   <div
-                    key={i}
+                    key={code}
                     className={`voucher-card ${isSelected ? "selected" : ""} ${
                       isExpired ? "expired" : ""
                     }`}
                     onClick={() => {
-                      if (isExpired) return; // Không chọn voucher hết hạn
+                      if (isExpired) return;
                       setSelectedVoucher(isSelected ? "" : v.code);
                     }}
                   >
+                    {v.count > 1 && (
+                      <span className="voucher-badge">x{v.count}</span>
+                    )}
                     <h4>{v.code}</h4>
                     <p>Giảm: {formatVND(v.discountPercent)} VND</p>
                     <p>
@@ -207,8 +220,6 @@ export const PlaceOrder = () => {
                 );
               })}
             </div>
-          ) : (
-            <p className="no-voucher">Bạn chưa có voucher nào</p>
           )}
         </div>
       </div>
