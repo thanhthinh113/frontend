@@ -1,61 +1,240 @@
-.place-order{
-    display: flex;
-    align-items: start;
-    justify-content: space-between;
-    gap:50px;
-    margin-top: 100px;
-    margin-left: 10%;
-    margin-right: 10%;
-}
-
-.place-order-left{
-    width: 100%;
-    max-width: max(30%,500px);
-}
-.place-order-left .title{
-    font-size: 30px;
-    font-weight: 600;
-    margin-bottom: 50px;
-
-}
-.place-order-left input{
-    margin-bottom: 15px;
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #c5c5c5;
-    border-radius: 4px;
-    outline-color: tomato;
-}
-.place-order-left .multi-fields{
-    display: flex;
-    gap: 10px;
-}
-.place-order-right{
-    width: 100%;
-    max-width: max(40%,500px);
-}
-.place-order .cart-total button{
-    margin-top: 30px;
-}
-.voucher-section {
-  margin-top: 15px;
+.place-order {
   display: flex;
-  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 50px;
+  margin-top: 100px;
+  margin-left: 10%;
+  margin-right: 10%;
+  flex-wrap: wrap;
 }
 
-.voucher-section label {
+/* --- Left form --- */
+.place-order-left {
+  width: 100%;
+  max-width: max(30%, 500px);
+}
+
+.place-order-left .title {
+  font-size: 30px;
   font-weight: 600;
-  margin-bottom: 5px;
+  margin-bottom: 50px;
 }
 
-.voucher-section select {
-  padding: 8px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+.place-order-left input {
+  margin-bottom: 15px;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #c5c5c5;
+  border-radius: 4px;
+  outline-color: tomato;
+}
+
+.place-order-left .multi-fields {
+  display: flex;
+  gap: 10px;
+}
+
+/* --- Right cart summary --- */
+.place-order-right {
+  width: 100%;
+  max-width: max(40%, 500px);
+}
+
+.place-order .cart-total button {
+  margin-top: 30px;
+}
+
+/* --- Voucher Section --- */
+.voucher-section {
+  margin-top: 25px;
+}
+
+.voucher-section h3 {
+  font-size: 18px;
+  margin-bottom: 12px;
+  color: #444;
+  border-left: 4px solid tomato;
+  padding-left: 8px;
+}
+
+.voucher-list {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scroll-behavior: smooth;
+}
+
+.voucher-list::-webkit-scrollbar {
+  height: 8px;
+}
+
+.voucher-list::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.voucher-card {
+  flex: 0 0 220px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 12px 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  border: 2px solid transparent;
+}
+
+.voucher-card:hover:not(.expired) {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.voucher-card.selected {
+  border: 2px solid tomato;
+  box-shadow: 0 0 10px rgba(255, 99, 71, 0.4);
+}
+
+.voucher-card.expired {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #f8f8f8;
+}
+
+.voucher-card h4 {
+  font-size: 16px;
+  color: #222;
+  margin-bottom: 6px;
+}
+
+.voucher-card p {
+  font-size: 14px;
+  margin: 3px 0;
+}
+
+.voucher-card .status-active {
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.voucher-card .status-expired {
+  color: #d32f2f;
+  font-weight: 600;
 }
 
 .no-voucher {
-  margin-top: 15px;
+  margin-top: 10px;
   color: gray;
   font-style: italic;
+}
+
+/* --- ✅ Responsive --- */
+
+/* Tablet (màn < 1024px) */
+@media (max-width: 1024px) {
+  .place-order {
+    margin-left: 5%;
+    margin-right: 5%;
+    gap: 30px;
+  }
+
+  .place-order-left .title {
+    font-size: 26px;
+    margin-bottom: 30px;
+    margin-top: 20px;
+  }
+
+  .voucher-card {
+    flex: 0 0 200px;
+    padding: 10px 14px;
+  }
+
+  .voucher-card h4 {
+    font-size: 15px;
+  }
+
+  .voucher-card p {
+    font-size: 13px;
+  }
+}
+
+/* Mobile (màn < 768px) */
+@media (max-width: 768px) {
+  .place-order {
+    flex-direction: column;
+    align-items: center;
+    margin: 60px 5%;
+    gap: 40px;
+  }
+
+  .place-order-left,
+  .place-order-right {
+    max-width: 100%;
+  }
+
+  .place-order-left .title {
+    font-size: 22px;
+    margin-bottom: 25px;
+    margin-top: 20px;
+  }
+
+  .place-order-left input {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .voucher-list {
+    flex-wrap: nowrap;
+    gap: 10px;
+  }
+
+  .voucher-card {
+    flex: 0 0 180px;
+    padding: 10px;
+  }
+
+  .voucher-card h4 {
+    font-size: 14px;
+  }
+
+  .voucher-card p {
+    font-size: 12px;
+  }
+
+  .cart-total h2 {
+    font-size: 20px;
+  }
+
+  .cart-total-details p,
+  .cart-total-details b {
+    font-size: 14px;
+  }
+
+  .place-order .cart-total button {
+    width: 100%;
+    font-size: 16px;
+    padding: 10px;
+  }
+}
+
+/* Siêu nhỏ (màn < 480px) */
+@media (max-width: 480px) {
+  .voucher-card {
+    flex: 0 0 160px;
+    padding: 8px;
+  }
+
+  .voucher-card h4 {
+    font-size: 13px;
+  }
+
+  .voucher-card p {
+    font-size: 11.5px;
+  }
+
+  .voucher-section h3 {
+    font-size: 16px;
+  }
 }

@@ -174,25 +174,43 @@ export const PlaceOrder = () => {
         />
 
         {/* 🎟️ Voucher section */}
-        {user?.redeemedVouchers?.length > 0 ? (
-          <div className="voucher-section">
-            <label htmlFor="voucher">Chọn voucher:</label>
-            <select
-              id="voucher"
-              value={selectedVoucher}
-              onChange={(e) => setSelectedVoucher(e.target.value)}
-            >
-              <option value="">Không dùng voucher</option>
-              {user.redeemedVouchers.map((v, i) => (
-                <option key={i} value={v.code}>
-                  {v.code} - Giảm {formatVND(v.discountPercent)} VND
-                </option>
-              ))}
-            </select>
-          </div>
-        ) : (
-          <p className="no-voucher">Bạn chưa có voucher nào</p>
-        )}
+        <div className="voucher-section">
+          <h3>🎁 Voucher của bạn</h3>
+          {user?.redeemedVouchers?.length > 0 ? (
+            <div className="voucher-list">
+              {user.redeemedVouchers.map((v, i) => {
+                const isExpired = new Date(v.expiryDate) < new Date();
+                const isSelected = selectedVoucher === v.code;
+
+                return (
+                  <div
+                    key={i}
+                    className={`voucher-card ${isSelected ? "selected" : ""} ${
+                      isExpired ? "expired" : ""
+                    }`}
+                    onClick={() => {
+                      if (isExpired) return; // Không chọn voucher hết hạn
+                      setSelectedVoucher(isSelected ? "" : v.code);
+                    }}
+                  >
+                    <h4>{v.code}</h4>
+                    <p>Giảm: {formatVND(v.discountPercent)} VND</p>
+                    <p>
+                      Hết hạn: {new Date(v.expiryDate).toLocaleDateString()}
+                    </p>
+                    <p
+                      className={isExpired ? "status-expired" : "status-active"}
+                    >
+                      {isExpired ? "⛔ Hết hạn" : "✅ Còn hiệu lực"}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <p className="no-voucher">Bạn chưa có voucher nào</p>
+          )}
+        </div>
       </div>
 
       <div className="place-order-right">
