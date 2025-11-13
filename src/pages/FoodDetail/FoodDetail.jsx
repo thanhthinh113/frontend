@@ -24,6 +24,9 @@ const FoodDetail = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploading, setUploading] = useState(false);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const reviewsPerPage = 5;
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -79,6 +82,16 @@ const FoodDetail = () => {
       throw err;
     }
   };
+
+  const indexOfLastReview = currentPage * reviewsPerPage;
+  const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
+  const currentReviews = reviews.slice(indexOfFirstReview, indexOfLastReview);
+
+  // Tính toán số trang
+  const totalPages = Math.ceil(reviews.length / reviewsPerPage);
+
+  // Thay đổi trang
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
@@ -284,39 +297,63 @@ const FoodDetail = () => {
           {reviews.length === 0 ? (
             <p>Chưa có đánh giá nào.</p>
           ) : (
-            reviews.map((r) => (
-              <div className="review-item">
-                <div className="review-header">
-                  <div className="user-info">
-                    <div className="user-icon">
-                      {r.userName?.charAt(0).toUpperCase()}
+            currentReviews.map(
+              (
+                r // 👈 Sử dụng currentReviews
+              ) => (
+                <div key={r._id || r.createdAt} className="review-item">
+                  <div className="review-header">
+                    {/* ... (Nội dung review item) */}
+                    <div className="user-info">
+                      <div className="user-icon">
+                        {r.userName?.charAt(0).toUpperCase()}
+                      </div>
+                      <strong>{r.userName}</strong>
                     </div>
-                    <strong>{r.userName}</strong>
+                    <span className="user-rating">
+                      {Array.from({ length: r.rating }, (_, i) => (
+                        <FaStar key={i} color="#FFD700" />
+                      ))}
+                    </span>
                   </div>
-                  <span className="user-rating">
-                    {Array.from({ length: r.rating }, (_, i) => (
-                      <FaStar key={i} color="#FFD700" />
-                    ))}
-                  </span>
+
+                  <div className="review-body">
+                    <p className="review-comment">{r.comment}</p>
+
+                    {r.media && r.media.endsWith(".mp4") ? (
+                      <video src={r.media} controls className="review-media" />
+                    ) : r.media ? (
+                      <img
+                        src={r.media}
+                        alt="review"
+                        className="review-media"
+                      />
+                    ) : null}
+                  </div>
+
+                  <small className="review-date">
+                    {new Date(r.createdAt).toLocaleString()}
+                  </small>
                 </div>
-
-                <div className="review-body">
-                  <p className="review-comment">{r.comment}</p>
-
-                  {r.media && r.media.endsWith(".mp4") ? (
-                    <video src={r.media} controls className="review-media" />
-                  ) : r.media ? (
-                    <img src={r.media} alt="review" className="review-media" />
-                  ) : null}
-                </div>
-
-                <small className="review-date">
-                  {new Date(r.createdAt).toLocaleString()}
-                </small>
-              </div>
-            ))
+              )
+            )
           )}
         </div>
+
+        {/* 🌟 Hiển thị Phân Trang */}
+        {reviews.length > reviewsPerPage && (
+          <div className="pagination">
+            {[...Array(totalPages).keys()].map((number) => (
+              <button
+                key={number + 1}
+                onClick={() => paginate(number + 1)}
+                className={currentPage === number + 1 ? "active" : ""}
+              >
+                {number + 1}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
