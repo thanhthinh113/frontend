@@ -12,37 +12,97 @@
 
 .user-container h3 {
   margin-bottom: 25px;
-    font-size: 28px;
-    font-weight: 600;
-    color: #333;
-    border-bottom: 2px solid #e0e0e0;
-    padding-bottom: 15px;
+  font-size: 28px;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 15px;
 }
 
+.user-loading,
+.user-empty {
+  text-align: center;
+  color: #777;
+  font-size: 16px;
+  padding: 20px;
+}
+
+/* --- Thanh công cụ tìm kiếm --- */
+.user-tools {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* Ô tìm kiếm kiểu đẹp (tái sử dụng style từ Orders) */
+.search-box.pretty {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 8px 14px;
+    flex: 0 1 400px; /* Chiếm tối đa 400px */
+    transition: all 0.25s ease;
+    height: 40px;
+}
+
+.search-box.pretty:focus-within {
+    border-color: #ff6347;
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.15);
+}
+
+.search-box.pretty input {
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 15px;
+    color: #444;
+    background: transparent;
+}
+.search-box.pretty input:focus {
+    outline: none !important; 
+    box-shadow: none !important; 
+}
+
+.search-box.pretty .search-icon {
+    color: #ff6347;
+    margin-right: 10px;
+}
+
+
+/* --- Bảng Người dùng --- */
 .user-table {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px; /* Giảm khoảng cách giữa các hàng */
 }
 .user-table b{
-  font-weight: bold;
-  font-size: 16px;
+  font-weight: 600; /* Thay đổi từ bold sang 600 để đồng nhất */
+  font-size: 15px;
 }
 
 .user-row {
   display: grid;
-  grid-template-columns: 0.3fr 1fr 2fr 1fr 1.5fr 1fr 1fr 1fr;
+  /* Điều chỉnh lại grid columns cho phù hợp với nội dung */
+  grid-template-columns: 0.3fr 1fr 1.5fr 1fr 1.5fr 1fr 0.7fr 1fr; 
   align-items: center;
-  gap: 20px;
-  padding: 15px 20px;
+  gap: 15px; /* Giảm gap */
+  padding: 12px 20px; /* Giảm padding */
   font-size: 14px;
   border-radius: 8px;
+  word-break: break-word; /* Đảm bảo nội dung dài không làm vỡ layout */
 }
 
 .user-header {
-  font-weight: 600;
+   font-weight: 600;
   background-color: #f7f7f7;
   border: 1px solid #e0e0e0;
+  padding: 15px;
+  letter-spacing: 0.5px; /* Tăng tính chuyên nghiệp */
 }
 
 .user-item {
@@ -56,10 +116,27 @@
   box-shadow: 0 2px 10px rgba(0,0,0,0.08);
   transform: translateY(-2px);
 }
+
+/* Style bổ sung cho các cột */
+.user-points {
+    font-weight: 600;
+    color: #ff6347;
+}
+
+.user-role.admin {
+    font-weight: 600;
+    color: #e95959; /* Màu đỏ cho admin */
+}
+
+.user-role.user {
+    font-weight: 500;
+}
+
+/* --- Phân trang --- */
 .pagination {
   display: flex;
   gap: 10px;
-  margin-top: 20px;
+  margin-top: 25px; /* Tăng khoảng cách trên */
   justify-content: center;
 }
 
@@ -69,11 +146,51 @@
   border-radius: 6px;
   background-color: #fcfcfc;
   cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pagination button:hover {
+    background-color: #e9ecef;
 }
 
 .pagination button.active {
-  background-color: #007bff;
+  background-color: #ff6347;
   color: #fff;
-  border-color: #007bff;
+  border-color: #ff6347;
+  font-weight: 600;
+}
+.pagination button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    background-color: #f8f9fa;
+    color: #6c757d;
+}
+.point-filter-group {
+  display: flex;
+  gap: 10px;
+  margin-left: 30px;
 }
 
+.pf-btn {
+  border: 1.8px solid #ddd;
+  background: #fff;
+  padding: 8px 14px;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.25s;
+  font-weight: 500;
+}
+
+.pf-btn:hover {
+  border-color: #ffb3a7;
+  background: #fff6f5;
+}
+
+.pf-btn.active {
+  border-color: #ff6347;
+  background: #fff5f3;
+  color: #ff6347;
+  font-weight: 600;
+  box-shadow: 0 0 0 3px rgba(255, 99, 71, 0.15);
+}

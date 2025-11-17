@@ -2,14 +2,14 @@
 
 .orders-container {
     padding: 20px; 
-  margin: 30px auto;
-  width: 100%;
-  max-width: 1200px;
-  background-color: #ffffff;
-  border-radius: 12px; 
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
-  font-family: 'Outfit', sans-serif;
-  color: #333;
+    margin: 30px auto;
+    width: 100%;
+    max-width: 1200px;
+    background-color: #ffffff;
+    border-radius: 12px; 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
+    font-family: 'Outfit', sans-serif;
+    color: #333;
 }
 
 .orders-container h3 {
@@ -21,6 +21,134 @@
     padding-bottom: 15px;
 }
 
+.orders-loading,
+.orders-empty {
+  text-align: center;
+  color: #777;
+  font-size: 16px;
+  padding: 20px;
+}
+
+/* --- Thanh công cụ tìm kiếm và lọc --- */
+.order-tools {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 20px;
+}
+
+/* Ô tìm kiếm kiểu đẹp */
+.search-box.pretty {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 8px 14px;
+    flex: 1;
+    min-width: 280px;
+    max-width: 500px;
+    transition: all 0.25s ease;
+    height: 40px;
+}
+
+.search-box.pretty:focus-within {
+    border-color: #007bff;
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.15);
+}
+
+.search-box.pretty input {
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 15px;
+    color: #444;
+    background: transparent;
+}
+.search-box.pretty input:focus {
+    outline: none !important; 
+    box-shadow: none !important; 
+}
+
+.search-box.pretty .search-icon {
+    color: #007bff;
+    margin-right: 10px;
+}
+
+/* Nút lọc */
+.filter-btn {
+    border: 1.8px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+    color: #444;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+/* Cập nhật quy tắc cho SVG */
+.filter-btn svg { /* Icon trong nút lọc */
+    font-size: 16px;
+    color: #555; /* Màu mặc định cho Tất cả */
+    transition: all 0.25s ease;
+}
+
+/* THÊM QUY TẮC MỚI CHO ICON TRONG NÚT LỌC */
+.filter-btn .filter-icon.processing {
+    color: #ffc107; /* Vàng - Food Processing */
+}
+.filter-btn .filter-icon.delivery {
+    color: #17a2b8; /* Xanh ngọc - Out for delivery */
+}
+.filter-btn .filter-icon.delivered {
+    color: #28a745; /* Xanh lá - Delivered */
+}
+.filter-btn .filter-icon.all {
+    color: #007bff; /* Xanh dương - All */
+}
+
+
+.filter-btn:hover {
+    border-color: #a4caff;
+    background: #f0f7ff;
+}
+
+.filter-btn.active {
+    border-color: #007bff;
+    color: #007bff;
+    background: #e6f0ff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+/* Đảm bảo khi nút Active, icon vẫn giữ màu sắc trạng thái (trừ All) */
+/* Khi nút Active, màu chữ (color) của nút được đặt là #007bff, 
+   chúng ta cần ghi đè màu icon nếu nó là màu trạng thái */
+.filter-btn.active svg {
+    /* Đảm bảo icon All Active vẫn là màu #007bff (đã được đặt trên) */
+    /* Các màu trạng thái khác sẽ được ghi đè bởi quy tắc dưới */
+    color: currentColor; /* fallback */
+}
+
+/* Ghi đè màu icon trạng thái khi nút Active */
+.filter-btn.active .filter-icon.processing {
+    color: #ffc107; 
+}
+.filter-btn.active .filter-icon.delivery {
+    color: #17a2b8; 
+}
+.filter-btn.active .filter-icon.delivered {
+    color: #28a745; 
+}
+
+/* --- Danh sách và Thẻ đơn hàng --- */
 .order-list {
     display: flex;
     flex-direction: column;
@@ -48,6 +176,30 @@
     border-bottom: 1px solid #f0f0f0;
     padding-bottom: 15px;
     margin-bottom: 15px;
+    justify-content: space-between; /* Để đẩy icon trạng thái sang phải */
+}
+
+.order-card-header h4 {
+    flex-grow: 1;
+}
+
+.order-id {
+    color: #007bff;
+    font-weight: 700;
+}
+
+.status-icon {
+  font-size: 20px;
+  margin-left: 15px;
+}
+.status-icon.processing {
+  color: #ffc107; /* Vàng */
+}
+.status-icon.delivery {
+  color: #17a2b8; /* Xanh ngọc */
+}
+.status-icon.delivered {
+  color: #28a745; /* Xanh lá */
 }
 
 .order-card-header img {
@@ -72,32 +224,90 @@
     flex: 2;
     min-width: 250px;
 }
+.items-list-title {
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 10px;
+}
 
 .order-item-list {
-    font-size: 14px;
-    line-height: 1.6;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  /* align-items: center; */
+}
+
+.order-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #fafafa;
+  border: 1px solid #eee;
+  padding: 8px 12px;
+  border-radius: 10px;
+  transition: all 0.2s ease-in-out;
+}
+
+.order-item:hover {
+  background-color: #f1f1f1;
+}
+
+.order-item-img {
+  width: 55px;
+  height: 55px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+
+.order-item-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.item-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.item-quantity {
+  font-size: 13px;
+  color: #777;
+}
+.order-total {
+    font-size: 16px !important;
+}
+.order-total strong {
+    color: #ff6347 !important;
+    font-size: 18px;
 }
 
 .order-customer-info {
-    margin-top: 10px;
-    line-height: 1.4;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #f0f0f0;
+    line-height: 1.6;
     font-size: 14px;
     color: #777;
 }
 
-.order-customer-name {
+.customer-name-label {
     font-weight: 600;
     color: #333;
-    margin-bottom: 5px;
+    margin-right: 5px;
 }
 
 .order-details {
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 8px;
-    min-width: 150px;
+    min-width: 200px;
+    padding-left: 15px;
+    border-left: 1px solid #f0f0f0;
 }
 
 .order-details p {
@@ -140,10 +350,19 @@
     background-size: 10px;
     outline: none;
 }
+
+.order-card-footer select:disabled {
+    background-color: #e9ecef;
+    color: #6c757d;
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+/* Phân trang */
 .pagination {
   display: flex;
   gap: 10px;
-  margin-top: 20px;
+  margin-top: 25px;
   justify-content: center;
 }
 
@@ -153,62 +372,23 @@
   border-radius: 6px;
   background-color: #fcfcfc;
   cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.pagination button:hover {
+    background-color: #e9ecef;
 }
 
 .pagination button.active {
   background-color: #007bff;
   color: #fff;
   border-color: #007bff;
-}
-.order-item-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  align-items: center;
-}
-
-.order-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background-color: #fafafa;
-  border: 1px solid #eee;
-  padding: 8px 12px;
-  border-radius: 10px;
-  transition: all 0.2s ease-in-out;
-}
-
-.order-item:hover {
-  background-color: #f1f1f1;
-}
-
-.order-item-img {
-  width: 55px;
-  height: 55px;
-  border-radius: 8px;
-  object-fit: cover;
-  border: 1px solid #ddd;
-}
-
-.order-item-info {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.item-name {
-  font-size: 14px;
   font-weight: 600;
-  color: #333;
 }
 
-.item-quantity {
-  font-size: 13px;
-  color: #777;
+.pagination button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    background-color: #f8f9fa;
+    color: #6c757d;
 }
-.item-price{
-    font-size: 13px;
-    color: #666;
-}
-
-

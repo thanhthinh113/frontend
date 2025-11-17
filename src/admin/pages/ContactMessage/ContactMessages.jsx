@@ -7,7 +7,6 @@ import {
   FaTimes,
   FaPaperPlane,
   FaSearch,
-  FaCheckCircle,
   FaExclamationTriangle,
 } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
@@ -86,12 +85,7 @@ export const ContactMessages = () => {
       });
       const result = await res.json();
       if (result.success) {
-        toast.success(
-          <span>
-            <FaCheckCircle style={{ color: "limegreen", marginRight: 5 }} />
-            Đã gửi phản hồi thành công!
-          </span>
-        );
+        toast.success(<span>Đã gửi phản hồi thành công!</span>);
 
         const updatedContact = result.data; // ✅ dữ liệu mới từ server
 
