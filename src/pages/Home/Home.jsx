@@ -4,6 +4,7 @@ import ExploreMenu from "../../components/ExploreMenu/ExploreMenu";
 import { FoodDisplay } from "../../components/FoodDisplay/FoodDisplay";
 import { StoreContext } from "../../context/StoreContext";
 import ComboDeals from "../../components/ComboDeals/ComboDeals";
+import CustomerTestimonials from "../../components/CustomerTestimonials/CustomerTestimonials"; // <-- Import component mới
 import "./Home.css";
 import Benefit from "../../components/Benefit/Benefit";
 
@@ -26,6 +27,10 @@ export const Home = () => {
         ) : (
           <p>Đang tải món ăn...</p>
         )}
+      </section>
+      {/* <-- Thêm Cảm nhận khách hàng ở đây --> */}
+      <section className="home-section">
+        <CustomerTestimonials />
       </section>
       <section className="home-section">
         <ComboDeals />

@@ -52,55 +52,62 @@
 
 /* ẢNH TRÒN */
 .explore-menu-img {
-  width: 105px;
-  height: 105px;
-  border-radius: 50%;
-  border: 3px solid #fff;
-  background-color: #f8f8f8;
+  width: 110px; /* Tăng nhẹ kích thước để nổi bật hơn */
+  height: 110px;
+  /* THAY ĐỔI: Đổi từ 50% sang bo góc vuông, giá trị lớn hơn để trông mềm mại hơn */
+  border-radius: 15px; 
+  /* THAY ĐỔI: Viền mỏng và nhẹ hơn để tạo cảm giác sang trọng */
+  background-color: #fcfcfc; /* Nền trắng sáng hơn */
   object-fit: cover;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  /* THAY ĐỔI: Tăng đổ bóng để nổi bật hơn */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12); 
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .explore-menu-img:hover {
-  transform: scale(1.08);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  /* THAY ĐỔI: Tăng hiệu ứng scale khi hover */
+  transform: scale(1.12); 
+  /* THAY ĐỔI: Tăng đổ bóng mạnh hơn khi hover */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); 
 }
 
-/* ẢNH ĐẶC BIỆT */
+/* ẢNH ĐẶC BIỆT (Tất cả) */
 .explore-menu-img.all {
   display: flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #ff7e5f, #ff6b81);
   color: #fff;
-  font-size: 20px;
+  font-size: 22px; /* Tăng font size cho chữ ALL */
   font-weight: 700;
   border: none;
-  box-shadow: 0 4px 12px rgba(255, 107, 129, 0.4);
+  /* THAY ĐỔI: Bo góc và đổ bóng tương tự các ảnh khác */
+  border-radius: 15px; 
+  box-shadow: 0 6px 15px rgba(255, 107, 129, 0.3);
 }
 
 .explore-menu-img.placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #eee;
-  color: #999;
-  font-size: 18px;
+  background: #f0f0f0; /* Màu nền placeholder nhẹ nhàng hơn */
+  color: #a0a0a0; /* Màu chữ placeholder nhẹ nhàng hơn */
+  font-size: 20px; /* Tăng font size */
   font-weight: 700;
+  border-radius: 15px; /* Bo góc cho placeholder */
 }
 
 /* TÊN DANH MỤC */
 .explore-menu-item p {
-  font-size: 15px;
+  font-size: 16px; /* Tăng nhẹ font size */
   font-weight: 600;
-  color: #444;
-  margin-top: 8px;
+  color: #555; /* Màu chữ nhẹ nhàng hơn */
+  margin-top: 10px; /* Tăng khoảng cách */
   transition: color 0.2s ease;
 }
 
 .explore-menu-item:hover p {
-  color: #ff6b81;
+  color: #e55c42; /* Màu chữ khi hover (cam/đỏ nổi bật) */
 }
 
 /* ====== RESPONSIVE ====== */

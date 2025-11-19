@@ -1,7 +1,17 @@
 .service-page {
-  max-width: 1200px;
-  margin: 60px auto;
   text-align: center;
+  background: url("/images/strengths.jpg");
+  padding-bottom: 50px;
+  padding-top: 50px;
+  margin-top: 70px;
+  margin-bottom: 20px;
+}
+.service-page-title{
+    font-size: 28px;
+    font-weight: 600;
+    color: tomato;
+    letter-spacing: 1px;
+    padding-bottom: 10px;
 }
 
 .service-features {
@@ -9,7 +19,6 @@
   justify-content: center;
   flex-wrap: wrap;
   gap: 25px;
-  background-color: #fafafa;
   padding: 25px 15px;
   border-radius: 16px;
 }
@@ -24,6 +33,7 @@
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
   transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s;
   cursor: pointer;
+  width: 270px;
 }
 
 .feature-box:hover {
@@ -49,7 +59,67 @@
   color: #6b7280;
   font-size: 0.9rem;
 }
+.initial-hidden {
+    opacity: 0;
+    transform: none !important; 
+    animation: none !important; 
+}
 
+
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInTop {
+    from { opacity: 0; transform: translateY(-50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInBottom {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Áp dụng animation cho từng Box */
+.feature-box.slide-in-left,
+.feature-box.slide-in-right,
+.feature-box.slide-in-top,
+.feature-box.slide-in-bottom {
+    animation-fill-mode: both; 
+    animation-duration: 1.0s; 
+    animation-timing-function: ease-out;
+    transition: box-shadow 0.25s ease, background 0.25s;
+}
+
+.feature-box.slide-in-left {
+    animation-name: slideInLeft;
+}
+
+.feature-box.slide-in-right {
+    animation-name: slideInRight;
+}
+
+.feature-box.slide-in-top {
+    animation-name: slideInTop;
+}
+
+.feature-box.slide-in-bottom {
+    animation-name: slideInBottom;
+}
+
+/* Đảm bảo hiệu ứng hover vẫn hoạt động trên trạng thái cuối cùng */
+.feature-box:hover {
+  /* Giữ nguyên các thuộc tính hover hiện tại */
+  transform: translateY(-4px); 
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+  background: #f9fff2;
+}
 /* Responsive */
 @media (max-width: 768px) {
   .feature-box {

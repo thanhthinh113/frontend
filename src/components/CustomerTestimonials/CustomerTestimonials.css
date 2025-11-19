@@ -1,0 +1,204 @@
+.customer-testimonials {
+    text-align: center;
+    padding: 50px 0;
+    background-color: #fcf8f0;
+    margin-bottom: 20px;
+}
+
+.testimonials-title {
+    font-size: 28px;
+    font-weight: 600;
+    color: tomato;
+    margin-bottom: 40px;
+    letter-spacing: 1px;
+}
+
+.testimonials-list {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 0 5%;
+}
+
+.testimonial-card {
+    flex: 1;
+    max-width: 350px;
+    background-color: transparent;
+}
+
+.testimonial-image-container {
+    width: 100%;
+    height: 180px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background-color: #e0e0e0;
+    color: #555;
+    font-size: 14px;
+}
+
+.testimonial-text {
+    color: #666;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 25px;
+    padding: 10px 0;
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    height: 100px;
+    text-align: start;
+}
+
+.customer-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.customer-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #ffaa00;
+    flex-shrink: 0;
+}
+
+.customer-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background-color: #ccc;
+    color: #444;
+    font-size: 10px;
+}
+
+.customer-details {
+    text-align: left;
+}
+
+.customer-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+.customer-location {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+.initial-hidden {
+    opacity: 0;
+    transform: translateY(50px); 
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInTop {
+    from {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.testimonial-card {
+    transition: all 0.5s ease-out; 
+    animation-fill-mode: forwards; 
+}
+
+/* HIỆU ỨNG TỐC ĐỘ CHẬM HƠN (1.2s) */
+
+.slide-in-left {
+    animation: slideInLeft 1.2s ease-out forwards;
+}
+
+.slide-in-top {
+    animation: slideInTop 1.2s ease-out forwards;
+    animation-delay: 0.3s; 
+}
+
+.slide-in-right {
+    animation: slideInRight 1.2s ease-out forwards;
+    animation-delay: 0.2s;
+}
+
+.testimonial-card.initial-hidden {
+    opacity: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .testimonials-list {
+        flex-wrap: wrap;
+    }
+    .testimonial-card {
+        max-width: 45%;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .testimonials-title {
+        font-size: 24px;
+    }
+    .testimonials-list {
+        flex-direction: column;
+        align-items: center;
+    }
+    .testimonial-card {
+        max-width: 90%;
+    }
+}
