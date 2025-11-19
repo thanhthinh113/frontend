@@ -1,0 +1,123 @@
+/* src/components/NewsFeed/NewsFeed.css */
+
+.news-feed-container {
+    margin: 0 auto;
+    padding: 30px 15px;
+    text-align: center;
+    background-color: #fcf8f0;
+
+}
+
+.news-feed-title {
+    font-size: 28px;
+    font-weight: 600;
+    color: tomato;
+    margin-bottom: 40px;
+    letter-spacing: 1px;
+    margin-bottom: 40px;
+}
+
+.news-list {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+    /* THAY ĐỔI: Chuyển sang Grid cho Responsive linh hoạt hơn */
+    display: grid; 
+    /* Đảm bảo center hoạt động bằng cách đặt width hợp lý */
+    max-width: 1140px; 
+    margin: 0 auto 40px;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Mặc định 3 cột */
+    
+}
+
+.news-card {
+    width: 350px;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: left;
+}
+
+.news-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.news-image-wrapper {
+    overflow: hidden;
+    height: 200px;
+}
+
+.news-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.news-card:hover .news-image {
+    transform: scale(1.05);
+}
+
+.news-content {
+    padding: 15px 20px;
+}
+
+.news-content h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.news-date {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 15px;
+}
+
+.read-more {
+    font-size: 0.95rem;
+    color: #e55c42;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.read-more:hover {
+    color: #e55c42;
+}
+
+.view-all-btn {
+    padding: 12px 30px;
+    border: 2px solid #e55c42;
+    border-radius: 8px;
+    background: #fff;
+    color: #e55c42;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.view-all-btn:hover {
+    background: #e55c42;
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(255, 107, 129, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .news-card {
+        width: 100%;
+        max-width: 450px;
+    }
+    .news-list {
+        gap: 20px;
+    }
+}

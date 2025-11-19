@@ -7,6 +7,7 @@ import ComboDeals from "../../components/ComboDeals/ComboDeals";
 import CustomerTestimonials from "../../components/CustomerTestimonials/CustomerTestimonials"; // <-- Import component mới
 import "./Home.css";
 import Benefit from "../../components/Benefit/Benefit";
+import NewsFeed from "../../components/NewsFeed/NewsFeed";
 
 export const Home = () => {
   const { food_list } = useContext(StoreContext);
@@ -34,6 +35,9 @@ export const Home = () => {
       </section>
       <section className="home-section">
         <ComboDeals />
+      </section>
+      <section className="home-section home-news-feed">
+        <NewsFeed />
       </section>
     </div>
   );
