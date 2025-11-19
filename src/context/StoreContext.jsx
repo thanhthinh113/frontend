@@ -24,7 +24,7 @@ const StoreContextProvider = ({ children }) => {
   const [notifications, setNotifications] = useState([]);
 
   const url = "https://backend-foodrestaurant.onrender.com";
-  //const url = "http://localhost:4000";
+  // const url = "http://localhost:4000";
 
   const url_AI = "https://food-del-ai.onrender.com";
 
@@ -231,18 +231,30 @@ const StoreContextProvider = ({ children }) => {
 
   const refreshUser = async () => {
     if (!token) return;
+
+    // 🔥 1. Ưu tiên lấy user lưu từ lúc login (có role)
+    const cachedUser = localStorage.getItem("user");
+    if (cachedUser) {
+      setUser(JSON.parse(cachedUser));
+    }
+
     try {
       const res = await axios.get(`${url}/api/user/profile`, {
         headers: { token },
       });
+
       if (res.data.success) {
-        setUser(res.data.user);
-        localStorage.setItem("user", JSON.stringify(res.data.user));
-      } else {
-        console.warn("Không thể lấy thông tin user:", res.data.message);
+        // 🔥 2. Giữ nguyên role cũ nếu BE không trả role
+        const mergedUser = {
+          ...res.data.user,
+          role: JSON.parse(cachedUser)?.role || res.data.user.role,
+        };
+
+        setUser(mergedUser);
+        localStorage.setItem("user", JSON.stringify(mergedUser));
       }
-    } catch (err) {
-      console.error("Lỗi tải user mới:", err);
+    } catch (error) {
+      console.log(error);
     }
   };
 

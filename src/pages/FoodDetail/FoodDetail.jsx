@@ -20,12 +20,24 @@ const FoodDetail = () => {
   const [, setPendingOrders] = useState([]);
   const [reviewOrderId, setReviewOrderId] = useState(null);
   const [relatedFoods, setRelatedFoods] = useState([]);
-
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploading, setUploading] = useState(false);
-
   const [currentPage, setCurrentPage] = useState(1);
+  const [showReactionOptions, setShowReactionOptions] = useState(null);
   const reviewsPerPage = 5;
+
+  // Bộ emoji reaction
+  const REACTIONS = [
+    "😀","😅","😍","😂","😎","😭","☺️","😴","😢","😳","😡","😜","😁","😐",
+    "😌","😇","😏","😔","😑","😤","😖","😫","😩","😲","😱","😬","😵","😶",
+    "👀","💀","🤠","🤡","😝","😒","😪","😳","😐","😔","🤔","😳","🤯","🤕","🤢"
+  ];
+
+  // Map reaction ký tự thành JSX
+  const REACTION_ICONS = REACTIONS.reduce((acc, emoji) => {
+    acc[emoji] = <span style={{ fontSize: "1.5rem" }}>{emoji}</span>;
+    return acc;
+  }, {});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,37 +73,22 @@ const FoodDetail = () => {
     fetchData();
   }, [id, url, url_AI, user]);
 
-  // Upload file lên S3
   const uploadFileToS3 = async (file) => {
     try {
-      const res = await axios.get(
-        `${url}/api/upload-url?fileName=${encodeURIComponent(
-          file.name
-        )}&fileType=${file.type}`
+      const res = await axios.post(
+        `${url}/api/reviews/presign`,
+        { fileName: file.name, fileType: file.type },
+        { headers: { token: localStorage.getItem("token") } }
       );
-      const uploadUrl = res.data.uploadUrl;
-
-      await axios.put(uploadUrl, file, {
+      await axios.put(res.data.uploadUrl, file, {
         headers: { "Content-Type": file.type },
       });
-
-      // Trả về URL public từ BE
       return res.data.fileUrl;
     } catch (err) {
-      console.error("❌ Upload failed:", err.response?.data || err.message);
+      console.error("Upload failed:", err);
       throw err;
     }
   };
-
-  const indexOfLastReview = currentPage * reviewsPerPage;
-  const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
-  const currentReviews = reviews.slice(indexOfFirstReview, indexOfLastReview);
-
-  // Tính toán số trang
-  const totalPages = Math.ceil(reviews.length / reviewsPerPage);
-
-  // Thay đổi trang
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
@@ -134,6 +131,46 @@ const FoodDetail = () => {
       alert(err.response?.data?.message || "Lỗi đánh giá");
     }
   };
+
+  const handleAdminReaction = async (reviewId, reaction) => {
+    if (!user || user.role !== "admin") return;
+
+    try {
+      await axios.post(
+        `${url}/api/reviews/reaction/${reviewId}`,
+        { reaction },
+        { headers: { token: localStorage.getItem("token") } }
+      );
+      const res = await axios.get(`${url}/api/reviews/${id}`);
+      setReviews(res.data);
+      setShowReactionOptions(null);
+    } catch (err) {
+      alert("Lỗi thả cảm xúc");
+    }
+  };
+
+  const handleAdminReply = async (reviewId, text) => {
+    if (!text.trim() || !user || user.role !== "admin") return;
+
+    try {
+      await axios.post(
+        `${url}/api/reviews/reply/${reviewId}`,
+        { text },
+        { headers: { token: localStorage.getItem("token") } }
+      );
+
+      const res = await axios.get(`${url}/api/reviews/${id}`);
+      setReviews(res.data);
+    } catch (err) {
+      alert("Lỗi trả lời");
+    }
+  };
+
+  const indexOfLastReview = currentPage * reviewsPerPage;
+  const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
+  const currentReviews = reviews.slice(indexOfFirstReview, indexOfLastReview);
+  const totalPages = Math.ceil(reviews.length / reviewsPerPage);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const handleAddToCart = () => {
     if (!food) return;
@@ -188,54 +225,21 @@ const FoodDetail = () => {
             <button onClick={() => setQuantity((q) => q + 1)}>+</button>
           </div>
           <button className="btn-cart" onClick={handleAddToCart}>
-            🛒 Thêm vào giỏ hàng
+            Thêm vào giỏ hàng
           </button>
         </div>
       </div>
 
-      {/* Món liên quan */}
-      {relatedFoods.length > 0 && (
-        <div className="review-section">
-          <h3>Món ăn liên quan</h3>
-          <div className="related-grid">
-            {relatedFoods.map((item) => {
-              const foodId = item._id || item.id;
-              return (
-                <div
-                  key={foodId}
-                  className="related-item"
-                  onClick={() => navigate(`/food/${foodId}`)}
-                  style={{ cursor: "pointer" }}
-                >
-                  <img
-                    src={
-                      item.image?.startsWith("http")
-                        ? item.image
-                        : `${url}/${item.image}`
-                    }
-                    alt={item.name}
-                  />
-                  <h4>{item.name}</h4>
-                  <p>{item.price?.toLocaleString("vi-VN")} đ</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* Đánh giá */}
       <div className="review-section">
         <h3>Đánh giá & Bình luận</h3>
         {!user ? (
           <p className="warning">
-            ⚠️ Vui lòng{" "}
-            <span onClick={() => navigate("/login")}>đăng nhập</span> để bình
-            luận.
+            Vui lòng <span onClick={() => navigate("/login")}>đăng nhập</span>{" "}
+            để bình luận.
           </p>
         ) : !canReview ? (
           <p className="warning">
-            ⚠️ Bạn chỉ có thể đánh giá khi đã mua món ăn này.
+            Bạn chỉ có thể đánh giá khi đã mua món ăn này.
           </p>
         ) : (
           <form onSubmit={handleReviewSubmit} className="review-form">
@@ -249,15 +253,12 @@ const FoodDetail = () => {
                 />
               ))}
             </div>
-
             <textarea
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               placeholder="Viết bình luận..."
               required
             />
-
-            {/* Upload ảnh/video */}
             <div className="file-upload">
               <input
                 type="file"
@@ -282,74 +283,123 @@ const FoodDetail = () => {
                 </div>
               )}
             </div>
-
-            {uploading && (
-              <p className="uploading-text">Đang tải lên dữ liệu...</p>
-            )}
-
+            {uploading && <p className="uploading-text">Đang tải lên...</p>}
             <button type="submit" className="btn-submit" disabled={uploading}>
-              {uploading ? "Đang gửi..." : "Gửi đánh giá"}
+              Gửi đánh giá
             </button>
           </form>
         )}
 
         <div className="review-list">
-          {reviews.length === 0 ? (
+          {currentReviews.length === 0 ? (
             <p>Chưa có đánh giá nào.</p>
           ) : (
-            currentReviews.map(
-              (
-                r // 👈 Sử dụng currentReviews
-              ) => (
-                <div key={r._id || r.createdAt} className="review-item">
-                  <div className="review-header">
-                    {/* ... (Nội dung review item) */}
-                    <div className="user-info">
-                      <div className="user-icon">
-                        {r.userName?.charAt(0).toUpperCase()}
-                      </div>
-                      <strong>{r.userName}</strong>
+            currentReviews.map((r) => (
+              <div key={r._id} className="review-item">
+                <div className="review-header">
+                  <div className="user-info">
+                    <div className="user-icon">
+                      {r.userName?.charAt(0).toUpperCase() || "U"}
                     </div>
-                    <span className="user-rating">
-                      {Array.from({ length: r.rating }, (_, i) => (
-                        <FaStar key={i} color="#FFD700" />
-                      ))}
-                    </span>
+                    <strong>{r.userName}</strong>
                   </div>
+                  <div className="user-rating">
+                    {Array.from({ length: r.rating }, (_, i) => (
+                      <FaStar key={i} color="#FFD700" />
+                    ))}
+                  </div>
+                </div>
 
-                  <div className="review-body">
-                    <p className="review-comment">{r.comment}</p>
-
-                    {r.media && r.media.endsWith(".mp4") ? (
+                <div className="review-body">
+                  <p className="review-comment">{r.comment}</p>
+                  {r.media &&
+                    (r.media.includes(".mp4") || r.media.includes("video") ? (
                       <video src={r.media} controls className="review-media" />
-                    ) : r.media ? (
+                    ) : (
                       <img
                         src={r.media}
                         alt="review"
                         className="review-media"
                       />
-                    ) : null}
-                  </div>
-
-                  <small className="review-date">
-                    {new Date(r.createdAt).toLocaleString()}
-                  </small>
+                    ))}
                 </div>
-              )
-            )
+
+                <small className="review-date">
+                  {new Date(r.createdAt).toLocaleString("vi-VN")}
+                </small>
+
+                {r.reaction && (
+                  <div className="admin-reaction-public">
+                    <span className="reaction-icon">{REACTION_ICONS[r.reaction]}</span>
+                  </div>
+                )}
+
+                {user?.role === "admin" && (
+                  <div className="admin-actions">
+                    <button
+                      className="reaction-toggle-btn"
+                      onClick={() =>
+                        setShowReactionOptions(
+                          showReactionOptions === r._id ? null : r._id
+                        )
+                      }
+                    >
+                      {r.reaction ? REACTION_ICONS[r.reaction] : "➕"}
+                    </button>
+
+                    {showReactionOptions === r._id && (
+                      <div className="reaction-options">
+                        {REACTIONS.map((emoji) => (
+                          <button
+                            key={emoji}
+                            onClick={() => handleAdminReaction(r._id, emoji)}
+                          >
+                            {emoji}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+
+                    <div className="admin-reply-box">
+                      <textarea
+                        placeholder="Phản hồi từ cửa hàng..."
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" && !e.shiftKey) {
+                            e.preventDefault();
+                            handleAdminReply(r._id, e.target.value);
+                            e.target.value = "";
+                          }
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {r.reply?.text && (
+                  <div className="admin-reply-display">
+                    <strong>Phản hồi từ cửa hàng:</strong>
+                    <p>{r.reply.text}</p>
+                    <small>
+                      {new Date(r.reply.createdAt || Date.now()).toLocaleString(
+                        "vi-VN"
+                      )}
+                    </small>
+                  </div>
+                )}
+              </div>
+            ))
           )}
         </div>
 
-        {/* 🌟 Hiển thị Phân Trang */}
         {reviews.length > reviewsPerPage && (
           <div className="pagination">
-            {[...Array(totalPages).keys()].map((number) => (
+            {Array.from({ length: totalPages }, (_, i) => (
               <button
-                key={number + 1}
-                onClick={() => paginate(number + 1)}
-                className={currentPage === number + 1 ? "active" : ""}
+                key={i + 1}
+                onClick={() => paginate(i + 1)}
+                className={currentPage === i + 1 ? "active" : ""}
               >
-                {number + 1}
+                {i + 1}
               </button>
             ))}
           </div>

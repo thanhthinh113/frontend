@@ -474,6 +474,33 @@
   box-shadow: 0 3px 8px rgba(255, 75, 75, 0.3);
   transform: translateY(-1px);
 }
+
+.reaction-toggle-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.reaction-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 5px;
+  max-width: 300px;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.reaction-options button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
 /* =======================
    📱 Responsive
 ======================= */
