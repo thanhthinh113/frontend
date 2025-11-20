@@ -8,10 +8,30 @@ import {
   FaPaperPlane,
   FaSearch,
   FaExclamationTriangle,
+  FaMagic, // Icon mới cho Tin nhắn mẫu
 } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { StoreContext } from "../../../context/StoreContext";
+
+// DANH SÁCH TIN NHẮN MẪU
+const REPLY_TEMPLATES = [
+  {
+    id: 1,
+    label: "Cảm ơn & Hỗ trợ",
+    text: "Chào bạn, cảm ơn bạn đã liên hệ với Tomato. Chúng tôi đã nhận được yêu cầu của bạn và sẽ kiểm tra ngay. Chúng tôi sẽ phản hồi lại bạn sớm nhất có thể trong vòng 24 giờ tới. Cảm ơn sự kiên nhẫn của bạn!",
+  },
+  {
+    id: 2,
+    label: "Đã giải quyết",
+    text: "Chào bạn, chúng tôi đã xem xét vấn đề bạn gặp phải và đã thực hiện các bước khắc phục cần thiết. Vấn đề của bạn đã được giải quyết. Vui lòng kiểm tra lại. Nếu bạn có bất kỳ câu hỏi nào khác, đừng ngần ngại liên hệ lại nhé. Cảm ơn bạn!",
+  },
+  {
+    id: 3,
+    label: "Yêu cầu thêm thông tin",
+    text: "Chào bạn, để chúng tôi có thể hỗ trợ bạn tốt hơn, bạn vui lòng cung cấp thêm thông tin chi tiết về vấn đề này, bao gồm (mã đơn hàng, ảnh chụp màn hình, hoặc thời gian xảy ra). Chúng tôi rất mong nhận được phản hồi của bạn để nhanh chóng giải quyết.",
+  },
+];
 
 export const ContactMessages = () => {
   const { url } = useContext(StoreContext);
@@ -49,7 +69,9 @@ export const ContactMessages = () => {
     };
     fetchMessages();
   }, []);
-
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, filter]);
   const openMessage = async (msg) => {
     setSelectedMsg(msg);
     setReply("");
@@ -72,6 +94,21 @@ export const ContactMessages = () => {
   };
 
   const closeModal = () => setSelectedMsg(null);
+
+  /**
+   * Hàm chèn nội dung mẫu vào ô phản hồi
+   * @param {string} templateText
+   */
+  const applyTemplate = (templateText) => {
+    // Thêm tên người gửi vào đầu tin nhắn mẫu (tùy chọn)
+    const senderName = selectedMsg?.name.split(" ")[0] || "Bạn";
+    const personalizedText = templateText.replace(
+      "Chào bạn",
+      `Chào ${senderName}`
+    );
+
+    setReply(personalizedText);
+  };
 
   const handleReply = async () => {
     if (!reply.trim()) return toast.warn("✉️ Vui lòng nhập nội dung phản hồi.");
@@ -228,7 +265,12 @@ export const ContactMessages = () => {
           {/* --- Phân trang --- */}
           {totalPages > 1 && (
             <div className="pagination">
-              <button onClick={() => changePage(currentPage - 1)}>◀</button>
+              <button
+                onClick={() => changePage(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                ◀
+              </button>
               {Array.from({ length: totalPages }, (_, i) => (
                 <button
                   key={i}
@@ -238,7 +280,12 @@ export const ContactMessages = () => {
                   {i + 1}
                 </button>
               ))}
-              <button onClick={() => changePage(currentPage + 1)}>▶</button>
+              <button
+                onClick={() => changePage(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >
+                ▶
+              </button>
             </div>
           )}
         </>
@@ -277,6 +324,26 @@ export const ContactMessages = () => {
             ) : (
               <>
                 <h3 className="reply-title">✉️ Phản hồi</h3>
+
+                {/* === KHỐI TIN NHẮN MẪU MỚI === */}
+                <div className="template-box">
+                  <p className="template-title">
+                    <FaMagic /> Chọn tin nhắn mẫu:
+                  </p>
+                  <div className="template-buttons">
+                    {REPLY_TEMPLATES.map((template) => (
+                      <button
+                        key={template.id}
+                        className="template-btn"
+                        onClick={() => applyTemplate(template.text)}
+                      >
+                        {template.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                {/* ============================= */}
+
                 <textarea
                   className="reply-input"
                   placeholder="Nhập nội dung phản hồi..."
