@@ -11,6 +11,7 @@ const FoodDetail = () => {
   const { addToCart, url, user, url_AI } = useContext(StoreContext);
 
   const [food, setFood] = useState(null);
+  const [openReplyBox, setOpenReplyBox] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
@@ -221,15 +222,44 @@ const FoodDetail = () => {
         </div>
       </div>
 
+      {relatedFoods.length > 0 && (
+        <div className="review-section">
+          <h3>Món ăn liên quan</h3>
+          <div className="related-grid">
+            {relatedFoods.map((item) => {
+              const foodId = item._id || item.id;
+              return (
+                <div
+                  key={foodId}
+                  className="related-item"
+                  onClick={() => navigate(`/food/${foodId}`)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <img
+                    src={
+                      item.image?.startsWith("http")
+                        ? item.image
+                        : `${url}/${item.image}`
+                    }
+                    alt={item.name}
+                  />
+                  <h4>{item.name}</h4>
+                  <p>{item.price?.toLocaleString("vi-VN")} đ</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* ====================== REVIEW SECTION ====================== */}
       <div className="review-section">
         <h3>Đánh giá & Bình luận</h3>
 
         {!user ? (
           <p className="warning">
-            Vui lòng{" "}
-            <span onClick={() => navigate("/login")}>đăng nhập</span> để bình
-            luận.
+            Vui lòng <span onClick={() => navigate("/login")}>đăng nhập</span>{" "}
+            để bình luận.
           </p>
         ) : !canReview ? (
           <p className="warning">
@@ -289,7 +319,6 @@ const FoodDetail = () => {
           </form>
         )}
 
-        {/* ====================== DANH SÁCH REVIEW ====================== */}
         <div className="review-list">
           {currentReviews.length === 0 ? (
             <p>Chưa có đánh giá nào.</p>
@@ -330,31 +359,53 @@ const FoodDetail = () => {
                   {new Date(r.createdAt).toLocaleString("vi-VN")}
                 </small>
 
-                {/* ADMIN REPLY */}
                 {user?.role === "admin" && (
                   <div className="admin-actions">
-                    <div className="admin-reply-box">
-                      <textarea
-                        placeholder="Phản hồi từ cửa hàng..."
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter" && !e.shiftKey) {
-                            e.preventDefault();
-                            handleAdminReply(r._id, e.target.value);
-                            e.target.value = "";
-                          }
-                        }}
-                      />
-                    </div>
+                    {!r.reply || !r.reply.text ? (
+                      openReplyBox !== r._id ? (
+                        <button
+                          className="admin-reply-btn"
+                          onClick={() => setOpenReplyBox(r._id)}
+                        >
+                          💬 Trả lời
+                        </button>
+                      ) : (
+                        <div className="admin-reply-box">
+                          <textarea
+                            autoFocus
+                            placeholder="Phản hồi từ cửa hàng..."
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" && !e.shiftKey) {
+                                e.preventDefault();
+                                handleAdminReply(r._id, e.target.value);
+                                e.target.value = "";
+                                setOpenReplyBox(null);
+                              }
+                            }}
+                          />
+
+                          <button
+                            className="cancel-reply-btn"
+                            onClick={() => setOpenReplyBox(null)}
+                          >
+                            Hủy
+                          </button>
+                        </div>
+                      )
+                    ) : null}
                   </div>
                 )}
 
-                {r.reply && r.reply.text && (
+                {r.reply?.text && (
                   <div className="admin-reply-container">
                     <div className="admin-reply-header">
                       <div className="admin-reply-avatar">👤</div>
 
                       <div className="admin-reply-info">
-                        <strong className="admin-reply-name">Tomato</strong>
+                        <strong className="admin-reply-name">
+                          Phản hồi của Tomato
+                        </strong>
+
                         <span className="admin-reply-date">
                           {new Date(
                             r.reply.createdAt || Date.now()
@@ -384,11 +435,10 @@ const FoodDetail = () => {
               </button>
             ))}
           </div>
-        )} 
+        )}
       </div>
     </div>
   );
 };
 
 export default FoodDetail;
- 

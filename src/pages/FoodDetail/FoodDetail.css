@@ -439,6 +439,38 @@ và /* ======================= 🌟 Tổng thể bố cục ====================
   display: flex;
   flex-direction: column;
 }
+.admin-reply-btn {
+  background: transparent;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 4px 0;
+}
+
+.admin-reply-btn:hover {
+  text-decoration: underline;
+}
+
+.admin-reply-box textarea {
+  width: 100%;
+  min-height: 60px;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  resize: vertical;
+}
+
+.cancel-reply-btn {
+  margin-top: 6px;
+  background: #eee;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
 .admin-reply-name {
   font-size: 14px;
   font-weight: 600;
@@ -449,6 +481,13 @@ và /* ======================= 🌟 Tổng thể bố cục ====================
   color: #777;
   margin-top: 2px;
 }
+
+.admin-actions {
+  margin-left: 40px;
+  display: flex;
+  gap: 10px;
+}
+
 .admin-reply-content {
   background: #f5f5f5;
   padding: 10px 14px;
