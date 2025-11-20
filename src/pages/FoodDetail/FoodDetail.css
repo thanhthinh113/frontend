@@ -1,4 +1,3 @@
-
 .food-detail-container {
   max-width: 1200px;
   margin: 40px auto;
@@ -163,6 +162,7 @@
   font-weight: 700;
 }
 .review-form textarea {
+  width: 100%;
   padding: 12px;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -415,6 +415,9 @@
   text-decoration: underline;
 }
 
+.admin-reply-box {
+    margin-left: 40px;
+}
 .admin-reply-box textarea {
   width: 100%;
   min-height: 60px;
@@ -460,7 +463,123 @@
   line-height: 1.5;
   max-width: 80%;
   border: 1px solid #e1e1e1;
-} /* ======================= 📱 Responsive ======================= */
+} 
+
+/* ============================ ⭐ BỘ LỌC ĐÁNH GIÁ MỚI ============================ */
+.review-summary-box {
+  display: flex;
+  flex-direction: column;
+  padding: 15px 20px;
+  background: #fff;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #f0f0f0;
+}
+
+.average-rating-display {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: #333;
+}
+
+.average-rating-display strong {
+  font-size: 36px;
+  font-weight: 700;
+  color: #ff4b4b;
+}
+
+.star-display svg {
+  font-size: 20px;
+}
+
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.filter-mode-buttons {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.filter-btn {
+  background: #f7f7f7;
+  color: #555;
+  border: 1px solid #ddd;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+  background: #fff0f0;
+  border-color: #ffb4b4;
+  color: #ff4b4b;
+}
+
+.filter-btn.active {
+  background: #ff4b4b;
+  color: white;
+  border-color: #ff4b4b;
+  box-shadow: 0 2px 6px rgba(255, 75, 75, 0.3);
+  font-weight: 600;
+}
+
+.no-reviews-message {
+    text-align: center;
+    color: #888;
+    margin-top: 20px;
+}
+
+/* Pagination Style */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.pagination button {
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+}
+
+.pagination button:hover:not(:disabled) {
+  background: #ffeded;
+  border-color: #ff4b4b;
+  color: #ff4b4b;
+}
+
+.pagination button.active {
+  background: #ff4b4b;
+  color: white;
+  border-color: #ff4b4b;
+  font-weight: 600;
+}
+
+.pagination button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+/* ======================= 📱 Responsive ======================= */
 @media (max-width: 768px) {
   .food-card {
     flex-direction: column;
@@ -480,5 +599,13 @@
   }
   .review-section {
     padding: 18px;
+  }
+  .filter-buttons {
+    /* Chuyển sang cột trên màn hình nhỏ nếu cần */
+    flex-direction: column; 
+    gap: 8px;
+  }
+  .filter-btn {
+    width: 100%;
   }
 }

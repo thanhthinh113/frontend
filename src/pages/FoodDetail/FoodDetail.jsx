@@ -25,6 +25,10 @@ const FoodDetail = () => {
   const [uploading, setUploading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
+  // ✅ STATE MỚI CHO BỘ LỌC
+  const [filterMode, setFilterMode] = useState("all"); // 'all', 'comment', 'media'
+  const [filterRating, setFilterRating] = useState("all"); // 'all', 5, 4, 3, 2, 1
+
   const reviewsPerPage = 5;
 
   /** ====================== FETCH DATA ====================== */
@@ -64,6 +68,11 @@ const FoodDetail = () => {
 
     fetchData();
   }, [id, url, url_AI, user]);
+
+  // ✅ USE EFFECT RESET TRANG KHI LỌC THAY ĐỔI
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filterMode, filterRating]);
 
   /** ====================== UPLOAD MEDIA ====================== */
   const uploadFileToS3 = async (file) => {
@@ -144,22 +153,64 @@ const FoodDetail = () => {
 
       const res = await axios.get(`${url}/api/reviews/${id}`);
       setReviews(res.data);
+      setOpenReplyBox(null);
     } catch (err) {
-      alert("Lỗi trả lời");
+      alert("Lỗi trả lời", err);
     }
   };
+
+  /** ====================== LỌC VÀ TÍNH TOÁN (Filtering & Calculation) ====================== */
+
+  // Hàm tính tổng số lượng đánh giá theo số sao
+  const getRatingCounts = (allReviews) => {
+    return allReviews.reduce((counts, r) => {
+      counts[r.rating] = (counts[r.rating] || 0) + 1;
+      return counts;
+    }, {});
+  };
+
+  const ratingCounts = getRatingCounts(reviews);
+
+  // Danh sách đánh giá đã lọc
+  const filteredReviews = reviews.filter((r) => {
+    // 1. Lọc theo chế độ (Bình luận / Media)
+    if (filterMode === "comment" && !r.comment?.trim()) {
+      return false;
+    }
+    if (filterMode === "media" && !r.media) {
+      return false;
+    }
+
+    // 2. Lọc theo số sao
+    // Nếu filterMode là 'comment' hoặc 'media', ta không áp dụng filterRating
+    if (
+      filterRating !== "all" &&
+      filterMode === "all" &&
+      r.rating !== parseInt(filterRating)
+    ) {
+      return false;
+    }
+
+    // Nếu filterMode là 'comment' hoặc 'media', ta chỉ lọc theo chế độ đó.
+    // Nếu filterMode là 'all', ta mới lọc theo rating.
+    return true;
+  });
 
   /** ====================== PAGINATION ====================== */
   const indexOfLastReview = currentPage * reviewsPerPage;
   const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
-  const currentReviews = reviews.slice(indexOfFirstReview, indexOfLastReview);
-  const totalPages = Math.ceil(reviews.length / reviewsPerPage);
+  const currentReviews = filteredReviews.slice(
+    indexOfFirstReview,
+    indexOfLastReview
+  );
+  const totalPages = Math.ceil(filteredReviews.length / reviewsPerPage); // Tính tổng trang dựa trên danh sách đã lọc
 
   const paginate = (pageNumber) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
       setCurrentPage(pageNumber);
     }
   };
+
   /** ====================== CART ====================== */
   const handleAddToCart = () => {
     if (!food) return;
@@ -260,6 +311,75 @@ const FoodDetail = () => {
       <div className="review-section">
         <h3>Đánh giá & Bình luận</h3>
 
+        {/* ✅ HIỂN THỊ ĐIỂM TRUNG BÌNH VÀ CÁC NÚT LỌC */}
+        <div className="review-summary-box">
+          <div className="average-rating-display">
+            <strong>{averageRating}</strong> trên 5
+            <div className="star-display">
+              {Array.from({ length: 5 }, (_, i) => (
+                <FaStar
+                  key={i}
+                  color={i < Math.round(averageRating) ? "#FFD700" : "#ddd"}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className="filter-buttons">
+            {/* Lọc theo số sao */}
+            <button
+              className={`filter-btn ${
+                filterRating === "all" && filterMode === "all" ? "active" : ""
+              }`}
+              onClick={() => {
+                setFilterRating("all");
+                setFilterMode("all");
+              }}
+            >
+              Tất Cả ({reviews.length})
+            </button>
+            {[5, 4, 3, 2, 1].map((star) => (
+              <button
+                key={star}
+                className={`filter-btn ${
+                  filterRating === star && filterMode === "all" ? "active" : ""
+                }`}
+                onClick={() => {
+                  setFilterRating(star);
+                  setFilterMode("all");
+                }}
+              >
+                {star} Sao ({ratingCounts[star] || 0})
+              </button>
+            ))}
+          </div>
+
+          <div className="filter-buttons filter-mode-buttons">
+            {/* Lọc theo chế độ */}
+            <button
+              className={`filter-btn ${
+                filterMode === "comment" ? "active" : ""
+              }`}
+              onClick={() => {
+                setFilterMode("comment");
+                setFilterRating("all");
+              }}
+            >
+              Có Bình Luận ({reviews.filter((r) => r.comment?.trim()).length})
+            </button>
+            <button
+              className={`filter-btn ${filterMode === "media" ? "active" : ""}`}
+              onClick={() => {
+                setFilterMode("media");
+                setFilterRating("all");
+              }}
+            >
+              Có Hình Ảnh / Video ({reviews.filter((r) => r.media).length})
+            </button>
+          </div>
+        </div>
+        {/* HẾT PHẦN LỌC */}
+
         {!user ? (
           <p className="warning">
             Vui lòng <span onClick={() => navigate("/login")}>đăng nhập</span>{" "}
@@ -325,7 +445,9 @@ const FoodDetail = () => {
 
         <div className="review-list">
           {currentReviews.length === 0 ? (
-            <p>Chưa có đánh giá nào.</p>
+            <p className="no-reviews-message">
+              Không có đánh giá nào phù hợp với bộ lọc.
+            </p>
           ) : (
             currentReviews.map((r) => (
               <div key={r._id} className="review-item">
@@ -427,7 +549,7 @@ const FoodDetail = () => {
         </div>
 
         {/* ====================== PAGINATION ====================== */}
-        {reviews.length > reviewsPerPage && (
+        {filteredReviews.length > reviewsPerPage && (
           <div className="pagination">
             <button
               onClick={() => paginate(currentPage - 1)}
