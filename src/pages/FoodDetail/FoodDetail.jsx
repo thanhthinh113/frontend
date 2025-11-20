@@ -123,6 +123,7 @@ const FoodDetail = () => {
       setSelectedFile(null);
       setCanReview(false);
       setReviewOrderId(null);
+      setCurrentPage(1);
     } catch (err) {
       console.error(err);
       setUploading(false);
@@ -154,8 +155,11 @@ const FoodDetail = () => {
   const currentReviews = reviews.slice(indexOfFirstReview, indexOfLastReview);
   const totalPages = Math.ceil(reviews.length / reviewsPerPage);
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
+  const paginate = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
   /** ====================== CART ====================== */
   const handleAddToCart = () => {
     if (!food) return;
@@ -425,6 +429,13 @@ const FoodDetail = () => {
         {/* ====================== PAGINATION ====================== */}
         {reviews.length > reviewsPerPage && (
           <div className="pagination">
+            <button
+              onClick={() => paginate(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              ◀
+            </button>
+
             {Array.from({ length: totalPages }, (_, i) => (
               <button
                 key={i + 1}
@@ -434,6 +445,13 @@ const FoodDetail = () => {
                 {i + 1}
               </button>
             ))}
+
+            <button
+              onClick={() => paginate(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              ▶
+            </button>
           </div>
         )}
       </div>

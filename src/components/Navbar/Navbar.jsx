@@ -92,8 +92,6 @@ export const Navbar = ({ setShowLogin }) => {
         </ul>
 
         <div className="navbar-right">
-          <img src={assets.search_icon} alt="Search icon" />
-
           <div className="navbar-search-icon" style={{ position: "relative" }}>
             <Link to="/cart">
               <img src={assets.basket_icon} alt="Basket icon" />

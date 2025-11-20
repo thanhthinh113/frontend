@@ -2,7 +2,6 @@ import React from "react";
 import { useInView } from "react-intersection-observer"; // <-- Import hook
 import "./CustomerTestimonials.css";
 
-// Dữ liệu mẫu
 const testimonialsData = [
   {
     id: 1,
@@ -32,43 +31,33 @@ const testimonialsData = [
 ];
 
 const CustomerTestimonials = () => {
-  // Sử dụng useInView cho container chính
   const [ref, inView] = useInView({
-    // Đã thay đổi:
-    triggerOnce: false, // <-- Thay đổi thành FALSE để kích hoạt lại mỗi lần vào/ra viewport
-    threshold: 0.1, // Kích hoạt khi 10% component hiển thị
+    triggerOnce: false,
+    threshold: 0.1,
   });
 
-  // Gán class animation dựa trên vị trí và trạng thái inView
   const getAnimationClass = (index) => {
-    // Khi inView là FALSE (component cuộn ra ngoài), bạn muốn nó trở lại trạng thái ẩn ban đầu.
-    // Khi inView là TRUE (component cuộn vào), bạn muốn nó chạy animation.
-
     if (inView) {
-      if (index === 0) return "slide-in-left"; // Hình 1: Từ trái vào
-      if (index === 1) return "slide-in-top"; // Hình 2 (ở giữa): Từ trên xuống
-      if (index === 2) return "slide-in-right"; // Hình 3: Từ phải vào
+      if (index === 0) return "slide-in-left";
+      if (index === 1) return "slide-in-top";
+      if (index === 2) return "slide-in-right";
     }
 
-    // Nếu không inView, trở về trạng thái ẩn ban đầu
     return "initial-hidden-retrigger";
   };
 
   return (
     <div className="customer-testimonials" ref={ref}>
       {" "}
-      {/* <-- Gắn ref */}
       <h2 className="testimonials-title">CẢM NHẬN CỦA KHÁCH HÀNG</h2>
       <div className="testimonials-list">
         {testimonialsData.map((testimonial, index) => (
           <div
             key={testimonial.id}
-            // Chỉ gán class animation khi inView là TRUE
             className={`testimonial-card ${
               inView ? getAnimationClass(index) : "initial-hidden-retrigger"
             }`}
           >
-            {/* Khu vực ảnh chụp khách hàng */}
             <div className="testimonial-image-container">
               {testimonial.image ? (
                 <img
@@ -76,18 +65,15 @@ const CustomerTestimonials = () => {
                   alt={`Ảnh khách hàng ${testimonial.name}`}
                 />
               ) : (
-                // Giữ lại placeholder nếu không có ảnh
                 <p className="image-placeholder">Chưa có ảnh</p>
               )}
             </div>
 
-            {/* Khu vực nội dung cảm nhận */}
             <p className="testimonial-text">{testimonial.text}</p>
 
-            {/* Thông tin khách hàng */}
             <div className="customer-info">
               <div className="customer-avatar">
-                {testimonial.avatar && ( // Kiểm tra xem có đường dẫn avatar không
+                {testimonial.avatar && (
                   <img
                     src={testimonial.avatar}
                     alt={`Avatar của ${testimonial.name}`}

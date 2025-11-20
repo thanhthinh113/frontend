@@ -67,8 +67,13 @@ export const List = () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredList.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredList.length / itemsPerPage);
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
 
   // Reset page khi tìm kiếm thay đổi
   useEffect(() => {
@@ -145,10 +150,15 @@ export const List = () => {
       </div>
 
       {/* Phân trang */}
-      <div className="pagination">
-        {Array.from(
-          { length: Math.ceil(filteredList.length / itemsPerPage) },
-          (_, i) => (
+      {totalPages > 1 && (
+        <div className="pagination">
+          <button
+            onClick={() => paginate(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            ◀
+          </button>
+          {Array.from({ length: totalPages }, (_, i) => (
             <button
               key={i + 1}
               onClick={() => paginate(i + 1)}
@@ -156,9 +166,15 @@ export const List = () => {
             >
               {i + 1}
             </button>
-          )
-        )}
-      </div>
+          ))}
+          <button
+            onClick={() => paginate(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            ▶
+          </button>
+        </div>
+      )}
 
       {editingFood && (
         <Edit

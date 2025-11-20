@@ -82,6 +82,7 @@
   border: 1px solid #e0e0e0;
   background-color: #fcfcfc;
   transition: all 0.2s ease-in-out;
+  cursor: pointer;
 }
 
 .voucher-item:hover {

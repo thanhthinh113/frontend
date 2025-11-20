@@ -8,7 +8,7 @@ export const MyOrders = () => {
   const { url, token } = useContext(StoreContext);
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [ordersPerPage] = useState(5);
+  const [ordersPerPage] = useState(5); // Số lượng đơn hàng trên mỗi trang
 
   const formatVND = (amount) => amount.toLocaleString("vi-VN");
 
@@ -30,12 +30,16 @@ export const MyOrders = () => {
   }, [token]);
 
   // ---- Phân trang ----
+  const totalPages = Math.ceil(data.length / ordersPerPage);
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
   const currentOrders = data.slice(indexOfFirstOrder, indexOfLastOrder);
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
+  const paginate = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
   return (
     <div className="my-orders">
       <h2>My Orders</h2>
@@ -113,10 +117,16 @@ export const MyOrders = () => {
       </div>
 
       {/* Phân trang */}
-      <div className="pagination">
-        {Array.from(
-          { length: Math.ceil(data.length / ordersPerPage) },
-          (_, i) => (
+      {totalPages > 1 && (
+        <div className="pagination">
+          <button
+            onClick={() => paginate(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            ◀
+          </button>
+          {/* Tạo các nút số trang */}
+          {Array.from({ length: totalPages }, (_, i) => (
             <button
               key={i + 1}
               onClick={() => paginate(i + 1)}
@@ -124,9 +134,15 @@ export const MyOrders = () => {
             >
               {i + 1}
             </button>
-          )
-        )}
-      </div>
+          ))}
+          <button
+            onClick={() => paginate(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            ▶
+          </button>
+        </div>
+      )}
     </div>
   );
 };

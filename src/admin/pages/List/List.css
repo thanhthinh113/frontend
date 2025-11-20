@@ -51,6 +51,7 @@
   border: 1px solid #e0e0e0;
   background-color: #fcfcfc;
   transition: all 0.25s ease; /* Đồng bộ với .food-item */
+  cursor: pointer;
 }
 
 .table-item:hover {
@@ -124,27 +125,6 @@
 .edit-btn:hover {
   color: #0056b3;
   background-color: #e6f0ff;
-}
-
-.pagination {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-  justify-content: center;
-}
-
-.pagination button {
-  padding: 6px 12px;
-  border: 1px solid #d1d1d1;
-  border-radius: 6px;
-  background-color: #fcfcfc;
-  cursor: pointer;
-}
-
-.pagination button.active {
-  background-color: #007bff;
-  color: #fff;
-  border-color: #007bff;
 }
 
 /* --- Thanh tìm kiếm đẹp giống User --- */

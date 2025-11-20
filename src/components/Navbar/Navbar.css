@@ -67,16 +67,7 @@
 .navbar-right {
   display: flex;
   align-items: center;
-  gap: 25px;
-}
-
-.navbar-right img {
-  cursor: pointer;
-  transition: transform 0.3s ease;
-}
-
-.navbar-right img:hover {
-  transform: scale(1.1);
+  gap: 20px;
 }
 
 .navbar button {
