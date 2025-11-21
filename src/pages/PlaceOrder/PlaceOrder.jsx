@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export const PlaceOrder = () => {
-  const { getTotalCartAmount, token, food_list, cartItems, url, user } =
+  const { getTotalCartAmount, token, food_list, combos, cartItems, url, user } =
     useContext(StoreContext);
 
   const [data, setData] = useState({
@@ -40,25 +40,63 @@ export const PlaceOrder = () => {
     setDiscountPercent(voucher ? voucher.discountPercent : 0);
   }, [selectedVoucher, user]);
 
+  const getItemDetails = (itemId) => {
+    // 1. Tìm trong danh sách Food
+    let item = food_list.find((f) => f._id === itemId);
+    let itemType = "food";
+
+    // 2. Nếu không phải Food, tìm trong danh sách Combo
+    if (!item) {
+      item = combos.find((c) => c._id === itemId);
+      itemType = "combo";
+    }
+
+    if (item) {
+      // Trích xuất giá (dùng discountPrice nếu có cho Combo)
+      const price =
+        itemType === "combo" ? item.discountPrice || item.price : item.price;
+
+      return {
+        ...item,
+        price: price, // Giá đã xử lý
+        isCombo: itemType === "combo",
+        // Đảm bảo có các trường cần thiết cho orderItems (price là số nguyên)
+        // LƯU Ý: Stripe yêu cầu giá phải là số nguyên (ví dụ: VND)
+        parsedPrice: Math.round(price),
+      };
+    }
+    return null; // Không tìm thấy
+  };
+
   const navigate = useNavigate();
 
   const placeOrder = async (e) => {
     e.preventDefault();
 
     let orderItems = [];
-    food_list.forEach((item) => {
-      if (cartItems[item._id] > 0) {
-        orderItems.push({
-          foodId: item._id,
-          name: item.name,
-          price: item.price,
-          quantity: cartItems[item._id],
-          image: item.image,
-          description: item.description,
-          categoryId: item.categoryId,
-        });
+    for (const itemId in cartItems) {
+      const quantity = cartItems[itemId];
+
+      if (quantity > 0) {
+        const itemDetails = getItemDetails(itemId);
+
+        if (itemDetails) {
+          orderItems.push({
+            // Đảm bảo tên sản phẩm phân biệt được Combo/Food
+            name: itemDetails.name + (itemDetails.isCombo ? " (Combo)" : ""),
+            // ⚠️ Dùng ID gốc (Food ID hoặc Combo ID)
+            foodId: itemDetails._id,
+            // Dùng giá đã được xử lý (parsedPrice là số nguyên)
+            price: itemDetails.parsedPrice,
+            quantity: quantity,
+            // Các thông tin khác cần thiết cho orderModel
+            image: itemDetails.image,
+            description: itemDetails.description,
+            categoryId: itemDetails.categoryId, // Nếu là Combo thì trường này có thể null/undefined
+          });
+        }
       }
-    });
+    }
 
     // Tổng tiền tạm tính
     let totalAmount = getTotalCartAmount() + 30000;

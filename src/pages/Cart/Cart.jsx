@@ -1,18 +1,51 @@
+// src/pages/Cart/Cart.jsx
+
 import React, { useContext } from "react";
 import "./Cart.css";
 import { StoreContext } from "../../context/StoreContext";
 import { useNavigate } from "react-router-dom";
 
 export const Cart = () => {
-  const { cartItems, food_list, removeFromCart, getTotalCartAmount } =
+  // Lấy thêm 'combos' từ StoreContext
+  const { cartItems, food_list, combos, removeFromCart, getTotalCartAmount } =
     useContext(StoreContext);
 
   const navigate = useNavigate();
 
-  // Hoặc dùng cách đơn giản hơn:
   const formatVNDSimple = (amount) => {
     return amount.toLocaleString("vi-VN");
   };
+
+  // 🧠 HÀM MỚI: Tìm chi tiết (Tên, Ảnh, Giá) của Food hoặc Combo dựa trên ID
+  const getItemDetails = (itemId) => {
+    // 1. Tìm trong danh sách Food
+    let item = food_list.find((f) => f._id === itemId);
+    let itemType = "food";
+
+    // 2. Nếu không phải Food, tìm trong danh sách Combo
+    if (!item) {
+      item = combos.find((c) => c._id === itemId);
+      itemType = "combo";
+    }
+
+    if (item) {
+      // Trích xuất giá (dùng discountPrice nếu có cho Combo)
+      const price =
+        itemType === "combo" ? item.discountPrice || item.price : item.price;
+
+      return {
+        ...item,
+        price: price, // Sử dụng giá đã được xử lý (đơn vị/combo)
+        isCombo: itemType === "combo",
+      };
+    }
+    return null; // Không tìm thấy
+  };
+
+  // Lấy tất cả các ID có trong giỏ hàng
+  const itemIdsInCart = Object.keys(cartItems).filter(
+    (itemId) => cartItems[itemId] > 0
+  );
 
   return (
     <div className="cart">
@@ -27,16 +60,29 @@ export const Cart = () => {
         </div>
         <br />
         <hr />
-        {food_list.map((item) => {
-          if (cartItems[item._id] > 0) {
+
+        {/* 🔄 Lặp qua TẤT CẢ các ID có trong cartItems */}
+        {itemIdsInCart.map((itemId) => {
+          const item = getItemDetails(itemId);
+          const quantity = cartItems[itemId];
+
+          if (item && quantity > 0) {
             return (
               <div key={item._id}>
-                <div className="cart-items-title cart-items-item">
+                <div
+                  className={`cart-items-title cart-items-item ${
+                    item.isCombo ? "combo-item" : ""
+                  }`}
+                >
                   <img src={`${item.image}`} alt={item.name} />
-                  <p>{item.name}</p>
+                  <p>
+                    {item.name}
+                    {/* 🏷️ Thêm tag 'Combo' nếu là combo */}
+                    {item.isCombo && <span className="combo-badge">Combo</span>}
+                  </p>
                   <p>{formatVNDSimple(item.price)} VND</p>
-                  <p>{cartItems[item._id]}</p>
-                  <p>{formatVNDSimple(item.price * cartItems[item._id])} VND</p>
+                  <p>{quantity}</p>
+                  <p>{formatVNDSimple(item.price * quantity)} VND</p>
                   <p onClick={() => removeFromCart(item._id)} className="cross">
                     x
                   </p>
@@ -45,8 +91,11 @@ export const Cart = () => {
               </div>
             );
           }
+          return null; // Bỏ qua nếu không tìm thấy item
         })}
       </div>
+
+      {/* ... (Phần cart-bottom giữ nguyên) ... */}
 
       <div className="cart-bottom">
         <div className="cart-total">

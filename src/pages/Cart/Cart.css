@@ -118,7 +118,24 @@
   background-color: #ff6347;
   box-shadow: 0 4px 10px rgba(255, 99, 71, 0.3);
 }
+/* Cart.css (thêm vào cuối file) */
 
+/* Làm nổi bật dòng là combo */
+.combo-item {
+  background-color: #fff9f0; /* Màu nền nhạt cho combo */
+}
+
+/* Badge hiển thị chữ Combo */
+.combo-badge {
+  background-color: #ff9800; /* Màu cam */
+  color: white;
+  padding: 2px 6px;
+  font-size: 12px;
+  border-radius: 4px;
+  margin-left: 4px;
+  font-weight: 500;
+  vertical-align: middle;
+}
 /* ===== Responsive ===== */
 @media (max-width: 900px) {
   .cart-items-title {

@@ -24,7 +24,7 @@ const StoreContextProvider = ({ children }) => {
   const [notifications, setNotifications] = useState([]);
 
   const url = "https://backend-foodrestaurant.onrender.com";
-  //const url = "http://localhost:4000";
+  // const url = "http://localhost:4000";
 
   const url_AI = "https://food-del-ai.onrender.com";
 
@@ -158,12 +158,30 @@ const StoreContextProvider = ({ children }) => {
     }
   };
 
+  const getItemPrice = (itemId) => {
+    // 1. Tìm trong food_list
+    const foodItem = food_list.find((f) => f._id === itemId);
+    if (foodItem) {
+      return parseFloat(foodItem.price);
+    }
+
+    // 2. Tìm trong combos
+    const comboItem = combos.find((c) => c._id === itemId);
+    if (comboItem) {
+      // Combo có thể có discountPrice
+      return parseFloat(comboItem.discountPrice || comboItem.price);
+    }
+
+    return 0; // Trả về 0 nếu không tìm thấy
+  };
+
+  // 💰 Tính tổng tiền
   const getTotalCartAmount = () => {
     let total = 0;
     for (const itemId in cartItems) {
       if (cartItems[itemId] > 0) {
-        const item = food_list.find((f) => f._id === itemId);
-        if (item) total += item.price * cartItems[itemId];
+        const price = getItemPrice(itemId); // Sử dụng hàm tìm giá mới
+        total += price * cartItems[itemId];
       }
     }
     return total;
