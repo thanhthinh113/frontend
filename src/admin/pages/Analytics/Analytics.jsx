@@ -181,7 +181,7 @@ const Analytics = () => {
 
   return (
     <div className="analytics-dashboard">
-      <h3>📊 Bảng điều khiển Quản trị (Dashboard)</h3>
+      <h3>📊 Bảng điều khiển Quản trị </h3>
 
       {/* Tổng quan */}
       <div className="stats-grid">

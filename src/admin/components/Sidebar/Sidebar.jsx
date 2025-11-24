@@ -17,6 +17,7 @@ export const Sidebar = () => {
   return (
     <div className="sidebar">
       <div className="sidebar-options">
+        {/* 1. ANALYTICS / DASHBOARD (Ưu tiên cao nhất) */}
         <NavLink
           to="/admin/analytics"
           className={({ isActive }) =>
@@ -24,39 +25,10 @@ export const Sidebar = () => {
           }
         >
           <FaChartBar className="sidebar-icon" />
-          <p>Analytics</p>
+          <p>Dashboard</p>
         </NavLink>
 
-        <NavLink
-          to="/admin/add"
-          className={({ isActive }) =>
-            isActive ? "sidebar-option active" : "sidebar-option"
-          }
-        >
-          <FaPlusCircle className="sidebar-icon" />
-          <p>Add Items</p>
-        </NavLink>
-
-        <NavLink
-          to="/admin/list"
-          className={({ isActive }) =>
-            isActive ? "sidebar-option active" : "sidebar-option"
-          }
-        >
-          <FaListAlt className="sidebar-icon" />
-          <p>List Items</p>
-        </NavLink>
-
-        <NavLink
-          to="/admin/categories"
-          className={({ isActive }) =>
-            isActive ? "sidebar-option active" : "sidebar-option"
-          }
-        >
-          <FaThLarge className="sidebar-icon" />
-          <p>Categories</p>
-        </NavLink>
-
+        {/* 2. ORDERS (Thao tác kinh doanh hàng ngày) */}
         <NavLink
           to="/admin/orders"
           className={({ isActive }) =>
@@ -67,16 +39,53 @@ export const Sidebar = () => {
           <p>Orders</p>
         </NavLink>
 
+        {/* 3. VOUCHER (Quản lý chương trình khuyến mãi) */}
         <NavLink
-          to="/admin/users"
+          to="/admin/voucher"
           className={({ isActive }) =>
             isActive ? "sidebar-option active" : "sidebar-option"
           }
         >
-          <FaUsers className="sidebar-icon" />
-          <p>Users</p>
+          <FaTicketAlt className="sidebar-icon" />
+          <p>Voucher</p>
         </NavLink>
 
+        {/* --- QUẢN LÝ SẢN PHẨM (MENU MANAGEMENT) --- */}
+
+        {/* 4. LIST ITEMS (Xem/Sửa tất cả sản phẩm) */}
+        <NavLink
+          to="/admin/list"
+          className={({ isActive }) =>
+            isActive ? "sidebar-option active" : "sidebar-option"
+          }
+        >
+          <FaListAlt className="sidebar-icon" />
+          <p>List Items</p>
+        </NavLink>
+
+        {/* 5. ADD ITEMS (Thêm sản phẩm mới) */}
+        <NavLink
+          to="/admin/add"
+          className={({ isActive }) =>
+            isActive ? "sidebar-option active" : "sidebar-option"
+          }
+        >
+          <FaPlusCircle className="sidebar-icon" />
+          <p>Add Items</p>
+        </NavLink>
+
+        {/* 6. CATEGORIES (Danh mục sản phẩm) */}
+        <NavLink
+          to="/admin/categories"
+          className={({ isActive }) =>
+            isActive ? "sidebar-option active" : "sidebar-option"
+          }
+        >
+          <FaThLarge className="sidebar-icon" />
+          <p>Categories</p>
+        </NavLink>
+
+        {/* 7. COMBO (Quản lý các gói/combo đặc biệt) */}
         <NavLink
           to="/admin/combos"
           className={({ isActive }) =>
@@ -87,15 +96,20 @@ export const Sidebar = () => {
           <p>Combo</p>
         </NavLink>
 
+        {/* --- QUẢN LÝ NGƯỜI DÙNG & HỖ TRỢ --- */}
+
+        {/* 8. USERS (Quản lý tài khoản khách hàng) */}
         <NavLink
-          to="/admin/voucher"
+          to="/admin/users"
           className={({ isActive }) =>
             isActive ? "sidebar-option active" : "sidebar-option"
           }
         >
-          <FaTicketAlt className="sidebar-icon" />
-          <p>Voucher</p>
+          <FaUsers className="sidebar-icon" />
+          <p>Users</p>
         </NavLink>
+
+        {/* 9. CONTACT MESSAGES (Hỗ trợ khách hàng/Tin nhắn) */}
         <NavLink
           to="/admin/contact"
           className={({ isActive }) =>

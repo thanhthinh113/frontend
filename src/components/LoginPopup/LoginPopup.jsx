@@ -48,7 +48,7 @@ export const LoginPopup = ({ setShowLogin }) => {
           toast.success("Đăng nhập thành công!");
           loginUser({ token: res.data.token, user: res.data.user });
           localStorage.setItem("role", res.data.user.role);
-          if (res.data.user.role === "admin") navigate("/admin/analytics");
+          if (res.data.user.role === "admin") navigate("/admin/orders");
           setShowLogin(false);
         } else {
           toast.error(res.data.message || "Sai thông tin đăng nhập");
