@@ -34,11 +34,13 @@
 /* ====== DANH SÁCH ====== */
 .explore-menu-list {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  /* 🎯 THAY ĐỔI: BỎ flex-wrap và justify-content */
+  /* flex-wrap: wrap; */ 
+  /* justify-content: center; */
   gap: 25px;
   max-width: 1000px;
   margin: 0 auto;
+  scrollbar-width: none;
 }
 
 /* ====== MỤC DANH MỤC ====== */
@@ -111,6 +113,27 @@
 }
 
 /* ====== RESPONSIVE ====== */
+@media (max-width: 1024px) {
+  /* Cho phép cuộn ngang khi màn hình hẹp hơn */
+  .explore-menu {
+    padding: 30px 0; /* Loại bỏ padding ngang của container chính */
+  }
+
+ .explore-menu-list {
+    overflow-x: auto; 
+    overflow-y: hidden;
+    padding: 0 15px; 
+    scroll-behavior: smooth; 
+  }
+
+  .explore-menu-item {
+      /* NGĂN CHẶN CÁC MỤC BỊ CO LẠI */
+      flex-shrink: 0; 
+      /* Đảm bảo khoảng cách đủ */
+      width: 110px; /* Cố định chiều rộng item trên 1024px */
+  }
+}
+
 @media (max-width: 768px) {
   .explore-menu h2 {
     font-size: 1.6rem;
@@ -118,6 +141,7 @@
 
   .explore-menu-list {
     gap: 18px;
+    padding: 0 10px; /* Giảm padding ngang */
   }
 
   .explore-menu-img,
@@ -126,6 +150,12 @@
     width: 85px;
     height: 85px;
     font-size: 16px;
+    border-radius: 12px;
+  }
+  
+  .explore-menu-item {
+      flex-shrink: 0;
+      width: 85px; /* Cố định chiều rộng item cho 768px */
   }
 
   .explore-menu-item p {
@@ -133,13 +163,32 @@
   }
 }
 
+/* @media (max-width: 480px) */
 @media (max-width: 480px) {
-  .explore-menu-img {
-    width: 75px;
-    height: 75px;
+  .explore-menu h2 {
+    font-size: 1.4rem;
+  }
+  
+  .explore-menu-list {
+    gap: 12px;
+    padding: 0 8px; /* Giảm padding ngang tối đa */
   }
 
-  .explore-menu h2::after {
-    width: 40%;
+  .explore-menu-img,
+  .explore-menu-img.all,
+  .explore-menu-img.placeholder {
+    width: 65px; 
+    height: 65px;
+    font-size: 14px;
+    border-radius: 10px; 
+  }
+  
+  .explore-menu-item {
+      flex-shrink: 0;
+      width: 65px; /* Cố định chiều rộng item cho 480px */
+  }
+  
+  .explore-menu-item p {
+    font-size: 12px;
   }
 }

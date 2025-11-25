@@ -5,7 +5,6 @@
     padding: 30px 15px;
     text-align: center;
     background-color: #fcf8f0;
-
 }
 
 .news-feed-title {
@@ -14,26 +13,41 @@
     color: tomato;
     margin-bottom: 40px;
     letter-spacing: 1px;
-    margin-bottom: 40px;
 }
 
+/* 🎯 CONTAINER CUỘN NGANG (FLEXBOX) */
 .news-list {
     display: flex;
-    justify-content: center;
+    /* CHỈNH SỬA: Đặt lại center để căn giữa trên Desktop khi không cuộn */
+    justify-content: center; 
     gap: 30px;
-    flex-wrap: wrap;
-    margin-bottom: 40px;
-    /* THAY ĐỔI: Chuyển sang Grid cho Responsive linh hoạt hơn */
-    display: grid; 
-    /* Đảm bảo center hoạt động bằng cách đặt width hợp lý */
-    max-width: 1140px; 
-    margin: 0 auto 40px;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Mặc định 3 cột */
+    flex-wrap: nowrap; 
     
+    /* VẪN GIỮ CUỘN NGANG VÀ ẨN SCROLLBAR CHO TRƯỜNG HỢP CẦN THIẾT */
+    overflow-x: auto; 
+    overflow-y: hidden; 
+    
+    max-width: 100%; 
+    margin: 0 auto 40px;
+    padding: 0 20px;
+    
+    /* Ẩn thanh cuộn (giữ nguyên) */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
+.news-list::-webkit-scrollbar {
+    display: none; 
+}
+
+
+/* --- NEWS-CARD CỐ ĐỊNH KÍCH THƯỚC --- */
 .news-card {
-    width: 350px;
+    /* Ngăn co lại và đặt kích thước mặc định */
+    flex-shrink: 0; 
+    width: 300px; 
+    max-width: 300px;
+    
     background: #fff;
     border-radius: 12px;
     overflow: hidden;
@@ -49,7 +63,7 @@
 
 .news-image-wrapper {
     overflow: hidden;
-    height: 200px;
+    height: 200px; /* Chiều cao ảnh mặc định */
 }
 
 .news-image {
@@ -73,6 +87,13 @@
     color: #333;
     margin-bottom: 8px;
     line-height: 1.4;
+    
+    /* Giới hạn 3 dòng để giữ chiều cao đồng đều (QUAN TRỌNG CHO BỐ CỤC SCROLL) */
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; 
+    -webkit-box-orient: vertical;
+    min-height: 4.2em; 
 }
 
 .news-date {
@@ -111,13 +132,88 @@
     box-shadow: 0 4px 10px rgba(255, 107, 129, 0.4);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+/* --- RESPONSIVE CHO BỐ CỤC CUỘN NGANG --- */
+
+/* Tablet/Desktop nhỏ (max-width: 900px) */
+@media (max-width: 992px) {
+    .news-feed-title {
+        font-size: 24px;
+        margin-bottom: 30px;
+    }
+    
+    .news-list {
+        /* Ghi đè: ÉP CĂN LỀ TRÁI VÀ BẮT ĐẦU CUỘN */
+        justify-content: flex-start; 
+        
+        /* Cần một padding ở cuối để item cuối cùng không bị dính vào lề phải */
+        padding-right: 20px; 
+    }
     .news-card {
-        width: 100%;
-        max-width: 450px;
+        /* Kích thước linh hoạt hơn trên mobile/tablet */
+        width: 85vw; 
+        max-width: 300px;
+        flex-shrink: 0;
+        
+        /* Thêm khoảng cách giữa các thẻ khi cuộn */
+        margin-right: 20px; 
+    }
+    
+    .news-image-wrapper {
+        height: 180px;
+    }
+}
+
+/* Mobile (max-width: 600px) */
+@media (max-width: 600px) {
+    .news-feed-title {
+        font-size: 22px;
+    }
+
+    .news-card {
+        width: 250px; 
+        max-width: 250px;
     }
     .news-list {
-        gap: 20px;
+        gap: 20px; 
+        padding: 0 10px; /* Padding nhỏ nhất cho mobile hẹp */
+    }
+
+    .news-image-wrapper {
+        height: 160px;
+    }
+
+    .news-content {
+        padding: 10px 15px;
+    }
+    
+    .news-content h3 {
+        font-size: 1rem;
+        -webkit-line-clamp: 3; 
+        min-height: 4.2em; 
+    }
+
+    .news-date, .read-more {
+        font-size: 0.75rem;
+    }
+    
+    .view-all-btn {
+        padding: 8px 15px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Mobile rất hẹp (max-width: 400px) */
+@media (max-width: 400px) {
+    .news-card {
+        width: 90vw; /* Chiếm 90% viewport để dễ xem từng mục */
+        max-width: 300px;
+    }
+    .news-list {
+        padding: 0 10px;
+    }
+    .news-content h3 {
+        font-size: 1.1rem;
+        -webkit-line-clamp: 4; /* Cho phép tiêu đề dài hơn khi chiếm gần hết màn hình */
+        min-height: 5.6em;
     }
 }

@@ -136,6 +136,7 @@
 @media (max-width: 768px) {
   .slider {
     height: 320px;
+    margin-top: 20px; /* Giảm margin top nếu cần */
   }
 
   .slide-text {
@@ -151,23 +152,53 @@
   .slide-text p {
     font-size: 0.9rem;
   }
+  
+  .arrow {
+    font-size: 1.8rem; /* Giảm kích thước mũi tên */
+  }
 }
 
 @media (max-width: 480px) {
   .slider {
-    height: 230px;
+    /* Giảm chiều cao thêm để phù hợp với màn hình dọc */
+    height: 180px; 
+    margin-top: 80px; /* Giảm margin top */
+    border-radius: 8px; /* Giảm border radius */
   }
 
   .slide-text {
     left: 15px;
-    bottom: 18px;
+    bottom: 15px; /* Giảm khoảng cách từ dưới */
+    max-width: 90%;
   }
 
   .slide-text h2 {
-    font-size: 1.1rem;
+    font-size: 1rem; /* Giảm kích thước H2 xuống 1rem */
+    margin-bottom: 5px;
   }
 
   .slide-text p {
-    font-size: 0.8rem;
+    /* Giảm kích thước P */
+    font-size: 0.75rem; 
+    line-height: 1.4;
+  }
+  
+  .arrow {
+    font-size: 1.5rem; /* Giảm kích thước mũi tên thêm */
+    padding: 5px;
+  }
+  
+  .arrow.left {
+    left: 8px; /* Giảm vị trí mũi tên */
+  }
+
+  .arrow.right {
+    right: 8px; /* Giảm vị trí mũi tên */
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    margin: 0 4px;
   }
 }

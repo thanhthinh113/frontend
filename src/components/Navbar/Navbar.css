@@ -1,20 +1,27 @@
 /* Navbar.css */
 .navbar-container {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  z-index: 999;
+    position: fixed;
+    top: 0;
+    /* KHÔNG dùng left: 50% và transform: translateX(-50%) trên fixed element */
+    left: 0; /* 🎯 Cố định bên trái 0 */
+    transform: none; /* 🎯 Bỏ transform */
+    width: 100%;
+    z-index: 999;
+    
+    background-color: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
-
 .navbar {
-  padding: 20px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 90%; /* Giữ chiều rộng trong vùng container */
-  margin: 0 auto;
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* Dùng width: 100% và padding ngang để ổn định hơn */
+    width: 100%; 
+    max-width: 1200px; /* Thêm max-width nếu cần */
+    margin: 0 auto;
+    /* 🎯 Thêm padding ngang cho .navbar thay vì .navbar-container */
+    padding: 20px 5%; /* Thêm padding ngang 5% thay cho width 90% cũ */
 }
 
 .navbar .logo {
@@ -277,9 +284,12 @@ hr {
 /* Responsive */
 @media (max-width: 900px) {
   .notif-dropdown {
-    width: 240px;
+    width: 280px; /* Tăng nhẹ độ rộng */
     max-height: 300px;
     top: 40px;
+    /* 🎯 THAY ĐỔI: Căn giữa cho màn hình hẹp */
+    right: 50%;
+    transform: translateX(50%); 
   }
   .notif-item p {
     font-size: 13px;
@@ -325,22 +335,55 @@ hr {
 @media (max-width: 900px) {
   .navbar .logo {
     width: 100px;
+    order: 1; /* Logo luôn ở vị trí 1 (bên trái) */
   }
 
   .navbar {
     padding: 15px 0;
   }
 
-  /* 💡 HIỂN THỊ ICON VÀ ẨN THANH MENU DƯỚI DẠNG DESKTOP */
+  /* 💡 ĐIỀU CHỈNH navbar-right */
+  .navbar-right {
+    gap: 15px; /* Giảm gap */
+    order: 2; /* 🎯 Cố định navbar-right ở vị trí 2 (bên phải) */
+    /* Quan trọng: Ngăn không cho các phần tử trong navbar-right bị co lại */
+    flex-shrink: 0; 
+  }
+  
+  /* Đặt thứ tự cho các item con trong navbar-right */
+  .navbar-search-icon {
+      order: 1; /* Giỏ hàng/Search icon */
+  }
+  
+  .navbar-notification {
+      order: 2; /* Chuông */
+      margin-left: 0 !important; /* Xóa margin-left cũ */
+  }
+
+  .navbar button {
+      /* Nút Sign In */
+      order: 3; 
+      font-size: 14px;
+      padding: 6px 15px;
+      /* Nếu nút Sign In bị biến mất, hãy thử giảm gap hoặc giảm padding nút */
+  }
+  
+  .navbar-profile {
+      /* Profile icon và dropdown */
+      order: 3; 
+  }
+  
   .mobile-menu-icon {
-    display: block; /* Hiển thị icon trên mobile */
+    display: block; 
+    order: 4; /* Menu icon luôn ở ngoài cùng bên phải */
+    margin-left: 10px; /* Thêm chút khoảng cách với các item khác */
   }
   
   /* Ẩn navbar-menu trên mobile và định vị lại */
   .navbar-menu {
     position: fixed;
     top: 0; 
-    right: -250px; /* Ẩn ra khỏi màn hình */
+    right: -250px; 
     height: 100vh;
     width: 250px;
     background-color: #fff;
@@ -352,7 +395,6 @@ hr {
     gap: 20px;
     align-items: flex-start;
     padding-left: 20px;
-    /* Loại bỏ hiệu ứng gạch chân cho link menu trên mobile */
   }
   
   /* 💡 STYLE KHI MENU ĐƯỢC MỞ */
@@ -374,7 +416,18 @@ hr {
   .navbar-profile-dropdown {
     padding: 10px 20px;
   }
-  
+  .navbar {
+    padding: 15px 5%; /* 🎯 Giữ padding ngang 5% cho mobile */
+  }
+}
+@media (max-width: 450px) {
+    .notif-dropdown {
+        /* Cho phép nó chiếm gần hết màn hình */
+        width: 90vw; 
+        right: 50%;
+        transform: translateX(50%); 
+        max-width: 300px; /* Giữ max-width để không quá rộng */
+    }
 }
 
 

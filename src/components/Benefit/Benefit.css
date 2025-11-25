@@ -120,16 +120,80 @@
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
   background: #f9fff2;
 }
-/* Responsive */
-@media (max-width: 768px) {
+
+@media (max-width: 1024px) {
+  .service-features {
+    gap: 20px;
+    padding: 20px 10px;
+  }
+  
   .feature-box {
-    flex-direction: column;
-    text-align: center;
-    padding: 15px 20px;
+    width: 45%; /* Cho phép 2 box hiển thị trên một hàng với khoảng gap nhỏ */
+    max-width: 320px;
+  }
+}
+
+/* 🎯 ĐIỀU CHỈNH CHÍNH: Bố cục 2 cột (Mobile/Tablet nhỏ: max-width: 768px) */
+@media (max-width: 768px) {
+  .service-page-title {
+    font-size: 24px;
+    padding: 0 15px 15px;
+  }
+  
+  .service-features {
+    /* Giảm khoảng cách */
+    gap: 15px; 
+    padding: 15px 10px;
+  }
+
+  .feature-box {
+    /* Đảm bảo 2 box trên 1 hàng ngang (50% - gap) */
+    width: calc(50% - 15px); 
+    max-width: none; /* Bỏ giới hạn max-width */
+    
+    /* Bố cục icon và text nằm ngang */
+    flex-direction: row;
+    text-align: left;
+    padding: 15px 15px;
   }
 
   .feature-icon {
     width: 30px;
     height: 30px;
+    flex-shrink: 0;
+  }
+}
+
+/* Tối ưu hóa cho Mobile nhỏ (max-width: 480px) */
+@media (max-width: 480px) {
+  .service-page-title {
+    font-size: 20px;
+    padding: 0 10px 10px; /* Điều chỉnh padding */
+  }
+  
+  .service-features {
+    gap: 10px; /* Giảm gap nhỏ hơn */
+  }
+
+  .feature-box {
+    /* ÉP BUỘC 2 CỘT: 50% trừ đi khoảng gap */
+    width: calc(50% - 5px); /* Tính toán lại gap, vì gap trong .service-features là 10px */
+    max-width: none;
+    margin: 0;
+    
+    padding: 12px 10px; /* Giảm padding box */
+  }
+  
+  .feature-box h4 {
+    font-size: 0.95rem; /* Giảm font nhỏ hơn */
+  }
+
+  .feature-box p {
+    font-size: 0.8rem;
+  }
+  
+  .feature-icon {
+    width: 25px;
+    height: 25px;
   }
 }

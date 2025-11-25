@@ -275,26 +275,66 @@
     width: 90px;
   }
 }
+@media (max-width: 768px) {
+    .combo-deals {
+        padding: 35px 15px;
+    }
+    
+    .combo-deals h2 {
+        font-size: 1.6rem;
+        margin-bottom: 20px;
+    }
 
-/* Responsive */
-@media (max-width: 600px) {
-  .filter-sort-container {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 15px;
-  }
+    .combo-list {
+        /* Đảm bảo ít nhất 2 cột, tối đa 3 cột */
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 15px;
+    }
 
-  .filter-left,
-  .filter-right {
-    justify-content: space-between;
-  }
-
-  .filter-left select,
-  .filter-right select {
-    width: 60%;
-  }
-
-  .food-img-wrapper img {
-    height: 140px;
-  }
+    .combo-img {
+        height: 160px; 
+    }
+    
+    .combo-info {
+        padding: 12px;
+    }
+    
+    .combo-info h3 {
+        font-size: 1.1rem;
+    }
 }
+
+/* 🎯 ĐIỀU CHỈNH CHÍNH CHO BỐ CỤC 2 CỘT */
+@media (max-width: 600px) {
+  /* Điều chỉnh bộ lọc/sắp xếp để hiển thị tốt hơn trên màn hình hẹp */
+  .control-bar {
+    gap: 10px;
+  }
+  
+  .filter-controls {
+    /* Đảm bảo hai nút lọc/sắp xếp nằm gọn */
+    gap: 5px; 
+  }
+
+  /* Điều chỉnh danh sách món ăn thành 2 cột */
+  .food-display-list {
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 15px;
+    }
+
+    .food-img-wrapper img {
+        height: 160px; /* Giữ kích thước này */
+    }
+
+  /* Điều chỉnh kích thước font cho gọn gàng hơn */
+  .food-item h3 {
+    font-size: 1rem;
+  }
+
+  .food-item span {
+    font-size: 1rem;
+  }
+
+  .food-item p {
+    font-size: 0.85rem;
+  }}

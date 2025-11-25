@@ -18,6 +18,7 @@
     justify-content: center;
     gap: 30px;
     padding: 0 5%;
+    scrollbar-width: none;
 }
 
 .testimonial-card {
@@ -187,24 +188,55 @@
 
 /* Responsive adjustments */
 @media (max-width: 992px) {
+    /* Đảm bảo danh sách không bị xuống hàng khi có đủ chỗ */
     .testimonials-list {
-        flex-wrap: wrap;
+        /* Bỏ flex-wrap: wrap; */
+        /* Giữ nguyên display: flex và justify-content: center */
     }
+    
+    /* Thiết lập độ rộng cố định cho thẻ để kích hoạt cuộn ngang */
     .testimonial-card {
-        max-width: 45%;
+        max-width: 350px; /* Giữ nguyên kích thước ban đầu */
+        min-width: 300px; /* Đảm bảo thẻ có kích thước tối thiểu */
+        flex-shrink: 0; /* Rất quan trọng: Ngăn thẻ co lại */
         margin-bottom: 20px;
     }
 }
 
+/* Áp dụng thanh cuộn ngang cho màn hình nhỏ hơn 768px */
 @media (max-width: 768px) {
     .testimonials-title {
         font-size: 24px;
     }
+    
     .testimonials-list {
-        flex-direction: column;
-        align-items: center;
+        /* Cho phép cuộn ngang */
+        overflow-x: auto; 
+        /* Bỏ flex-direction: column; */
+        /* Giữ nguyên display: flex */
+        justify-content: flex-start; /* Bắt đầu các item từ bên trái */
+        padding: 0 5%;
+        /* Đảm bảo danh sách nằm trên 1 hàng */
+        flex-wrap: nowrap; 
     }
+    
     .testimonial-card {
-        max-width: 90%;
+        /* Thiết lập kích thước để cuộn được */
+        width: 80%; /* Chiếm 80% chiều rộng viewport */
+        max-width: 350px;
+        min-width: 300px;
+        flex-shrink: 0; /* Ngăn thẻ co lại */
+        margin-right: 20px; /* Thêm khoảng cách giữa các thẻ khi cuộn */
+        margin-left: 10px; /* Khoảng cách với lề trái */
+    }
+    
+    /* Ẩn thanh cuộn trên các trình duyệt cụ thể (tùy chọn) */
+    .testimonials-list::-webkit-scrollbar {
+        height: 8px;
+    }
+    
+    .testimonials-list::-webkit-scrollbar-thumb {
+        background-color: #ccc;
+        border-radius: 4px;
     }
 }

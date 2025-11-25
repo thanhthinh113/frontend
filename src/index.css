@@ -9,6 +9,10 @@
 }
 body {
   min-height: 100vh;
+  overflow-x: hidden; 
+    
+    /* Đặt box-sizing mặc định cho dễ tính toán */
+    box-sizing: border-box;
 }
 /* ✅ thêm */
 html, body, #root {
@@ -16,7 +20,9 @@ html, body, #root {
   display: flex;
   flex-direction: column;
 }
-
+*, *::before, *::after {
+    box-sizing: inherit;
+}
 /* ✅ thêm */
 main {
   flex: 1;

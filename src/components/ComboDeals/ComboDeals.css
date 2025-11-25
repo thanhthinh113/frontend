@@ -121,3 +121,153 @@
   background: linear-gradient(135deg, #ff6b81, #e63946);
   transform: scale(1.05);
 }
+@media (max-width: 1024px) {
+    .combo-list {
+        /* Cho phép 2-3 cột linh hoạt */
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 15px;
+    }
+}
+
+/* 🎯 Responsive cho Mobile/Tablet nhỏ (max-width: 600px): Bố cục 2 cột */
+@media (max-width: 600px) {
+  .combo-deals {
+    padding: 30px 10px;
+  }
+  
+  .combo-deals h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-align: center; /* Căn giữa tiêu đề trên mobile */
+  }
+
+  .combo-list {
+    /* Ép buộc 2 cột ngang (giống FoodDisplay) */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .combo-card {
+    border-radius: 12px;
+  }
+
+  .combo-img {
+    /* Điều chỉnh chiều cao ảnh cho bố cục 2 cột */
+    height: 140px; 
+  }
+
+  .combo-info {
+    padding: 10px;
+    text-align: center; /* Căn giữa nội dung trong card */
+  }
+
+  .combo-info h3 {
+    font-size: 1rem;
+    margin-bottom: 4px;
+    /* Giới hạn số dòng để tránh tràn */
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    min-height: 2.5em; /* Giữ chiều cao ổn định */
+  }
+
+  .combo-info p {
+    font-size: 0.8rem; 
+    color: #666; /* Đổi về màu gốc hoặc màu tối hơn */
+    margin: 4px 0 8px;
+    line-height: 1.3; /* Tăng line-height cho dễ đọc */
+
+    /* LOẠI BỎ GIỚI HẠN DÒNG */
+    overflow: visible;
+    display: block; /* Quay lại display block bình thường */
+    -webkit-line-clamp: unset; 
+    -webkit-box-orient: unset;
+    min-height: auto; /* Bỏ min-height */
+    text-align: center;
+  }
+
+  .combo-price {
+    /* Sắp xếp giá */
+    justify-content: center; 
+    margin: 8px 0;
+  }
+
+  .combo-price .new-price {
+    font-size: 1rem;
+  }
+  
+  .combo-price .old-price {
+      font-size: 0.85rem;
+  }
+
+  .btn-add {
+    font-size: 0.85rem;
+    padding: 8px;
+    border-radius: 6px;
+    /* Loại bỏ hiệu ứng transform: scale trên mobile nếu nó gây giật */
+    transform: none; 
+  }
+  
+  .btn-add:hover {
+      transform: none; 
+  }
+  
+  /* Badge giảm giá gọn hơn */
+  .combo-card::before {
+      content: "SALE"; /* Nội dung ngắn gọn hơn */
+      font-size: 0.65rem;
+      padding: 3px 8px;
+  }
+}
+
+/* Responsive cho Mobile rất nhỏ (max-width: 400px): Có thể chuyển sang 1 cột nếu cần */
+@media (max-width: 400px) {
+  .combo-deals h2 {
+    font-size: 18px; /* Giảm font size tối đa */
+  }
+
+  .combo-list {
+    /* Ép buộc 2 cột, ngay cả trên iPhone Pro */
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 8px; /* Giảm gap tối đa */
+  }
+  
+  .combo-img {
+      height: 120px; /* Giảm chiều cao ảnh để tiết kiệm không gian */
+  }
+  
+  .combo-info {
+      padding: 8px; /* Giảm padding */
+      text-align: center;
+  }
+  
+  .combo-info h3 {
+      font-size: 0.9rem;
+      min-height: 2.3em; 
+  }
+
+  .combo-info p {
+    font-size: 0.75rem;
+    color: #666; /* Đổi về màu gốc hoặc màu tối hơn */
+    margin: 4px 0 6px;
+    line-height: 1.3;
+
+    /* LOẠI BỎ GIỚI HẠN DÒNG */
+    overflow: visible;
+    display: block; /* Quay lại display block bình thường */
+    -webkit-line-clamp: unset; 
+    -webkit-box-orient: unset;
+    min-height: auto;
+    text-align: center;
+  }
+  
+  .combo-price .new-price {
+      font-size: 0.95rem;
+  }
+  
+  .btn-add {
+      font-size: 0.75rem; /* Rất nhỏ */
+      padding: 6px;
+  }
+}
