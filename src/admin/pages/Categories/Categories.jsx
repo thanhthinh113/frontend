@@ -59,15 +59,21 @@ export const Categories = () => {
   };
 
   const handleDelete = async (id) => {
-    try {
-      await axios.delete(`${url}/api/categories/${id}`);
-      toast.success("Xóa danh mục thành công");
-      fetchCategories();
-    } catch (err) {
-      toast.error("Lỗi khi xóa danh mục");
-      console.error(err);
-    }
-  };
+  const confirmDelete = window.confirm(
+    "Bạn có chắc chắn muốn xóa danh mục này?"
+  );
+  if (!confirmDelete) return;
+
+  try {
+    await axios.delete(`${url}/api/categories/${id}`);
+    toast.success("Xóa danh mục thành công");
+    fetchCategories();
+  } catch (err) {
+    toast.error("Lỗi khi xóa danh mục");
+    console.error(err);
+  }
+};
+
 
   return (
     <div className="categories-container">
