@@ -24,7 +24,7 @@ const StoreContextProvider = ({ children }) => {
   const [notifications, setNotifications] = useState([]);
 
   const url = "https://backend-foodrestaurant.onrender.com";
-  //const url = "http://localhost:4000";
+  // const url = "http://localhost:4000";
 
   const url_AI = "https://food-del-ai.onrender.com";
 

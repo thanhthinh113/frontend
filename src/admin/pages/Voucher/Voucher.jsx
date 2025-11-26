@@ -57,6 +57,9 @@ export const Voucher = () => {
 
   // ❌ Xóa voucher
   const deleteVoucher = async (id) => {
+    const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa voucher này?");
+    if (!confirmDelete) return;
+
     try {
       const res = await axios.delete(`${url}/api/voucher/delete/${id}`);
       if (res.data.success) {
