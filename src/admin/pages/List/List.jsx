@@ -34,6 +34,11 @@ export const List = () => {
   };
 
   const removeFood = async (id) => {
+    const confirmDelete = window.confirm(
+      "Bạn có chắc chắn muốn xóa món ăn này?"
+    );
+    if (!confirmDelete) return;
+
     try {
       const response = await axios.post(`${url}/api/food/remove`, { id });
       if (response.data.success) {
