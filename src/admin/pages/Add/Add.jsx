@@ -36,7 +36,10 @@ export const Add = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-
+    if (!image) {
+      toast.error("Vui lòng chọn ảnh sản phẩm");
+      return;
+    }
     // ⚠️ Kiểm tra giá sản phẩm
     const priceValue = Number(data.price);
 
@@ -96,7 +99,7 @@ export const Add = () => {
             type="file"
             id="image"
             hidden
-            required
+            // required
           />
         </div>
 
