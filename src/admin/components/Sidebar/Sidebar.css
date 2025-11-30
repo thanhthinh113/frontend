@@ -5,7 +5,8 @@
   background-color: #ffffff;
   padding-top: 20px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
-  position: sticky;
+  /* position: sticky; */
+position: fixed;
   top: 0;
   left: 0;
   transition: width 0.3s ease-in-out;
@@ -109,8 +110,8 @@
 }
 
 .app-content {
-  display: flex;
-  flex-grow: 1;
+ margin-left: 220px;  /* bằng width sidebar */
+  padding: 20px;
 }
 
 hr {
