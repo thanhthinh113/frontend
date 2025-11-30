@@ -35,6 +35,20 @@ export const Voucher = () => {
   // 🆕 Tạo voucher mới (test không cần token)
   const createVoucher = async (e) => {
     e.preventDefault();
+
+    // ✅ Kiểm tra ngày hết hạn
+    const today = new Date();
+    const selectedDate = new Date(formData.expiryDate);
+
+    // Loại bỏ phần thời gian để so sánh chỉ ngày
+    today.setHours(0, 0, 0, 0);
+    selectedDate.setHours(0, 0, 0, 0);
+
+    if (selectedDate <= today) {
+      toast.error("Ngày hết hạn phải sau ngày hiện tại");
+      return;
+    }
+
     try {
       const res = await axios.post(`${url}/api/voucher/create`, formData);
       if (res.data.success) {
@@ -57,7 +71,9 @@ export const Voucher = () => {
 
   // ❌ Xóa voucher
   const deleteVoucher = async (id) => {
-    const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa voucher này?");
+    const confirmDelete = window.confirm(
+      "Bạn có chắc chắn muốn xóa voucher này?"
+    );
     if (!confirmDelete) return;
 
     try {

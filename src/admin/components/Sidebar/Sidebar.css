@@ -6,7 +6,7 @@
   padding-top: 20px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
   /* position: sticky; */
-position: fixed;
+  position: fixed;
   top: 0;
   left: 0;
   transition: width 0.3s ease-in-out;
@@ -110,7 +110,7 @@ position: fixed;
 }
 
 .app-content {
- margin-left: 220px;  /* bằng width sidebar */
+  margin-left: 220px; /* bằng width sidebar */
   padding: 20px;
 }
 
