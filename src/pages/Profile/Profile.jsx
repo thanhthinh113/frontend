@@ -34,6 +34,19 @@ export const Profile = () => {
     }
   }, [user]);
   const handleSave = async () => {
+    // ⚠️ Kiểm tra số điện thoại
+    const phoneRegex = /^(0[0-9]{9})$/;
+
+    if (!phone) {
+      toast.error("Số điện thoại không được để trống");
+      return;
+    }
+
+    if (!phoneRegex.test(phone)) {
+      toast.error("Số điện thoại phải gồm 10 số và bắt đầu bằng 0");
+      return;
+    }
+
     try {
       const res = await axios.post(
         `${url}/api/user/update-profile`,
@@ -51,12 +64,12 @@ export const Profile = () => {
         toast.success("Cập nhật thông tin thành công");
 
         const updatedUser = {
-          ...user, // giữ lại email, role, _id
-          ...res.data.data, // cập nhật name, phone, address
+          ...user,
+          ...res.data.data,
         };
 
         setUser(updatedUser);
-        localStorage.setItem("user", JSON.stringify(updatedUser)); // ✅ lưu full user
+        localStorage.setItem("user", JSON.stringify(updatedUser));
         setEditing(false);
       }
     } catch (err) {

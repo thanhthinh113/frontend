@@ -134,7 +134,11 @@ export const AdminCombo = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    // Kiểm tra giá ưu đãi nhỏ hơn giá gốc
+    if (formData.discountPrice >= formData.price) {
+      toast.error("❌ Giá ưu đãi phải nhỏ hơn giá gốc!");
+      return;
+    }
     const data = new FormData();
     data.append("name", formData.name);
     data.append("description", formData.description);
