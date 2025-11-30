@@ -36,15 +36,33 @@ export const Add = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    // ⚠️ Kiểm tra giá sản phẩm
+    const priceValue = Number(data.price);
+
+    if (data.price === "") {
+      toast.error("Giá sản phẩm không được để trống");
+      return;
+    }
+
+    if (isNaN(priceValue)) {
+      toast.error("Giá sản phẩm phải là số hợp lệ");
+      return;
+    }
+
+    if (priceValue <= 0) {
+      toast.error("Giá sản phẩm phải lớn hơn 0");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("name", data.name);
     formData.append("description", data.description);
     formData.append("categoryId", data.category);
-    formData.append("price", Number(data.price));
+    formData.append("price", priceValue);
     if (image) formData.append("image", image);
 
     try {
-      // 🔥 BE sẽ upload ảnh lên S3 và trả về S3 URL
       const response = await axios.post(`${url}/api/food/add`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
