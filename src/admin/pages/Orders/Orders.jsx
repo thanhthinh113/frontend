@@ -147,7 +147,42 @@ export const Orders = () => {
 
   return (
     <div className="orders-container">
-      <h3>📋 Quản lý Đơn hàng</h3>
+      <div className="orders-header">
+        <div>
+          <h3>📋 Quản lý Đơn hàng</h3>
+          <p>
+            Theo dõi toàn bộ đơn hàng, cập nhật trạng thái và quản lý quy trình
+            giao hàng.
+          </p>
+        </div>
+      </div>
+      <div className="order-metrics">
+        <div className="metric-card">
+          <span className="metric-label">Tổng đơn</span>
+          <strong className="metric-value">{orders.length}</strong>
+        </div>
+
+        <div className="metric-card">
+          <span className="metric-label">Đang xử lý</span>
+          <strong className="metric-value accent-purple">
+            {orders.filter((o) => o.status === "Food Processing").length}
+          </strong>
+        </div>
+
+        <div className="metric-card">
+          <span className="metric-label">Đang giao</span>
+          <strong className="metric-value accent-blue">
+            {orders.filter((o) => o.status === "Out for delivery").length}
+          </strong>
+        </div>
+
+        <div className="metric-card">
+          <span className="metric-label">Đã giao</span>
+          <strong className="metric-value accent-green">
+            {orders.filter((o) => o.status === "Delivered").length}
+          </strong>
+        </div>
+      </div>
 
       {/* --- Thanh công cụ tìm kiếm và lọc --- */}
       <div className="order-tools">

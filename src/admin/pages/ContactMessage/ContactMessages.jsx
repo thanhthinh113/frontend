@@ -175,7 +175,15 @@ export const ContactMessages = () => {
 
   return (
     <div className="mailbox-container">
-      <h1 className="mailbox-title">📬 Hộp Thư Liên Hệ Khách Hàng</h1>
+      <div className="mailbox-header">
+        <div>
+          <h3>📬 Hộp Thư Liên Hệ Khách Hàng</h3>
+          <p>
+            Theo dõi toàn bộ thư liên hệ của khách hàng và phân loại từng trạng
+            thái của tin nhắn.
+          </p>
+        </div>
+      </div>
       {/* --- Contact Metrics (giống User Metrics) --- */}
       <div className="contact-metrics">
         <div className="metric-card">

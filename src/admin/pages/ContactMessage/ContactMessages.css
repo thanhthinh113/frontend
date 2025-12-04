@@ -9,12 +9,25 @@
   color: #111827;
 }
 
-.mailbox-title {
-  font-size: 26px;
-  font-weight: 600;
-  margin-bottom: 30px;
-  text-align: start;
-  color: #333;
+.mailbox-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.mailbox-header h3 {
+  font-size: 28px;
+  margin: 0 0 6px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.mailbox-header p {
+  margin: 0;
+  color: #475467;
+  font-size: 14px;
 }
 
 .mailbox-loading,
