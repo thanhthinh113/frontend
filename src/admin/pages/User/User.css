@@ -1,197 +1,295 @@
 .user-container {
-  padding: 20px; 
-  margin: 30px auto; 
+  padding: 32px 36px;
+  margin: 32px auto;
   width: 100%;
-  max-width: 1200px; 
-  background-color: #ffffff;
-  border-radius: 12px; 
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  font-family: 'Outfit', sans-serif;
-  color: #333;
+  max-width: 1200px;
+  background: radial-gradient(circle at top left, #ffffff 0, #f8faff 45%, #eef2ff 100%);
+  border-radius: 24px;
+  box-shadow: 0 28px 55px rgba(15, 23, 42, 0.18);
+  font-family: "Outfit", sans-serif;
+  color: #0f172a;
+  border: 1px solid rgba(226, 232, 240, 0.8);
 }
 
-.user-container h3 {
-  margin-bottom: 25px;
+.user-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.user-header h3 {
+  margin: 0 0 6px;
   font-size: 28px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.user-header p {
+  margin: 0;
+  color: #475467;
+  font-size: 14px;
+}
+
+.user-badge {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(99, 102, 241, 0.12);
+  color: #4338ca;
+  font-size: 12px;
   font-weight: 600;
-  color: #333;
-  border-bottom: 2px solid #e0e0e0;
-  padding-bottom: 15px;
+}
+
+.user-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.metric-card {
+  padding: 14px 18px;
+  border-radius: 18px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 15px 30px rgba(15, 23, 42, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.metric-label {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.metric-value {
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.metric-value.accent-green {
+  color: #059669;
+}
+.metric-value.accent-purple {
+  color: #7c3aed;
+}
+.metric-value.accent-blue {
+  color: #2563eb;
 }
 
 .user-loading,
 .user-empty {
   text-align: center;
-  color: #777;
+  color: #94a3b8;
   font-size: 16px;
   padding: 20px;
 }
 
-/* --- Thanh công cụ tìm kiếm --- */
 .user-tools {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    margin-bottom: 25px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #e2e8f0;
 }
 
-/* Ô tìm kiếm kiểu đẹp (tái sử dụng style từ Orders) */
-.search-box.pretty {
-    display: flex;
-    align-items: center;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 8px 14px;
-    flex: 0 1 400px; /* Chiếm tối đa 400px */
-    transition: all 0.25s ease;
-    height: 40px;
+.search-box-user.pretty {
+  display: flex;
+  align-items: center;
+  background: rgba(99, 102, 241, 0.06);
+  border: 1px solid #e0e7ff;
+  border-radius: 14px;
+  padding: 8px 14px;
+  flex: 1;
+  min-width: 240px;
+  max-width: 420px;
+  transition: all 0.25s ease;
+  height: 40px;
 }
 
-.search-box.pretty:focus-within {
-    border-color: #ff6347;
-    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.15);
+.search-box-user.pretty:focus-within {
+  border-color: #6366f1;
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
 }
 
-.search-box.pretty input {
-    border: none;
-    outline: none;
-    flex: 1;
-    font-size: 15px;
-    color: #444;
-    background: transparent;
-}
-.search-box.pretty input:focus {
-    outline: none !important; 
-    box-shadow: none !important; 
+.search-box-user.pretty input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 15px;
+  color: #0f172a;
+  background: transparent;
 }
 
-.search-box.pretty .search-icon {
-    color: #ff6347;
-    margin-right: 10px;
+.search-box-user.pretty input:focus {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
+.search-box-user.pretty .search-icon {
+  color: #6366f1;
+  margin-right: 12px;
+}
 
-/* --- Bảng Người dùng --- */
 .user-table {
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Giảm khoảng cách giữa các hàng */
+  gap: 12px;
 }
-.user-table b{
-  font-weight: 600; /* Thay đổi từ bold sang 600 để đồng nhất */
+
+.user-table b {
+  font-weight: 600;
   font-size: 15px;
 }
 
 .user-row {
   display: grid;
-  /* Điều chỉnh lại grid columns cho phù hợp với nội dung */
-  grid-template-columns: 0.3fr 1fr 1.5fr 1fr 1.5fr 1fr 0.7fr 1fr; 
+  grid-template-columns: 0.3fr 1fr 1.5fr 1fr 1.5fr 1fr 0.7fr 1fr;
   align-items: center;
-  gap: 15px; /* Giảm gap */
-  padding: 12px 20px; /* Giảm padding */
+  gap: 15px;
+  padding: 12px 20px;
   font-size: 14px;
-  border-radius: 8px;
-  word-break: break-word; /* Đảm bảo nội dung dài không làm vỡ layout */
+  border-radius: 12px;
+  word-break: break-word;
 }
 
 .user-header {
-   font-weight: 600;
-  background-color: #f7f7f7;
-  border: 1px solid #e0e0e0;
-  padding: 15px;
-  letter-spacing: 0.5px; /* Tăng tính chuyên nghiệp */
+  font-weight: 600;
+  padding: 16px;
+  letter-spacing: 0.5px;
 }
 
 .user-item {
-  border: 1px solid #e0e0e0;
-  background-color: #fcfcfc;
+  border: 1px solid #e2e8f0;
+  background-color: #ffffff;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
 }
 
 .user-item:hover {
-  background-color: #fff;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  background-color: #f8fafc;
+  box-shadow: 0 12px 25px rgba(15, 23, 42, 0.12);
   transform: translateY(-2px);
 }
 
-/* Style bổ sung cho các cột */
 .user-points {
-    font-weight: 600;
-    color: #ff6347;
+  font-weight: 700;
+  color: #065f46;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content:center;
+  gap: 4px;
 }
 
-.user-role.admin {
-    font-weight: 600;
-    color: #e95959; /* Màu đỏ cho admin */
+.points-suffix {
+  font-size: 11px;
+  font-weight: 500;
+  color: #6b7280;
 }
 
-.user-role.user {
-    font-weight: 500;
+.user-role-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 12px;
 }
 
-/* --- Phân trang --- */
+.user-role-pill.admin {
+  background: rgba(248, 113, 113, 0.18);
+  color: #b91c1c;
+}
+
+.user-role-pill.user {
+  background: rgba(59, 130, 246, 0.15);
+  color: #1d4ed8;
+}
+
 .pagination {
   display: flex;
   gap: 10px;
-  margin-top: 25px; /* Tăng khoảng cách trên */
+  margin-top: 30px;
   justify-content: center;
 }
 
 .pagination button {
-  padding: 6px 12px;
+  padding: 8px 14px;
   border: 1px solid #d1d1d1;
-  border-radius: 6px;
-  background-color: #fcfcfc;
+  border-radius: 10px;
+  background-color: #ffffff;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .pagination button:hover {
-    background-color: #e9ecef;
+  background-color: #e9ecef;
 }
 
 .pagination button.active {
-  background-color: #ff6347;
+  background-color: #6366f1;
   color: #fff;
-  border-color: #ff6347;
+  border-color: #6366f1;
   font-weight: 600;
+  box-shadow: 0 8px 18px rgba(99, 102, 241, 0.3);
 }
+
 .pagination button:disabled {
-    cursor: not-allowed;
-    opacity: 0.6;
-    background-color: #f8f9fa;
-    color: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.6;
+  background-color: #f8f9fa;
+  color: #6c757d;
 }
+
 .point-filter-group {
   display: flex;
-  gap: 10px;
-  margin-left: 30px;
+  gap: 8px;
+  margin-left: auto;
+  flex-wrap: wrap;
 }
 
 .pf-btn {
-  border: 1.8px solid #ddd;
-  background: #fff;
-  padding: 8px 14px;
-  font-size: 14px;
-  border-radius: 8px;
+  border: 1.5px solid #dbe4ff;
+  background: #ffffff;
+  padding: 8px 16px;
+  font-size: 13px;
+  border-radius: 999px;
   cursor: pointer;
-  transition: 0.25s;
-  font-weight: 500;
+  transition: 0.2s;
+  font-weight: 600;
+  color: #475569;
 }
 
 .pf-btn:hover {
-  border-color: #ffb3a7;
-  background: #fff6f5;
+  border-color: #a5b4fc;
+  background: rgba(165, 180, 252, 0.15);
 }
 
 .pf-btn.active {
-  border-color: #ff6347;
-  background: #fff5f3;
-  color: #ff6347;
-  font-weight: 600;
-  box-shadow: 0 0 0 3px rgba(255, 99, 71, 0.15);
+  border-color: #6366f1;
+  background: #eef2ff;
+  color: #4338ca;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18);
+}
+
+.user-phone,
+.user-address,
+.user-email,
+.user-date {
+  color: #475467;
+}
+
+@media (max-width: 1000px) {
+  .user-row {
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: auto;
+    row-gap: 12px;
+  }
 }

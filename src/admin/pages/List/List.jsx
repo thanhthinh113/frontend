@@ -58,6 +58,7 @@ export const List = () => {
   }, []);
 
   // ---- Lọc theo tìm kiếm ----
+  const totalItems = list.length;
   const filteredList = list.filter(
     (item) =>
       item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -68,11 +69,16 @@ export const List = () => {
   } else if (sortPrice === "desc") {
     filteredList.sort((a, b) => b.price - a.price);
   }
+  const filteredCount = filteredList.length;
+  const isFiltered = searchTerm.trim().length > 0 || sortPrice !== null;
+
   // ---- Phân trang ----
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredList.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filteredList.length / itemsPerPage);
+  const rangeStart = filteredCount ? indexOfFirstItem + 1 : 0;
+  const rangeEnd = Math.min(indexOfLastItem, filteredCount);
 
   const paginate = (pageNumber) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
@@ -86,17 +92,67 @@ export const List = () => {
   }, [searchTerm, sortPrice]);
   return (
     <div className="list-container">
-      <h3>Tất cả sản phẩm</h3>
+      <div className="list-header">
+        <div className="list-heading">
+          <h3>Tất cả sản phẩm</h3>
+          <p className="list-subtitle">
+            Quản lý toàn bộ món ăn hiện có, tìm kiếm nhanh và chỉnh sửa dễ dàng.
+          </p>
+        </div>
+        <div className="list-metrics">
+          <div className="metric-card">
+            <span className="metric-label">Tổng món</span>
+            <p className="metric-value">{totalItems}</p>
+          </div>
+          <div className="metric-card">
+            <span className="metric-label">Đang hiển thị</span>
+            <p className="metric-value">
+              {rangeStart}-{rangeEnd || 0}
+            </p>
+          </div>
+          <div className="metric-card">
+            <span className="metric-label">Theo bộ lọc</span>
+            <p className="metric-value">{filteredCount}</p>
+          </div>
+        </div>
+      </div>
 
-      {/* --- Thanh tìm kiếm giống User --- */}
-      <div className="list-search pretty">
-        <FaSearch className="search-icon" />
-        <input
-          type="text"
-          placeholder="🔍 Tìm kiếm theo tên hoặc mô tả..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+      {/* --- Thanh tìm kiếm & filter pills --- */}
+      <div className="list-toolbar">
+        <div className="list-search pretty">
+          <FaSearch className="search-icon" />
+          <input
+            type="text"
+            placeholder="🔍 Tìm kiếm theo tên hoặc mô tả..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        {isFiltered && (
+          <div className="active-filters">
+            {searchTerm && (
+              <span className="filter-chip">
+                Từ khóa: <strong>{searchTerm}</strong>
+              </span>
+            )}
+            {sortPrice === "asc" && (
+              <span className="filter-chip success">Giá tăng dần</span>
+            )}
+            {sortPrice === "desc" && (
+              <span className="filter-chip warning">Giá giảm dần</span>
+            )}
+            <button
+              className="filter-reset"
+              type="button"
+              onClick={() => {
+                setSearchTerm("");
+                setSortPrice(null);
+              }}
+            >
+              Xóa bộ lọc
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="list-table">
@@ -141,7 +197,9 @@ export const List = () => {
             <p>{item.name}</p>
             <p className="item-description">{item.description}</p>
             <p>{item.categoryId?.name || "Chưa có danh mục"}</p>
-            <p>{formatVND(item.price)} VND</p>
+            <p className="price-chip">
+              {formatVND(item.price)} <span>VND</span>
+            </p>
             <div className="action-buttons">
               <span onClick={() => setEditingFood(item)} className="edit-btn">
                 Sửa

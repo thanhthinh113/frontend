@@ -88,13 +88,50 @@ export const User = () => {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  const totalUsers = users.length;
+  const totalPoints = users.reduce((sum, user) => sum + (user.points || 0), 0);
+  const vipUsers = users.filter((user) => (user.points || 0) > 5000).length;
+  const rangeStart = filteredUsers.length ? indexOfFirstUser + 1 : 0;
+  const rangeEnd = Math.min(indexOfLastUser, filteredUsers.length);
+
   return (
     <div className="user-container">
-      <h3>👥 Danh sách người dùng</h3>
+      <div className="user-header">
+        <div>
+          <h3>👥 Danh sách người dùng</h3>
+          <p>
+            Quản lý tài khoản khách hàng, xem điểm tích lũy và phân loại theo
+            từng nhóm điểm thưởng.
+          </p>
+        </div>
+      </div>
+
+      <div className="user-metrics">
+        <div className="metric-card">
+          <span className="metric-label">Tổng người dùng</span>
+          <strong className="metric-value">{totalUsers}</strong>
+        </div>
+        <div className="metric-card">
+          <span className="metric-label">Điểm đã tích lũy</span>
+          <strong className="metric-value accent-green">
+            {formatVNDSimple(totalPoints)}
+          </strong>
+        </div>
+        <div className="metric-card">
+          <span className="metric-label">VIP (5000+)</span>
+          <strong className="metric-value accent-purple">{vipUsers}</strong>
+        </div>
+        <div className="metric-card">
+          <span className="metric-label">Đang hiển thị</span>
+          <strong className="metric-value accent-blue">
+            {rangeStart}-{rangeEnd || 0}
+          </strong>
+        </div>
+      </div>
 
       {/* --- Thanh công cụ tìm kiếm --- */}
       <div className="user-tools">
-        <div className="search-box pretty">
+        <div className="search-box-user pretty">
           <FaSearch className="search-icon" />
           <input
             type="text"
@@ -156,10 +193,15 @@ export const User = () => {
                 <p>{indexOfFirstUser + index + 1}</p>
                 <p>{u.name}</p>
                 <p className="user-email">{u.email}</p>
-                <p>{u.phone || "N/A"}</p>
+                <p className="user-phone">{u.phone || "N/A"}</p>
                 <p className="user-address">{formatAddress(u.address)}</p>
-                <p className="user-points">{formatVNDSimple(u.points || 0)}</p>
-                <p className={`user-role ${u.role}`}>{u.role}</p>
+                <p className="user-points">
+                  {formatVNDSimple(u.points || 0)}{" "}
+                  <span className="points-suffix">điểm</span>
+                </p>
+                <p className={`user-role-pill ${u.role}`}>
+                  {u.role === "admin" ? "Quản trị" : "Khách hàng"}
+                </p>
                 <p className="user-date">
                   {new Date(u.createdAt).toLocaleDateString("vi-VN")}
                 </p>

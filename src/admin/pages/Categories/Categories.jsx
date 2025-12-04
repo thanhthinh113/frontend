@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+} from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { StoreContext } from "../../../context/StoreContext";
@@ -12,7 +18,7 @@ export const Categories = () => {
   const [editing, setEditing] = useState(null);
   const fileInputRef = useRef(null); // 👈 thêm ref
 
-  const fetchCategories = async () => {
+  const fetchCategories = useCallback(async () => {
     try {
       const res = await axios.get(`${url}/api/categories`);
       setCategories(res.data);
@@ -20,11 +26,11 @@ export const Categories = () => {
       toast.error("Lỗi khi tải danh mục");
       console.error(err);
     }
-  };
+  }, [url]);
 
   useEffect(() => {
     fetchCategories();
-  }, []);
+  }, [fetchCategories]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,79 +65,125 @@ export const Categories = () => {
   };
 
   const handleDelete = async (id) => {
-  const confirmDelete = window.confirm(
-    "Bạn có chắc chắn muốn xóa danh mục này?"
-  );
-  if (!confirmDelete) return;
+    try {
+      await axios.delete(`${url}/api/categories/${id}`);
+      toast.success("Xóa danh mục thành công");
+      fetchCategories();
+    } catch (err) {
+      toast.error("Lỗi khi xóa danh mục");
+      console.error(err);
+    }
+  };
 
-  try {
-    await axios.delete(`${url}/api/categories/${id}`);
-    toast.success("Xóa danh mục thành công");
-    fetchCategories();
-  } catch (err) {
-    toast.error("Lỗi khi xóa danh mục");
-    console.error(err);
-  }
-};
-
+  const totalCategories = categories.length;
 
   return (
     <div className="categories-container">
-      <h3>Quản lý Danh mục</h3>
+      <div className="categories-header">
+        <div>
+          <h3>Quản lý Danh mục</h3>
+          <p>
+            Theo dõi toàn bộ danh mục món ăn, thêm hình minh họa và cập nhật tên
+            tiện lợi.
+          </p>
+        </div>
+      </div>
 
-      <form className="category-form" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Nhập tên danh mục"
-          value={newName}
-          onChange={(e) => setNewName(e.target.value)}
-          required
-        />
-        <input
-          type="file"
-          accept="image/*"
-          ref={fileInputRef} // 👈 gắn ref
-          onChange={(e) => setNewImage(e.target.files[0])}
-        />
-        <button type="submit">{editing ? "Cập nhật" : "Thêm mới"}</button>
-        {editing && (
-          <button
-            type="button"
-            onClick={() => {
-              setEditing(null);
-              setNewName("");
-              setNewImage(null);
-              if (fileInputRef.current) fileInputRef.current.value = ""; // 👈 reset file input
-            }}
-          >
-            Hủy
-          </button>
-        )}
-      </form>
+      <div className="category-metrics single">
+        <div className="metric-card">
+          <span className="metric-label">Tổng danh mục</span>
+          <strong className="metric-value">{totalCategories}</strong>
+        </div>
+      </div>
 
-      <div className="categories-grid">
-        {categories.map((cat) => (
-          <div className="category-card" key={cat._id}>
-            {cat.image ? (
-              <img src={cat.image} alt={cat.name} className="category-img" />
-            ) : (
-              <div className="category-placeholder">?</div>
-            )}
-            <p className="category-name">{cat.name}</p>
-            <div className="category-actions">
+      <div className="category-layout">
+        <form className="category-form" onSubmit={handleSubmit}>
+          <h4>{editing ? "Cập nhật danh mục" : "Thêm danh mục mới"}</h4>
+          <label className="form-label">Tên danh mục</label>
+          <input
+            type="text"
+            placeholder="Nhập tên danh mục"
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+            required
+          />
+          <label className="form-label">Hình ảnh</label>
+          <label className="upload-dropzone">
+            <input
+              type="file"
+              accept="image/*"
+              ref={fileInputRef}
+              onChange={(e) => setNewImage(e.target.files[0])}
+            />
+            <span>
+              {newImage
+                ? newImage.name
+                : "Kéo & thả hoặc chọn ảnh (PNG, JPG...)"}
+            </span>
+          </label>
+          <div className="form-actions">
+            <button type="submit" className="primary-btn">
+              {editing ? "Lưu thay đổi" : "Thêm mới"}
+            </button>
+            {editing && (
               <button
+                type="button"
+                className="ghost-btn"
                 onClick={() => {
-                  setEditing(cat);
-                  setNewName(cat.name);
-                  if (fileInputRef.current) fileInputRef.current.value = ""; // 👈 clear file khi edit
+                  setEditing(null);
+                  setNewName("");
+                  setNewImage(null);
+                  if (fileInputRef.current) fileInputRef.current.value = "";
                 }}
               >
-                Sửa
+                Hủy
               </button>
-              <button onClick={() => handleDelete(cat._id)}>Xóa</button>
-            </div>
+            )}
           </div>
-        ))}
+        </form>
+
+        <div className="categories-grid">
+          {categories.map((cat) => (
+            <div className="category-card" key={cat._id}>
+              {cat.image ? (
+                <img src={cat.image} alt={cat.name} className="category-img" />
+              ) : (
+                <div className="category-placeholder">?</div>
+              )}
+              <p className="category-name">{cat.name}</p>
+              <div className="category-actions">
+                <button
+                  className="edit-pill"
+                  type="button"
+                  onClick={() => {
+                    setEditing(cat);
+                    setNewName(cat.name);
+                    if (fileInputRef.current) fileInputRef.current.value = "";
+                  }}
+                >
+                  Sửa
+                </button>
+                <button
+                  className="delete-pill"
+                  type="button"
+                  onClick={() => {
+                    const confirmed = window.confirm(
+                      `Bạn có chắc muốn xóa danh mục "${cat.name}"?`
+                    );
+                    if (confirmed) handleDelete(cat._id);
+                  }}
+                >
+                  Xóa
+                </button>
+              </div>
+            </div>
+          ))}
+          {!categories.length && (
+            <div className="empty-state">
+              <p>Chưa có danh mục nào. Bắt đầu thêm danh mục mới!</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

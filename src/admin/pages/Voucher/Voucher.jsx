@@ -17,6 +17,14 @@ export const Voucher = () => {
     return amount.toLocaleString("vi-VN");
   };
 
+  const getStatusInfo = (voucher) => {
+    const isExpired = new Date(voucher.expiryDate) < new Date();
+    if (isExpired) return { label: "Hết hạn", className: "status-expired" };
+    if (voucher.isActive)
+      return { label: "Hoạt động", className: "status-active" };
+    return { label: "Tắt", className: "status-off" };
+  };
+
   // 📦 Lấy danh sách voucher
   const fetchVouchers = async () => {
     try {
@@ -35,20 +43,6 @@ export const Voucher = () => {
   // 🆕 Tạo voucher mới (test không cần token)
   const createVoucher = async (e) => {
     e.preventDefault();
-
-    // ✅ Kiểm tra ngày hết hạn
-    const today = new Date();
-    const selectedDate = new Date(formData.expiryDate);
-
-    // Loại bỏ phần thời gian để so sánh chỉ ngày
-    today.setHours(0, 0, 0, 0);
-    selectedDate.setHours(0, 0, 0, 0);
-
-    if (selectedDate <= today) {
-      toast.error("Ngày hết hạn phải sau ngày hiện tại");
-      return;
-    }
-
     try {
       const res = await axios.post(`${url}/api/voucher/create`, formData);
       if (res.data.success) {
@@ -151,26 +145,37 @@ export const Voucher = () => {
           <b>Hành động</b>
         </div>
 
-        {vouchers.map((v, index) => (
-          <div className="voucher-row voucher-item" key={v._id}>
-            <p>{index + 1}</p>
-            <p>{v.code}</p>
-            <p>{formatVND(v.discountPercent)} VND</p>
-            <p>{formatVND(v.pointsRequired)}</p>
-            <p>{new Date(v.createdAt).toLocaleDateString("vi-VN")}</p>
-            <p>{new Date(v.expiryDate).toLocaleDateString("vi-VN")}</p>
-            <p>
-              {new Date(v.expiryDate) < new Date()
-                ? "Hết hạn"
-                : v.isActive
-                ? "Hoạt động"
-                : "Tắt"}
-            </p>
-            <button className="delete-btn" onClick={() => deleteVoucher(v._id)}>
-              Xóa
-            </button>
-          </div>
-        ))}
+        {vouchers.map((v, index) => {
+          const statusInfo = getStatusInfo(v);
+          return (
+            <div className="voucher-row voucher-item" key={v._id}>
+              <p>{index + 1}</p>
+              <p className="voucher-code">{v.code}</p>
+              <p className="voucher-money">
+                {formatVND(v.discountPercent)}{" "}
+                <span className="currency">VND</span>
+              </p>
+              <p className="voucher-points">
+                {formatVND(v.pointsRequired)}{" "}
+                <span className="points-label">điểm</span>
+              </p>
+              <p>{new Date(v.createdAt).toLocaleDateString("vi-VN")}</p>
+              <p>{new Date(v.expiryDate).toLocaleDateString("vi-VN")}</p>
+              <p>
+                <span className={`status-pill ${statusInfo.className}`}>
+                  {statusInfo.label}
+                </span>
+              </p>
+              <button
+                className="delete-btn"
+                type="button"
+                onClick={() => deleteVoucher(v._id)}
+              >
+                Xóa
+              </button>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
