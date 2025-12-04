@@ -33,6 +33,7 @@
 .order-tools {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 10px;
     margin-bottom: 25px;
     flex-wrap: wrap;
@@ -77,13 +78,15 @@
     color: #007bff;
     margin-right: 10px;
 }
-
+.btn-opp{
+    display: flex;
+    justify-content: space-between;
+}
 /* Nút lọc */
-.filter-btn {
-    border: 1.8px solid #ddd;
+.filter-btn-order {
+    border: 1.5px solid #ffedd5; /* cam nhạt */
     border-radius: 8px;
-    background: #fff;
-    color: #444;
+    background: #ffffff;
     font-size: 15px;
     font-weight: 500;
     padding: 8px 14px;
@@ -92,59 +95,60 @@
     gap: 6px;
     cursor: pointer;
     transition: all 0.25s ease;
+    margin-left: 10px;
 }
 
 /* Cập nhật quy tắc cho SVG */
-.filter-btn svg { /* Icon trong nút lọc */
+.filter-btn-order svg { /* Icon trong nút lọc */
     font-size: 16px;
     color: #555; /* Màu mặc định cho Tất cả */
     transition: all 0.25s ease;
 }
 
 /* THÊM QUY TẮC MỚI CHO ICON TRONG NÚT LỌC */
-.filter-btn .filter-icon.processing {
+.filter-btn-order .filter-icon.processing {
     color: #ffc107; /* Vàng - Food Processing */
 }
-.filter-btn .filter-icon.delivery {
+.filter-btn-order .filter-icon.delivery {
     color: #17a2b8; /* Xanh ngọc - Out for delivery */
 }
-.filter-btn .filter-icon.delivered {
+.filter-btn-order .filter-icon.delivered {
     color: #28a745; /* Xanh lá - Delivered */
 }
-.filter-btn .filter-icon.all {
+.filter-btn-order .filter-icon.all {
     color: #007bff; /* Xanh dương - All */
 }
 
 
-.filter-btn:hover {
-    border-color: #a4caff;
-    background: #f0f7ff;
+.filter-btn-order:hover {
+    border-color: #fdba74; /* cam viền */
+  background: rgba(251, 146, 60, 0.15); /* cam nhạt */
 }
 
-.filter-btn.active {
-    border-color: #007bff;
-    color: #007bff;
-    background: #e6f0ff;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+.filter-btn-order.active {
+    border-color: #f97316;
+  background: #fff7ed; /* cam siêu nhạt */
+  color: #c2410c;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.18);
 }
 
 /* Đảm bảo khi nút Active, icon vẫn giữ màu sắc trạng thái (trừ All) */
 /* Khi nút Active, màu chữ (color) của nút được đặt là #007bff, 
    chúng ta cần ghi đè màu icon nếu nó là màu trạng thái */
-.filter-btn.active svg {
+.filter-btn-order.active svg {
     /* Đảm bảo icon All Active vẫn là màu #007bff (đã được đặt trên) */
     /* Các màu trạng thái khác sẽ được ghi đè bởi quy tắc dưới */
     color: currentColor; /* fallback */
 }
 
 /* Ghi đè màu icon trạng thái khi nút Active */
-.filter-btn.active .filter-icon.processing {
+.filter-btn-order.active .filter-icon.processing {
     color: #ffc107; 
 }
-.filter-btn.active .filter-icon.delivery {
+.filter-btn-order.active .filter-icon.delivery {
     color: #17a2b8; 
 }
-.filter-btn.active .filter-icon.delivered {
+.filter-btn-order.active .filter-icon.delivered {
     color: #28a745; 
 }
 

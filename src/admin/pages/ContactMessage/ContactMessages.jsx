@@ -176,6 +176,34 @@ export const ContactMessages = () => {
   return (
     <div className="mailbox-container">
       <h1 className="mailbox-title">📬 Hộp Thư Liên Hệ Khách Hàng</h1>
+      {/* --- Contact Metrics (giống User Metrics) --- */}
+      <div className="contact-metrics">
+        <div className="metric-card">
+          <span className="metric-label">Tổng tin nhắn</span>
+          <strong className="metric-value">{messages.length}</strong>
+        </div>
+
+        <div className="metric-card">
+          <span className="metric-label">Tin mới</span>
+          <strong className="metric-value accent-purple">
+            {messages.filter((m) => m.status === "new").length}
+          </strong>
+        </div>
+
+        <div className="metric-card">
+          <span className="metric-label">Đã xem</span>
+          <strong className="metric-value accent-blue">
+            {messages.filter((m) => m.status === "viewed").length}
+          </strong>
+        </div>
+
+        <div className="metric-card">
+          <span className="metric-label">Đã phản hồi</span>
+          <strong className="metric-value accent-green">
+            {messages.filter((m) => m.status === "replied").length}
+          </strong>
+        </div>
+      </div>
 
       {/* --- Thanh công cụ tìm kiếm và lọc --- */}
       <div className="mailbox-tools">
@@ -188,31 +216,34 @@ export const ContactMessages = () => {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-
-        {["all", "new", "viewed", "replied"].map((type) => (
-          <button
-            key={type}
-            className={`filter-btn ${filter === type ? "active" : ""}`}
-            onClick={() => setFilter(type)}
-          >
-            <span>
+        <div className="btn-op">
+          {["all", "new", "viewed", "replied"].map((type) => (
+            <button
+              key={type}
+              className={`filter-btn-contact ${
+                filter === type ? "active" : ""
+              }`}
+              onClick={() => setFilter(type)}
+            >
+              <span>
+                {type === "all"
+                  ? "📩"
+                  : type === "new"
+                  ? "🆕"
+                  : type === "viewed"
+                  ? "👁️"
+                  : "✅"}
+              </span>
               {type === "all"
-                ? "📩"
+                ? "Tất cả"
                 : type === "new"
-                ? "🆕"
+                ? "Mới"
                 : type === "viewed"
-                ? "👁️"
-                : "✅"}
-            </span>
-            {type === "all"
-              ? "Tất cả"
-              : type === "new"
-              ? "Mới"
-              : type === "viewed"
-              ? "Đã xem"
-              : "Phản hồi"}
-          </button>
-        ))}
+                ? "Đã xem"
+                : "Phản hồi"}
+            </button>
+          ))}
+        </div>
       </div>
 
       {loading ? (

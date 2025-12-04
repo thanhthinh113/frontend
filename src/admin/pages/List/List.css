@@ -8,7 +8,6 @@
   box-shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
   font-family: "Outfit", sans-serif;
   color: #0f172a;
-  border: 1px solid rgba(226, 232, 240, 0.8);
 }
 
 .list-header {
@@ -46,6 +45,18 @@
   box-shadow: 0 12px 25px rgba(15, 23, 42, 0.08);
 }
 
+
+.metric-value.accent-purple1 {
+  color: #0f172a;
+}
+
+.metric-value.accent-blue1 {
+  color: #2563eb;
+}
+
+.metric-value.accent-green1 {
+  color: #059669;
+}
 .metric-label {
   font-size: 11px;
   text-transform: uppercase;
@@ -87,8 +98,8 @@
 
 .table-header {
   font-weight: 600;
-  background: linear-gradient(135deg, #e0e7ff, #e0f2fe);
-  border: 1px solid #c7d2fe;
+  background: linear-gradient(135deg, #ffe8d6, #ffedd5); /* CAM NHẠT */
+  border: 1px solid #fdba74; /* VIỀN CAM */
   padding: 15px;
   letter-spacing: 0.5px;
 }
@@ -179,8 +190,8 @@
 .list-search.pretty {
   display: flex;
   align-items: center;
-  background: rgba(99, 102, 241, 0.06);
-  border: 1px solid #e0e7ff;
+  background: rgba(249, 115, 22, 0.06); /* CAM NHẠT */
+  border: 1px solid #fed7aa; /* VIỀN CAM NHẠT */
   border-radius: 14px;
   padding: 8px 14px;
   flex: 1;
@@ -191,8 +202,8 @@
 }
 
 .list-search.pretty:focus-within {
-  border-color: #6366f1;
-  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.25);
+  border-color: #f97316; /* CAM CHÍNH */
+  box-shadow: 0 8px 25px rgba(249, 115, 22, 0.25); /* SHADOW CAM */
 }
 
 .list-search.pretty input {
@@ -210,7 +221,7 @@
 }
 
 .list-search.pretty .search-icon {
-  color: #6366f1;
+  color: #f97316;
   margin-right: 10px;
 }
 
@@ -225,8 +236,8 @@
 }
 
 .filter-chip {
-  background-color: rgba(99, 102, 241, 0.12);
-  color: #4338ca;
+  background-color: rgba(249, 115, 22, 0.12); /* CAM NHẠT HƠN */
+  color: #ea580c; /* CAM ĐẬM CHỮ */
   padding: 6px 12px;
   border-radius: 999px;
   font-size: 12px;

@@ -1,14 +1,19 @@
 .mailbox-container {
-  padding: 40px;
-  min-height: 100vh;
-  font-family: "Segoe UI", sans-serif;
+  padding: 24px 28px;
+  margin: 30px auto;
+  width: 100%;
+  max-width: 1200px;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.16);
+  font-family: "Outfit", sans-serif;
+  color: #111827;
 }
 
 .mailbox-title {
   font-size: 26px;
   font-weight: 600;
   margin-bottom: 30px;
-  text-align: center;
+  text-align: start;
   color: #333;
 }
 
@@ -217,31 +222,37 @@
 /* Thanh công cụ tìm kiếm và lọc */
 .mailbox-tools {
   display: flex;
-  align-items: center;
   gap: 10px;
   margin-bottom: 25px;
   flex-wrap: wrap;
+  justify-content: space-between;
 }
-
+.btn-op{
+  display: flex;
+  justify-content: space-between;
+  
+}
 /* Ô tìm kiếm kiểu đẹp */
 .search-box.pretty {
   display: flex;
   align-items: center;
-  background: #fff;
-  border: 2px solid #ff7b73;
-  border-radius: 8px;
-  padding: 8px 14px;
+  background: rgba(249, 115, 22, 0.06); /* cam 6% */
+  border: 1px solid #fed7aa; /* cam viền nhạt */
+  border-radius: 10px;
+  padding: 10px 16px;
   flex: 1;
   min-width: 280px;
   max-width: 500px;
   transition: all 0.25s ease;
-  height: 40px;
+  height: 42px;
 }
 
 .search-box.pretty:focus-within {
-  border-color: #ff3b2f;
-  box-shadow: 0 0 0 4px rgba(255, 99, 71, 0.15);
+  border-color: #f97316; /* cam */
+  box-shadow: 0 8px 20px rgba(249, 115, 22, 0.25);
 }
+
+
 
 .search-box.pretty input {
   border: none;
@@ -257,16 +268,14 @@
 }
 
 .search-box.pretty .search-icon {
-  color: #ff3b2f;
-  margin-right: 10px;
+  color: #f97316; /* cam */
+  margin-right: 12px;
 }
-
 /* Nút lọc */
-.filter-btn {
-  border: 1.8px solid #ddd;
-  border-radius: 8px;
-  background: #fff;
-  color: #444;
+.filter-btn-contact {
+  border: 1.5px solid #ffedd5;
+  border-radius: 10px;
+  background: #ffffff;
   font-size: 15px;
   font-weight: 500;
   padding: 8px 14px;
@@ -275,23 +284,22 @@
   gap: 6px;
   cursor: pointer;
   transition: all 0.25s ease;
+  margin-left: 10px;
+
+}
+.filter-btn-contact:hover {
+  background: rgba(249, 115, 22, 0.12);
+  border-color: rgba(249, 115, 22, 0.45);
 }
 
-.filter-btn span {
-  font-size: 16px;
-  color: #ff3b2f;
+/* Khi được chọn (active) */
+.filter-btn-contact.active {
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.25);
 }
 
-.filter-btn:hover {
-  border-color: #ffb3a7;
-  background: #fff6f5;
-}
-
-.filter-btn.active {
-  border-color: #ff3b2f;
-  color: #ff3b2f;
-  background: #fff5f3;
-  box-shadow: 0 0 0 3px rgba(255, 99, 71, 0.15);
+.filter-btn-contact.active span {
+  color: white !important;
 }
 
 
@@ -374,6 +382,48 @@
     background: #f0f0f0;
     color: #777;
     box-shadow: none;
+}
+.contact-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 16px;
+  margin: 25px 0 30px;
+}
+
+.metric-card {
+  padding: 14px 18px;
+  border-radius: 18px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 15px 30px rgba(15, 23, 42, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.metric-label {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.metric-value {
+  font-size: 26px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.metric-value.accent-purple {
+  color: #7c3aed;
+}
+
+.metric-value.accent-blue {
+  color: #2563eb;
+}
+
+.metric-value.accent-green {
+  color: #059669;
 }
 
 /* Hiệu ứng */

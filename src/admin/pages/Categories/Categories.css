@@ -1,11 +1,12 @@
 .categories-container {
-  padding: 30px 32px 50px;
-  margin: 32px auto;
-  width: 1200px;
-  background: radial-gradient(circle at top left, #ffffff 0, #f5f8ff 48%, #eef2ff 100%);
-  border-radius: 24px;
-  box-shadow: 0 15px 45px rgba(15, 23, 42, 0.12);
-  border: 1px solid rgba(226, 232, 240, 0.8);
+  padding: 24px 28px;
+  margin: 30px auto;
+  width: 100%;
+  max-width: 1200px;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.16);
+  font-family: "Outfit", sans-serif;
+  color: #111827;
 }
 
 .categories-header {
@@ -32,8 +33,8 @@
 .badge.subtle {
   padding: 6px 14px;
   border-radius: 999px;
-  background: rgba(99, 102, 241, 0.12);
-  color: #4338ca;
+  background: rgba(249, 115, 22, 0.12); /* cam nhạt */
+  color: #c2410c; /* cam đậm */
   font-weight: 600;
   font-size: 12px;
 }
@@ -113,7 +114,7 @@
 
 .category-form input[type="text"] {
   border-radius: 10px;
-  border: 1px solid #cbd5f5;
+  border: 1px solid rgba(249, 115, 22, 0.25); /* cam nhạt */
   padding: 10px 12px;
   font-size: 14px;
   transition: border 0.2s, box-shadow 0.2s;
@@ -121,25 +122,25 @@
 
 .category-form input[type="text"]:focus {
   outline: none;
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+  border-color: #f97316; /* cam đậm */
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.3);
 }
 
 .upload-dropzone {
-  border: 1px dashed #cbd5f5;
+  border: 1px dashed rgba(249, 115, 22, 0.35);
   border-radius: 14px;
   padding: 16px;
   text-align: center;
   font-size: 13px;
-  color: #475467;
-  background: rgba(99, 102, 241, 0.06);
+  color: #b45309;
+  background: rgba(249, 115, 22, 0.06); /* cam nhạt */
   cursor: pointer;
   transition: border 0.2s, background 0.2s;
 }
 
 .upload-dropzone:hover {
-  border-color: #6366f1;
-  background: rgba(99, 102, 241, 0.12);
+  border-color: #f97316; /* cam đậm */
+  background: rgba(249, 115, 22, 0.12);
 }
 
 .upload-dropzone input {
@@ -165,25 +166,27 @@
 }
 
 .primary-btn {
-  background: linear-gradient(135deg, #10b981, #059669);
+  background: linear-gradient(135deg, #fb923c, #f97316); /* cam gradient */
   color: #fff;
-  box-shadow: 0 10px 24px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 10px 24px rgba(249, 115, 22, 0.3);
 }
 
 .primary-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 14px 30px rgba(16, 185, 129, 0.4);
+  box-shadow: 0 14px 30px rgba(249, 115, 22, 0.4);
 }
 
+
 .ghost-btn {
-  background: rgba(99, 102, 241, 0.08);
-  color: #4338ca;
+  background: rgba(249, 115, 22, 0.08); /* cam */
+  color: #c2410c;
 }
 
 .ghost-btn:hover {
   transform: translateY(-1px);
-  box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.4);
+  box-shadow: inset 0 0 0 1px rgba(249, 115, 22, 0.4);
 }
+
 
 .categories-grid {
   display: grid;
@@ -210,16 +213,16 @@
   border-radius: 50%;
   margin: 0 auto;
   object-fit: cover;
-  border: 3px solid rgba(99, 102, 241, 0.15);
+  border: 3px solid rgba(249, 115, 22, 0.15)
 }
 
 .category-placeholder {
-  background: rgba(148, 163, 184, 0.2);
+  background: rgba(249, 115, 22, 0.12);
+  color: #c2410c;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 28px;
-  color: #64748b;
   font-weight: 700;
 }
 
@@ -247,13 +250,13 @@
 }
 
 .edit-pill {
-  background: rgba(59, 130, 246, 0.15);
-  color: #1d4ed8;
+  background: rgba(249, 115, 22, 0.15);
+  color: #c2410c;
 }
 
-.delete-pill {
-  background: rgba(248, 113, 113, 0.15);
-  color: #b91c1c;
+.edit-pill:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(249, 115, 22, 0.25);
 }
 
 .edit-pill:hover,

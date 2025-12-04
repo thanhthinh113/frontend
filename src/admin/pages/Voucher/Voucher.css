@@ -3,12 +3,10 @@
   margin: 30px auto;
   width: 100%;
   max-width: 1200px;
-  background: radial-gradient(circle at top left, #ffffff 0, #f9fafb 50%, #eef2ff 100%);
   border-radius: 16px;
   box-shadow: 0 20px 40px rgba(15, 23, 42, 0.16);
   font-family: "Outfit", sans-serif;
   color: #111827;
-  border: 1px solid rgba(148, 163, 184, 0.25);
 }
 
 .voucher-container h3 {
@@ -41,8 +39,8 @@
 
 .voucher-form input:focus {
   outline: none;
-  border-color: #6366f1;
-  box-shadow: 0 0 0 1px #6366f1, 0 6px 15px rgba(79, 70, 229, 0.18);
+  border-color: #f97316; /* CAM */
+  box-shadow: 0 0 0 1px #f97316, 0 6px 15px rgba(249, 115, 22, 0.25);
   background-color: #ffffff;
 }
 
@@ -83,8 +81,8 @@
 
 .voucher-header {
   font-weight: 600;
-  background: linear-gradient(135deg, #eef2ff, #e0f2fe);
-  border: 1px solid #d4d4ff;
+  background: linear-gradient(135deg, #ffe8d6, #ffedd5); /* CAM GRADIENT */
+  border: 1px solid #fdba74; /* CAM BORDER */
 }
 .voucher-header b{
   font-weight: bold;
@@ -92,16 +90,16 @@
 }
 
 .voucher-item {
-  border: 1px solid #e5e7eb;
+  border: 1px solid #e2e8f0; /* CAM BORDER NHẸ */
   background-color: #ffffff;
   transition: all 0.18s ease-in-out;
   cursor: pointer;
 }
 
 .voucher-item:hover {
-  background-color: #f9fafb;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.10);
-  transform: translateY(-2px);
+  background-color: #f8fafc;
+  box-shadow: 0 15px 35px rgba(15, 23, 42, 0.12);
+  transform: translateY(-3px);
 }
 
 /* Nút xóa */
@@ -154,8 +152,8 @@
 }
 
 .status-active {
-  background-color: rgba(16, 185, 129, 0.12);
-  color: #047857;
+  background-color: rgba(16, 185, 129, 0.12); /* CAM */
+  color: #10b981;
 }
 
 .status-expired {

@@ -102,17 +102,17 @@ export const List = () => {
         <div className="list-metrics">
           <div className="metric-card">
             <span className="metric-label">Tổng món</span>
-            <p className="metric-value">{totalItems}</p>
+            <p className="metric-value accent-purple1">{totalItems}</p>
           </div>
           <div className="metric-card">
-            <span className="metric-label">Đang hiển thị</span>
-            <p className="metric-value">
+            <span className="metric-label accent-blue1">Đang hiển thị</span>
+            <p className="metric-value accent-blue1">
               {rangeStart}-{rangeEnd || 0}
             </p>
           </div>
           <div className="metric-card">
-            <span className="metric-label">Theo bộ lọc</span>
-            <p className="metric-value">{filteredCount}</p>
+            <span className="metric-label ">Theo bộ lọc</span>
+            <p className="metric-value accent-green1">{filteredCount}</p>
           </div>
         </div>
       </div>

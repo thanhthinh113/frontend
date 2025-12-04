@@ -160,22 +160,25 @@ export const Orders = () => {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-
-        {[
-          { key: "all", label: "Tất cả" },
-          { key: "Food Processing", label: "Đang xử lý" },
-          { key: "Out for delivery", label: "Đang giao" },
-          { key: "Delivered", label: "Đã giao" },
-        ].map((type) => (
-          <button
-            key={type.key}
-            className={`filter-btn ${filter === type.key ? "active" : ""}`}
-            onClick={() => setFilter(type.key)}
-          >
-            {getFilterIcon(type.key)}
-            {type.label}
-          </button>
-        ))}
+        <div className="btn-opp">
+          {[
+            { key: "all", label: "Tất cả" },
+            { key: "Food Processing", label: "Đang xử lý" },
+            { key: "Out for delivery", label: "Đang giao" },
+            { key: "Delivered", label: "Đã giao" },
+          ].map((type) => (
+            <button
+              key={type.key}
+              className={`filter-btn-order ${
+                filter === type.key ? "active" : ""
+              }`}
+              onClick={() => setFilter(type.key)}
+            >
+              {getFilterIcon(type.key)}
+              {type.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {loading ? (
