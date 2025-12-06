@@ -14,7 +14,7 @@ export const AdminCombo = () => {
     name: "",
     description: "",
     price: 0,
-    discountPrice: "", // Lưu giá trị số thô
+    discountPrice: "", // Lưu giá trị số thô1
     items: [],
     image: null,
   });
