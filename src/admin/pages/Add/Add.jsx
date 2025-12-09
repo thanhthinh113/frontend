@@ -15,6 +15,7 @@ export const Add = () => {
     description: "",
     category: "",
     price: "",
+    stock: "",
   });
 
   useEffect(() => {
@@ -57,12 +58,24 @@ export const Add = () => {
       toast.error("Giá sản phẩm phải lớn hơn 0");
       return;
     }
+    const stockValue = Number(data.stock);
+
+    if (data.stock === "") {
+      toast.error("Tồn kho không được để trống");
+      return;
+    }
+
+    if (isNaN(stockValue) || stockValue < 0) {
+      toast.error("Tồn kho phải là số không âm");
+      return;
+    }
 
     const formData = new FormData();
     formData.append("name", data.name);
     formData.append("description", data.description);
     formData.append("categoryId", data.category);
     formData.append("price", priceValue);
+    formData.append("stock", stockValue);
     if (image) formData.append("image", image);
 
     try {
@@ -72,7 +85,13 @@ export const Add = () => {
 
       if (response.data.success) {
         toast.success(response.data.message || "Thêm sản phẩm thành công");
-        setData({ name: "", description: "", category: "", price: "" });
+        setData({
+          name: "",
+          description: "",
+          category: "",
+          price: "",
+          stock: "",
+        });
         setImage(null);
       } else {
         toast.error(response.data.message || "Không thể thêm sản phẩm");
@@ -152,6 +171,18 @@ export const Add = () => {
               type="number"
               name="price"
               placeholder="₫50,000"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <p>Số lượng tồn kho</p>
+            <input
+              onChange={onChangeHandler}
+              value={data.stock}
+              type="number"
+              name="stock"
+              placeholder="VD: 20"
+              min="0"
               required
             />
           </div>

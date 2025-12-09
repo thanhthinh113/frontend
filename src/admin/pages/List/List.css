@@ -88,7 +88,7 @@
 
 .table-row {
   display: grid;
-  grid-template-columns: 0.25fr 0.6fr 1.2fr 2.6fr 1fr 0.9fr 0.9fr;
+  grid-template-columns: 0.25fr 0.6fr 1.2fr 2.2fr 1fr 0.8fr 0.6fr 0.9fr;
   align-items: center;
   gap: 12px; /* Đồng bộ với .explore-menu-list */
   padding: 12px 15px;
@@ -310,4 +310,18 @@
   color: #ff6347;
   transform: scale(1.1);
   transition: all 0.2s;
+}
+.stock-chip {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 12px;
+  background-color: rgba(59, 130, 246, 0.12);
+  color: #1e3a8a;
+  font-weight: 600;
+  min-width: 50px;
+  text-align: center;
+}
+.stock-chip.zero {
+  background-color: rgba(239, 68, 68, 0.12);
+  color: #b91c1c;
 }

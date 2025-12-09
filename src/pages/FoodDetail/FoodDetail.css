@@ -621,6 +621,21 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
+.food-stock {
+  font-size: 15px;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 12px;
+}
+
+.food-stock.low {
+  color: #ff9900;
+}
+
+.food-stock.out {
+  color: #ff4b4b;
+  font-weight: 600;
+}
 
 /* ======================= 📱 RESPONSIVE ======================= */
 

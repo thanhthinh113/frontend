@@ -13,6 +13,7 @@ export const Edit = ({ food, onClose, onUpdated }) => {
     description: food.description || "",
     category: food.category?._id || "",
     price: food.price || "",
+    stock: food.stock || 0,
   });
 
   useEffect(() => {
@@ -39,12 +40,17 @@ export const Edit = ({ food, onClose, onUpdated }) => {
     formData.append("description", data.description);
     formData.append("categoryId", data.category);
     formData.append("price", Number(data.price));
+    formData.append("stock", Number(data.stock));
     if (image) formData.append("image", image);
 
     try {
-      const response = await axios.put(`${url}/api/food/${food._id}`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const response = await axios.put(
+        `${url}/api/food/${food._id}`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
       if (response.data.success) {
         toast.success("Cập nhật sản phẩm thành công");
         onUpdated();
@@ -132,6 +138,17 @@ export const Edit = ({ food, onClose, onUpdated }) => {
                 value={data.price}
                 type="number"
                 name="price"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <p>Tồn kho (stock)</p>
+              <input
+                onChange={onChangeHandler}
+                value={data.stock}
+                type="number"
+                name="stock"
+                min="0"
                 required
               />
             </div>

@@ -1,12 +1,10 @@
 .food-display {
   padding: 40px 20px;
-  /* Thay đổi màu nền nhẹ nhàng, cao cấp hơn */
   background: #fdfdfd; 
-  border-radius: 20px; /* Bo góc lớn hơn */
+  border-radius: 20px;
   text-align: left;
   margin: 0 auto 30px;
   max-width: 1200px;
-  /* Đổ bóng nhẹ cho cả container */
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
@@ -17,189 +15,15 @@
 }
 
 .food-display-header h2 {
-  font-size: 2rem; /* Tăng kích thước font */
-  font-weight: 700; /* Tăng độ đậm */
+  font-size: 2rem;
+  font-weight: 700;
   margin-bottom: 30px;
   color: #333;
-  /* Thêm gạch chân nhỏ tinh tế */
   border-bottom: 3px solid #ff6b81;
   display: inline-block;
   padding-bottom: 5px;
 }
 
-/* Bộ lọc và sắp xếp */
-.filter-sort-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 15px auto 25px;
-  max-width: 1200px;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding: 0 10px;
-}
-
-.filter-left,
-.filter-right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.filter-left label,
-.filter-right label {
-  font-weight: 600;
-  color: #333;
-  font-size: 15px;
-}
-
-.filter-left select,
-.filter-right select {
-  appearance: none;
-  padding: 8px 30px 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background: #fff;
-  cursor: pointer;
-  font-size: 14px;
-  outline: none;
-  transition: all 0.2s ease;
-}
-
-.filter-left select:hover,
-.filter-right select:hover,
-.filter-left select:focus,
-.filter-right select:focus {
-  border-color: #ff4b4b;
-  box-shadow: 0 0 0 3px rgba(255, 75, 75, 0.1);
-}
-
-/* Danh sách món ăn */
-.food-display-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
-  margin: 20px auto;
-  width: 100%;
-  max-width: 1200px;
-}
-
-/* Thẻ món ăn */
-.food-item {
-  background: #fff;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  position: relative;
-  text-align: center;
-  padding-bottom: 12px;
-}
-
-.food-item:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
-}
-
-.food-img-wrapper {
-  position: relative;
-  overflow: hidden;
-  border-radius: 16px 16px 0 0;
-}
-
-.food-img-wrapper img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.3s ease;
-}
-
-.food-item:hover .food-img-wrapper img {
-  transform: scale(1.05);
-}
-
-/* Nút thêm món */
-.add-btn {
-  position: absolute;
-  bottom: 12px;
-  right: 12px;
-  background: linear-gradient(135deg, #ff7e5f, #ff6b81);
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  padding: 10px;
-  font-size: 14px;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  opacity: 0;
-  transform: scale(0.8);
-  transition: all 0.25s ease;
-}
-
-.food-img-wrapper:hover .add-btn {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.add-btn:hover {
-  background: linear-gradient(135deg, #ff6b81, #e63946);
-  transform: scale(1.15);
-}
-
-/* Thông tin món ăn */
-.food-name-link h3 {
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin: 10px 0 4px;
-  color: #222;
-}
-
-.food-item p {
-  font-size: 0.95rem;
-  color: #666;
-  margin-bottom: 4px;
-}
-
-.food-item span {
-  color: #e63946;
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
-/* Phân trang */
-.pagination {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin: 20px auto;
-  max-width: 1200px;
-  gap: 8px;
-}
-
-.pagination button {
-  padding: 6px 12px;
-  border: none;
-  background: #f5f5f5;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.pagination button:hover {
-  background: #eaeaea;
-}
-
-.pagination button.active {
-  background: #ff4d4f;
-  color: #fff;
-  font-weight: bold;
-}
-
-.pagination button:disabled {
-  background: #ddd;
-  cursor: not-allowed;
-}
 /* Thanh điều khiển chung: tìm kiếm + lọc + sắp xếp */
 .control-bar {
   display: flex;
@@ -259,8 +83,252 @@
   width: 100px;
 }
 
-/* Responsive */
+/* Danh sách món ăn */
+.food-display-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+  margin: 20px auto;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* Thẻ món ăn */
+.food-item {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.food-item:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+.food-img-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px 16px 0 0;
+}
+
+.food-img-wrapper img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.food-item:hover .food-img-wrapper img {
+  transform: scale(1.05);
+}
+
+/* Badge hết hàng trên ảnh */
+.out-of-stock-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(239, 68, 68, 0.95);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+}
+
+/* Nút thêm món */
+.add-btn {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: linear-gradient(135deg, #ff7e5f, #ff6b81);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  padding: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(255, 107, 129, 0.4);
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.25s ease;
+  z-index: 2;
+}
+
+.food-img-wrapper:hover .add-btn {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.add-btn:hover {
+  background: linear-gradient(135deg, #ff6b81, #e63946);
+  transform: scale(1.15);
+  box-shadow: 0 6px 16px rgba(255, 107, 129, 0.5);
+}
+
+.add-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  background: #ccc;
+}
+
+/* Phần thông tin món ăn */
+.food-info-wrapper {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.food-name-link {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.2s ease;
+}
+
+.food-name-link:hover {
+  color: #ff4b4b;
+}
+
+.food-name-link h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0;
+  color: #222;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.food-category {
+  font-size: 0.9rem;
+  color: #888;
+  margin: 0;
+  text-transform: capitalize;
+}
+
+/* Footer: giá + tag kho */
+.food-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.food-price {
+  color: #e63946;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.stock-tag {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #1e3a8a;
+  background: rgba(59, 130, 246, 0.12);
+  padding: 4px 10px;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+
+.stock-tag.out-stock {
+  background: rgba(239, 68, 68, 0.12);
+  color: #b91c1c;
+}
+
+/* Phân trang */
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 20px auto;
+  max-width: 1200px;
+  gap: 8px;
+}
+
+.pagination button {
+  padding: 6px 12px;
+  border: none;
+  background: #f5f5f5;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pagination button:hover {
+  background: #eaeaea;
+}
+
+.pagination button.active {
+  background: #ff4d4f;
+  color: #fff;
+  font-weight: bold;
+}
+
+.pagination button:disabled {
+  background: #ddd;
+  cursor: not-allowed;
+}
+
+.food-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 2px 0 4px;
+}
+
+.food-rating .star {
+  font-size: 1rem;
+  transition: 0.25s ease;
+}
+
+/* Sao sáng */
+.food-rating .star.filled {
+  color: #fbbf24; /* vàng */
+}
+
+/* Sao mờ */
+.food-rating .star.empty {
+  color: #d1d5db; /* gray-300 */
+  opacity: 0.5;
+}
+
+.no-rating-text {
+  margin-left: 6px;
+  font-size: 0.8rem;
+  color: #888;
+  opacity: 0.7;
+  font-style: italic;
+}
+
+
+/* ============================================
+   RESPONSIVE STYLES
+   ============================================ */
+
+/* Tablet - 768px */
 @media (max-width: 768px) {
+  .food-display {
+    padding: 30px 15px;
+  }
+
+  .food-display-header h2 {
+    font-size: 1.75rem;
+  }
+
   .control-bar {
     flex-direction: column;
     align-items: stretch;
@@ -274,67 +342,173 @@
   .filter-item select {
     width: 90px;
   }
-}
-@media (max-width: 768px) {
-    .combo-deals {
-        padding: 35px 15px;
-    }
-    
-    .combo-deals h2 {
-        font-size: 1.6rem;
-        margin-bottom: 20px;
-    }
 
-    .combo-list {
-        /* Đảm bảo ít nhất 2 cột, tối đa 3 cột */
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-        gap: 15px;
-    }
+  .food-display-list {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+  }
 
-    .combo-img {
-        height: 160px; 
-    }
-    
-    .combo-info {
-        padding: 12px;
-    }
-    
-    .combo-info h3 {
-        font-size: 1.1rem;
-    }
+  .food-img-wrapper img {
+    height: 180px;
+  }
+
+  .food-name-link h3 {
+    font-size: 1.05rem;
+  }
+
+  .food-price {
+    font-size: 1.15rem;
+  }
 }
 
-/* 🎯 ĐIỀU CHỈNH CHÍNH CHO BỐ CỤC 2 CỘT */
+/* Mobile - 600px (2 cột) */
 @media (max-width: 600px) {
-  /* Điều chỉnh bộ lọc/sắp xếp để hiển thị tốt hơn trên màn hình hẹp */
+  .food-display {
+    padding: 25px 12px;
+    border-radius: 12px;
+  }
+
+  .food-display-header h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+
   .control-bar {
     gap: 10px;
+    margin: 10px auto 20px;
   }
   
   .filter-controls {
-    /* Đảm bảo hai nút lọc/sắp xếp nằm gọn */
-    gap: 5px; 
+    gap: 6px;
   }
 
-  /* Điều chỉnh danh sách món ăn thành 2 cột */
+  .filter-item {
+    padding: 5px 8px;
+  }
+
+  .filter-item select {
+    font-size: 13px;
+    width: 85px;
+  }
+
+  /* Layout 2 cột cố định */
   .food-display-list {
-        grid-template-columns: repeat(2, 1fr); 
-        gap: 15px;
-    }
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
 
-    .food-img-wrapper img {
-        height: 160px; /* Giữ kích thước này */
-    }
+  .food-item {
+    border-radius: 12px;
+  }
 
-  /* Điều chỉnh kích thước font cho gọn gàng hơn */
-  .food-item h3 {
+  .food-img-wrapper {
+    border-radius: 12px 12px 0 0;
+  }
+
+  .food-img-wrapper img {
+    height: 140px;
+  }
+
+  /* Badge hết hàng nhỏ gọn */
+  .out-of-stock-badge {
+    top: 8px;
+    left: 8px;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+  }
+
+  /* Nút thêm nhỏ hơn */
+  .add-btn {
+    bottom: 8px;
+    right: 8px;
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  /* Thông tin món ăn */
+  .food-info-wrapper {
+    padding: 10px;
+    gap: 6px;
+  }
+
+  .food-name-link h3 {
+    font-size: 0.95rem;
+    min-height: 2.6em;
+    line-height: 1.3;
+  }
+
+  .food-category {
+    font-size: 0.8rem;
+  }
+
+  .food-footer {
+    padding-top: 6px;
+    margin-top: 4px;
+  }
+
+  .food-price {
+    font-size: 1.05rem;
+  }
+
+  .stock-tag {
+    font-size: 0.7rem;
+    padding: 3px 7px;
+  }
+
+  /* Phân trang */
+  .pagination {
+    gap: 5px;
+    justify-content: center;
+  }
+
+  .pagination button {
+    padding: 5px 10px;
+    font-size: 0.9rem;
+  }
+  .food-rating .star {
+    font-size: 0.9rem;
+  }
+
+  .no-rating-text {
+   display: none !important;
+  }
+}
+
+/* Extra Small - 400px */
+@media (max-width: 400px) {
+  .food-display {
+    padding: 20px 10px;
+  }
+
+  .food-display-list {
+    gap: 10px;
+  }
+
+  .food-img-wrapper img {
+    height: 120px;
+  }
+
+  .food-info-wrapper {
+    padding: 8px;
+  }
+
+  .food-name-link h3 {
+    font-size: 0.9rem;
+  }
+
+  .food-price {
     font-size: 1rem;
   }
 
-  .food-item span {
-    font-size: 1rem;
+  .filter-item select {
+    width: 75px;
+    font-size: 12px;
+  }
+  .food-rating .star {
+    font-size: 0.8rem;
   }
 
-  .food-item p {
-    font-size: 0.85rem;
-  }}
+  .no-rating-text {
+    display: none !important;
+  }
+}

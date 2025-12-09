@@ -74,6 +74,12 @@ const FoodDetail = () => {
     setCurrentPage(1);
   }, [filterMode, filterRating]);
 
+  useEffect(() => {
+    if (food && quantity > food.stock) {
+      setQuantity(food.stock);
+    }
+  }, [food, quantity]);
+
   /** ====================== UPLOAD MEDIA ====================== */
   const uploadFileToS3 = async (file) => {
     try {
@@ -261,6 +267,22 @@ const FoodDetail = () => {
 
           <p>Danh mục: {food.categoryId?.name || "Chưa có"}</p>
           <h3>{food.price?.toLocaleString("vi-VN")} đ</h3>
+          <p
+            className={
+              food.stock === 0
+                ? "food-stock out"
+                : food.stock <= 5
+                ? "food-stock low"
+                : "food-stock"
+            }
+          >
+            {food.stock === 0
+              ? "Hết hàng"
+              : food.stock <= 5
+              ? `Còn lại ${food.stock} món`
+              : `Tồn kho: ${food.stock} món`}
+          </p>
+
           <p>{food.description}</p>
 
           <div className="quantity-box">
@@ -268,11 +290,25 @@ const FoodDetail = () => {
               -
             </button>
             <span>{quantity}</span>
-            <button onClick={() => setQuantity((q) => q + 1)}>+</button>
+            <button
+              onClick={() => {
+                if (quantity < food.stock) setQuantity(quantity + 1);
+              }}
+            >
+              +
+            </button>
           </div>
 
-          <button className="btn-cart" onClick={handleAddToCart}>
-            Thêm vào giỏ hàng
+          <button
+            className="btn-cart"
+            onClick={handleAddToCart}
+            disabled={food.stock === 0}
+            style={{
+              opacity: food.stock === 0 ? 0.6 : 1,
+              cursor: food.stock === 0 ? "not-allowed" : "pointer",
+            }}
+          >
+            {food.stock === 0 ? "Hết hàng" : "Thêm vào giỏ hàng"}
           </button>
         </div>
       </div>

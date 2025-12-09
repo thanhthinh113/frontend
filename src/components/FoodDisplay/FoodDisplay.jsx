@@ -155,15 +155,50 @@ export const FoodDisplay = () => {
                     className="add-btn"
                     onClick={() => addToCart(item._id)}
                     title="Thêm vào giỏ"
+                    disabled={item.stock === 0}
                   >
                     <FaPlus />
                   </button>
+                  {item.stock === 0 && (
+                    <div className="out-of-stock-badge">Hết hàng</div>
+                  )}
                 </div>
-                <Link to={`/food/${item._id}`} className="food-name-link">
-                  <h3>{item.name}</h3>
-                </Link>
-                <p>{getCategoryName(item)}</p>
-                <span>{parseFloat(item.price).toLocaleString()} đ</span>
+                <div className="food-info-wrapper">
+                  <Link to={`/food/${item._id}`} className="food-name-link">
+                    <h3>{item.name}</h3>
+                  </Link>
+                  {/* ⭐ Hiển thị sao đánh giá */}
+                  <div className="food-rating">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <span
+                        key={star}
+                        className={`star ${
+                          item.averageRating >= star ? "filled" : "empty"
+                        }`}
+                      >
+                        ★
+                      </span>
+                    ))}
+
+                    {item.averageRating === 0 && (
+                      <span className="no-rating-text">Chưa có đánh giá</span>
+                    )}
+                  </div>
+
+                  <p className="food-category">{getCategoryName(item)}</p>
+                  <div className="food-footer">
+                    <span className="food-price">
+                      {parseFloat(item.price).toLocaleString()} đ
+                    </span>
+                    <span
+                      className={`stock-tag ${
+                        item.stock === 0 ? "out-stock" : ""
+                      }`}
+                    >
+                      {item.stock > 0 ? `Kho: ${item.stock}` : "Hết hàng"}
+                    </span>
+                  </div>
+                </div>
               </div>
             );
           })

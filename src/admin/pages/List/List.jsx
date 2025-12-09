@@ -179,6 +179,7 @@ export const List = () => {
               />
             </span>
           </b>
+          <b>Kho</b>
 
           <b>Hành động</b>
         </div>
@@ -199,6 +200,9 @@ export const List = () => {
             <p>{item.categoryId?.name || "Chưa có danh mục"}</p>
             <p className="price-chip">
               {formatVND(item.price)} <span>VND</span>
+            </p>
+            <p className={`stock-chip ${item.stock === 0 ? "zero" : ""}`}>
+              {item.stock}
             </p>
             <div className="action-buttons">
               <span onClick={() => setEditingFood(item)} className="edit-btn">
