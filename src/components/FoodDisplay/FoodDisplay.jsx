@@ -169,16 +169,19 @@ export const FoodDisplay = () => {
                   </Link>
                   {/* ⭐ Hiển thị sao đánh giá */}
                   <div className="food-rating">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <span
-                        key={star}
-                        className={`star ${
-                          item.averageRating >= star ? "filled" : "empty"
-                        }`}
-                      >
-                        ★
-                      </span>
-                    ))}
+                    {(() => {
+                      const roundedRating = Math.round(item.averageRating || 0);
+                      return [1, 2, 3, 4, 5].map((star) => (
+                        <span
+                          key={star}
+                          className={`star ${
+                            roundedRating >= star ? "filled" : "empty"
+                          }`}
+                        >
+                          ★
+                        </span>
+                      ));
+                    })()}
 
                     {item.averageRating === 0 && (
                       <span className="no-rating-text">Chưa có đánh giá</span>
