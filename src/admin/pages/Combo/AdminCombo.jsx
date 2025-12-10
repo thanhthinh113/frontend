@@ -134,11 +134,54 @@ export const AdminCombo = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Kiểm tra giá ưu đãi nhỏ hơn giá gốc
+    // Kiểm tra tên combo
+    if (!formData.name.trim()) {
+      toast.error("❌ Tên combo không được để trống!");
+      return;
+    }
+
+    // Kiểm tra mô tả combo
+    if (!formData.description.trim()) {
+      toast.error("❌ Mô tả combo không được để trống!");
+      return;
+    }
+
+    // Phải chọn ít nhất 1 món
+    if (formData.items.length < 2) {
+      toast.error("❌ Combo phải có ít nhất 2 món!");
+      return;
+    }
+
+    // Giá gốc phải hợp lệ
+    if (formData.price <= 0) {
+      toast.error("❌ Combo chưa có món nên giá gốc = 0!");
+      return;
+    }
+
+    // Giá ưu đãi < giá gốc
     if (formData.discountPrice >= formData.price) {
       toast.error("❌ Giá ưu đãi phải nhỏ hơn giá gốc!");
       return;
     }
+
+    // Ảnh combo: bắt buộc khi tạo mới
+    if (!editingId && !formData.image) {
+      toast.error("❌ Vui lòng chọn ảnh combo!");
+      return;
+    }
+
+    // Giá ưu đãi không được để trống
+    if (formData.discountPrice === "" || formData.discountPrice === null) {
+      toast.error("❌ Vui lòng nhập giá ưu đãi!");
+      return;
+    }
+
+    // Giá ưu đãi không được âm
+    if (formData.discountPrice < 0) {
+      toast.error("❌ Giá ưu đãi không thể là số âm!");
+      return;
+    }
+
     const data = new FormData();
     data.append("name", formData.name);
     data.append("description", formData.description);
@@ -221,9 +264,6 @@ export const AdminCombo = () => {
           return categoryId?.toString() === selectedCategory.toString();
         });
 
-  // -------------------------------------------------------------
-  // 📝 PHẦN JSX ĐÃ CẬP NHẬT THỨ TỰ VÀ TRƯỜNG GIÁ ƯU ĐÃI
-  // -------------------------------------------------------------
   return (
     <div className="admin-combo">
       <h2 className="title">🎁 Quản lý Combo Ưu Đãi</h2>

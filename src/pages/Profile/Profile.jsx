@@ -46,6 +46,20 @@ export const Profile = () => {
       toast.error("Số điện thoại phải gồm 10 số và bắt đầu bằng 0");
       return;
     }
+    if (!address.street?.trim()) {
+      toast.error("Tên đường không được để trống");
+      return;
+    }
+
+    if (!address.district?.trim()) {
+      toast.error("Quận/Huyện không được để trống");
+      return;
+    }
+
+    if (!address.city?.trim()) {
+      toast.error("Thành phố không được để trống");
+      return;
+    }
 
     try {
       const res = await axios.post(

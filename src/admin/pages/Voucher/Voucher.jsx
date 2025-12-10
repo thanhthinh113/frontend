@@ -43,8 +43,39 @@ export const Voucher = () => {
   // 🆕 Tạo voucher mới (test không cần token)
   const createVoucher = async (e) => {
     e.preventDefault();
+
+    const { code, discountPercent, pointsRequired, expiryDate } = formData;
+
+    // ⚠️ Kiểm tra trống
+    if (!code || !discountPercent || !pointsRequired || !expiryDate) {
+      toast.error("Vui lòng nhập đầy đủ thông tin");
+      return;
+    }
+
+    // ⚠️ Kiểm tra trùng mã voucher
+    const isDuplicate = vouchers.some(
+      (v) => v.code.toUpperCase() === code.toUpperCase()
+    );
+    if (isDuplicate) {
+      toast.error("Mã voucher đã tồn tại, vui lòng chọn mã khác");
+      return;
+    }
+
+    // ⚠️ Kiểm tra ngày hết hạn
+    const today = new Date();
+    const expiry = new Date(expiryDate);
+
+    // Đặt 0h cho ngày hôm nay để tránh lệch do giờ
+    today.setHours(0, 0, 0, 0);
+
+    if (expiry <= today) {
+      toast.error("Ngày hết hạn phải sau ngày hôm nay");
+      return;
+    }
+
     try {
       const res = await axios.post(`${url}/api/voucher/create`, formData);
+
       if (res.data.success) {
         toast.success("Tạo voucher thành công!");
         setFormData({

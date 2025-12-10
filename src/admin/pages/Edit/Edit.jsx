@@ -8,10 +8,11 @@ export const Edit = ({ food, onClose, onUpdated }) => {
   const { url } = useContext(StoreContext);
   const [categories, setCategories] = useState([]);
   const [image, setImage] = useState(null);
+
   const [data, setData] = useState({
     name: food.name || "",
     description: food.description || "",
-    category: food.category?._id || "",
+    category: food.categoryId?._id || "",
     price: food.price || "",
     stock: food.stock || 0,
   });
@@ -35,12 +36,58 @@ export const Edit = ({ food, onClose, onUpdated }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    // 📌 Tên sản phẩm
+    if (!data.name.trim()) {
+      toast.error("Tên sản phẩm không được để trống");
+      return;
+    }
+
+    // 📌 Mô tả
+    if (!data.description.trim()) {
+      toast.error("Mô tả không được để trống");
+      return;
+    }
+
+    // 📌 Danh mục
+    if (!data.category) {
+      toast.error("Vui lòng chọn danh mục");
+      return;
+    }
+
+    // 📌 Giá
+    const priceValue = Number(data.price);
+    if (data.price === "") {
+      toast.error("Giá sản phẩm không được để trống");
+      return;
+    }
+    if (isNaN(priceValue)) {
+      toast.error("Giá phải là số hợp lệ");
+      return;
+    }
+    if (priceValue <= 0) {
+      toast.error("Giá sản phẩm phải lớn hơn 0");
+      return;
+    }
+
+    // 📌 Tồn kho
+    const stockValue = Number(data.stock);
+    if (data.stock === "") {
+      toast.error("Tồn kho không được để trống");
+      return;
+    }
+    if (isNaN(stockValue) || stockValue < 0) {
+      toast.error("Tồn kho phải là số không âm");
+      return;
+    }
+
+    // 📦 Tạo FormData
     const formData = new FormData();
     formData.append("name", data.name);
     formData.append("description", data.description);
     formData.append("categoryId", data.category);
-    formData.append("price", Number(data.price));
-    formData.append("stock", Number(data.stock));
+    formData.append("price", priceValue);
+    formData.append("stock", stockValue);
     if (image) formData.append("image", image);
 
     try {
@@ -51,6 +98,7 @@ export const Edit = ({ food, onClose, onUpdated }) => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
+
       if (response.data.success) {
         toast.success("Cập nhật sản phẩm thành công");
         onUpdated();
@@ -68,6 +116,7 @@ export const Edit = ({ food, onClose, onUpdated }) => {
     <div className="edit-popup">
       <div className="edit-content">
         <h3>Sửa sản phẩm</h3>
+
         <form onSubmit={onSubmit}>
           <div className="form-group-image">
             <p>Ảnh sản phẩm</p>
@@ -77,12 +126,13 @@ export const Edit = ({ food, onClose, onUpdated }) => {
                   image
                     ? URL.createObjectURL(image)
                     : food.image?.startsWith("https://")
-                    ? food.image // 🔥 là link S3
+                    ? food.image
                     : `${url}/${food.image}`
                 }
                 alt="Ảnh sản phẩm"
               />
             </label>
+
             <input
               onChange={(e) => setImage(e.target.files[0])}
               type="file"
@@ -141,8 +191,9 @@ export const Edit = ({ food, onClose, onUpdated }) => {
                 required
               />
             </div>
+
             <div className="form-group">
-              <p>Tồn kho (stock)</p>
+              <p>Tồn kho</p>
               <input
                 onChange={onChangeHandler}
                 value={data.stock}

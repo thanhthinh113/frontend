@@ -34,6 +34,25 @@ export const Categories = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Tên danh mục không được để trống
+    if (!newName.trim()) {
+      toast.error("❌ Tên danh mục không được để trống!");
+      return;
+    }
+
+    // Tên phải dài tối thiểu 2 ký tự
+    if (newName.trim().length < 2) {
+      toast.error("❌ Tên danh mục phải có ít nhất 2 ký tự!");
+      return;
+    }
+
+    // Khi TẠO MỚI thì bắt buộc có ảnh
+    if (!editing && !newImage) {
+      toast.error("❌ Vui lòng chọn hình ảnh cho danh mục!");
+      return;
+    }
+
     try {
       const formData = new FormData();
       formData.append("name", newName);
